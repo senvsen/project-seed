@@ -34,7 +34,7 @@ public abstract class AbstractCodeGenerator {
     private static final String JDBC_DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
 
     //项目在硬盘的路径
-    public static final String PROJECT_PATH = "E:" + File.separator + "Demo" + File.separator + "project-seed";
+    public static final String PROJECT_PATH = "D:" + File.separator + "Projects" + File.separator + "project-seed";
     //Java文件路径
     public static final String JAVA_PATH = "/src/main/java";
     //资源文件路径

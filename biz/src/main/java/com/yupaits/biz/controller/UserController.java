@@ -4,7 +4,6 @@ package com.yupaits.biz.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
-import com.yupaits.commons.core.BaseController;
 
 /**
  * <p>
@@ -16,6 +15,6 @@ import com.yupaits.commons.core.BaseController;
  */
 @RestController
 @RequestMapping("/biz/user")
-public class UserController extends BaseController {
+public class UserController {
 
 }

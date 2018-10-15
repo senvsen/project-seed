@@ -1,4 +1,4 @@
-package com.yupaits.controller;
+package com.yupaits.auth.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +12,10 @@ import com.yupaits.commons.core.BaseController;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-15
+ * @since 2018-10-16
  */
 @RestController
-@RequestMapping("//biz-user")
-public class BizUserController extends BaseController {
+@RequestMapping("/auth/user")
+public class UserController extends BaseController {
 
 }
