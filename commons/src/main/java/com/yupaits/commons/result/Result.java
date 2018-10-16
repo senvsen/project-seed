@@ -1,5 +1,6 @@
 package com.yupaits.commons.result;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,6 +12,9 @@ import lombok.Data;
 @Builder
 public class Result<T> {
     private int code;
+
     private String msg;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 }

@@ -10,12 +10,16 @@ import javax.servlet.http.HttpSession;
 public class HttpUtils {
 
     private static final String SESSION_USER_KEY = "";
-    private static final ThreadLocal<HttpServletRequest> requestThreadLocal = new ThreadLocal<>();
+    private static ThreadLocal<HttpServletRequest> requestThreadLocal = new ThreadLocal<>();
 
     public static void setRequest(HttpServletRequest request) {
         if (request != null) {
             requestThreadLocal.set(request);
         }
+    }
+
+    public static void removeRequest() {
+        requestThreadLocal.remove();
     }
 
     public static HttpServletRequest getRequest() {

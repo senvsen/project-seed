@@ -1,6 +1,5 @@
 package com.yupaits.generator;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
@@ -34,7 +33,7 @@ public abstract class AbstractCodeGenerator {
     private static final String JDBC_DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
 
     //项目在硬盘的路径
-    public static final String PROJECT_PATH = "D:" + File.separator + "Projects" + File.separator + "project-seed";
+    public static final String PROJECT_PATH = "E:" + File.separator + "Demo" + File.separator + "project-seed";
     //Java文件路径
     public static final String JAVA_PATH = "/src/main/java";
     //资源文件路径
@@ -48,7 +47,12 @@ public abstract class AbstractCodeGenerator {
     private static final String AUTHOR = "yupaits";
 
     private static final String BASE_ENTITY_CLASS = "com.yupaits.commons.core.BaseEntity";
-    private static final String BASE_CONTROLLER_CLASS = "com.yupaits.commons.core.BaseController";
+
+    //控制台交互
+    private static final String BASE_ENTITY_TIP = "Entity是否继承BaseEntity";
+    private static final String DELETED_COLUMN_TIP = "是否存在逻辑删除deleted字段";
+    private static final String VERSION_COLUMN_TIP = "是否存在乐观锁version字段";
+    private static final String TRUE_VAL = "y";
 
     private AutoGenerator mpg = new AutoGenerator();
     private GlobalConfig globalConfig = new GlobalConfig();
@@ -68,7 +72,7 @@ public abstract class AbstractCodeGenerator {
         if (StringUtils.isNotEmpty(outputDir)) {
             globalConfig.setOutputDir(outputDir);
         } else {
-            globalConfig.setOutputDir(PROJECT_PATH + "/" + packageConfig.getModuleName() + JAVA_PATH);
+            globalConfig.setOutputDir(PROJECT_PATH + "/server" + JAVA_PATH);
         }
     }
 
@@ -106,7 +110,7 @@ public abstract class AbstractCodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输入文件名称
-                return PROJECT_PATH + "/" + packageConfig.getModuleName() + MAPPER_XML_PATH
+                return PROJECT_PATH + "/server" + MAPPER_XML_PATH + packageConfig.getModuleName()
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
@@ -117,13 +121,20 @@ public abstract class AbstractCodeGenerator {
         //策略配置
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setSuperEntityClass(BASE_ENTITY_CLASS);
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
-        strategy.setSuperControllerClass(BASE_CONTROLLER_CLASS);
-        strategy.setSuperEntityColumns("id");
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setInclude(scanner("表名"));
+        if (scannerBool(BASE_ENTITY_TIP)) {
+            strategy.setSuperEntityClass(BASE_ENTITY_CLASS);
+            strategy.setSuperEntityColumns("id", "created_at", "created_by", "updated_at", "updated_by", "deleted", "version");
+        }
+        if (scannerBool(DELETED_COLUMN_TIP)) {
+            strategy.setLogicDeleteFieldName("deleted");
+        }
+        if (scannerBool(VERSION_COLUMN_TIP)) {
+            strategy.setVersionFieldName("version");
+        }
         strategy.setTablePrefix(packageConfig.getModuleName() + "_");
         mpg.setStrategy(strategy);
 
@@ -133,14 +144,13 @@ public abstract class AbstractCodeGenerator {
 
     /**
      * 读取控制台内容
-     *
      * @param tip 控制台输入提示
      * @return 读取到的内容
      */
-    protected String scanner(String tip) {
+    public static String scanner(String tip) {
         Scanner scanner = new Scanner(System.in);
         StringBuilder help = new StringBuilder();
-        help.append("请输入" + tip + "：");
+        help.append("请输入").append(tip).append("：");
         System.out.println(help.toString());
         if (scanner.hasNext()) {
             String ipt = scanner.next();
@@ -149,6 +159,23 @@ public abstract class AbstractCodeGenerator {
             }
         }
         throw new MybatisPlusException("请输入正确的" + tip + "！");
+    }
+
+    /**
+     * 读取控制台输入的bool值
+     * @param tip 控制台提示输入
+     * @return 读取到的值
+     */
+    protected boolean scannerBool(String tip) {
+        Scanner scanner = new Scanner(System.in);
+        StringBuilder help = new StringBuilder();
+        help.append("请选择").append(tip).append("(是: y, 否: 其他输入)?");
+        System.out.println(help.toString());
+        if (scanner.hasNext()) {
+            String ipt = scanner.next();
+            return StringUtils.isNotEmpty(ipt) && TRUE_VAL.equals(ipt);
+        }
+        return false;
     }
 
     /**
