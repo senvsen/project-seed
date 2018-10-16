@@ -12,6 +12,56 @@ mybatis-plus:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=false&characterEncoding=utf8
     username: root
     password: sql123
-    url: jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=false&characterEncoding=utf8
+    druid:
+      initial-size: 1
+      max-active: 20
+      min-idle: 1
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat
+      stat-view-servlet:
+        login-username: yupaits
+        login-password: druid123
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+      shutdown-timeout: 100ms
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+logging:
+  config: classpath:log4j2.yml
+
+api:
+  version: v1.0.0
+  contact-name: YupaiTS
+  contact-url: https://github.com/YupaiTS
+  contact-email: ts495606653@hotmail.com
+  termsOfServiceUrl:
+  license: Apache v2 License
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
+  groups:
+    - name: auth
+      title: Auth模块接口
+      description: 权限模块接口文档

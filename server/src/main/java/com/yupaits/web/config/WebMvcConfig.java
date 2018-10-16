@@ -4,13 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yupaits.web.handler.ExceptionHandler;
 import com.yupaits.web.interceptor.HttpInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.ErrorPage;
-import org.springframework.boot.web.server.ErrorPageRegistrar;
-import org.springframework.boot.web.server.ErrorPageRegistry;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -23,7 +19,7 @@ import java.util.List;
  * @date 2018/10/16
  */
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer, ErrorPageRegistrar {
+public class WebMvcConfig implements WebMvcConfigurer {
 
     private final ObjectMapper objectMapper;
 
@@ -49,13 +45,5 @@ public class WebMvcConfig implements WebMvcConfigurer, ErrorPageRegistrar {
                 .allowedOrigins("*")
                 .allowedHeaders("X-Requested-With", "accept", "content-type")
                 .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(), HttpMethod.DELETE.name());
-    }
-
-    @Override
-    public void registerErrorPages(ErrorPageRegistry registry) {
-//        registry.addErrorPages(
-//                new ErrorPage(HttpStatus.NOT_FOUND, "/404"),
-//                new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/500")
-//        );
     }
 }

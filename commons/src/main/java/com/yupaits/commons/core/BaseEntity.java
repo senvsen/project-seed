@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
  * @date 2018/10/15
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class BaseEntity extends Model implements Serializable {
 
     @ApiModelProperty(value = "主键ID")

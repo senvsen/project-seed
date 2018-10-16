@@ -1,0 +1,51 @@
+Configuration:
+  status: warn
+
+  Properties:
+    Property:
+    - name: log.base
+      value: logs
+    - name: app.name
+      value: app
+    - name: log.pattern
+      value: "%d [${app.name}] %p [%t] [%c{39}:%M] %m%n"
+
+  Appenders:
+    Console:
+      name: CONSOLE
+      target: SYSTEM_OUT
+      ThresholdFilter:
+        level: info
+        onMatch: ACCEPT
+        onMismatch: DENY
+      PatternLayout:
+        pattern: ${log.pattern}
+    RollingFile:
+    - name: ROLLIING_FILE
+      ignoreExceptions: false
+      fileName: ${log.base}/${app.name}.log
+      filePattern: "${log.base}/${app.name}.%d{yyyy-MM-dd}.%i.log"
+      PatternLayout:
+        pattern: ${log.pattern}
+      Policies:
+        TimeBasedTriggeringPolicy:
+          interval: 1
+          modulate: true
+        SizeBasedTriggeringPolicy:
+          size: "10 MB"
+      DefaultRolloverStrategy:
+        max: 1000
+
+  Loggers:
+    Root:
+      level: warn
+      AppenderRef:
+      - ref: CONSOLE
+      - ref: ROLLIING_FILE
+    Logger:
+    - name: com.yupaits
+      additivity: false
+      level: info
+      AppenderRef:
+      - ref: CONSOLE
+      - ref: ROLLIING_FILE
