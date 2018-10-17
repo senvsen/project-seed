@@ -46,6 +46,9 @@ public class UserRealm extends AuthorizingRealm {
         if (user == null) {
             throw new UnknownAccountException(String.format("用户%s不存在", token.getUsername()));
         }
+        if (!user.getEnabled()) {
+            throw new DisabledAccountException(String.format("%s已被禁用", token.getUsername()));
+        }
         return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
     }
 

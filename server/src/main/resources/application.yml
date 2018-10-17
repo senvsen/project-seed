@@ -1,20 +1,11 @@
 server:
   port: 8888
 
-mybatis-plus:
-  global-config:
-    db-config:
-      db-type: mysql
-      logic-delete-value: 1
-      logic-not-delete-value: 0
-  type-enums-package: com.yupaits.commons.consts.enums
-
 spring:
+  profiles:
+    active: dev  #切换运行环境
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=false&characterEncoding=utf8
-    username: root
-    password: sql123
     druid:
       initial-size: 1
       max-active: 20
@@ -29,14 +20,8 @@ spring:
       pool-prepared-statements: true
       max-pool-prepared-statement-per-connection-size: 20
       filters: stat
-      stat-view-servlet:
-        login-username: yupaits
-        login-password: druid123
   redis:
     database: 0
-    host: localhost
-    port: 6379
-    password:
     lettuce:
       pool:
         max-active: 8
@@ -45,16 +30,21 @@ spring:
         min-idle: 0
       shutdown-timeout: 100ms
   rabbitmq:
-    host: localhost
     port: 5672
-    username: guest
-    password: guest
 
 logging:
   config: classpath:log4j2.yml
 
+mybatis-plus:
+  global-config:
+    db-config:
+      db-type: mysql
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  type-enums-package: com.yupaits.commons.consts.enums
+
 api:
-  version: v1.0.0
+  version: ${spring.profiles.active} v1.0.0
   contact-name: YupaiTS
   contact-url: https://github.com/YupaiTS
   contact-email: ts495606653@hotmail.com
@@ -62,6 +52,50 @@ api:
   license: Apache v2 License
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
   groups:
-    - name: auth
-      title: Auth模块接口
-      description: 权限模块接口文档
+  - name: auth
+    title: Auth模块接口
+    description: 权限模块接口文档
+  - name: session
+    title: Session管理接口
+    description: Session会话管理接口文档
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=false&characterEncoding=utf8
+    username: root
+    password: sql123
+    druid:
+      stat-view-servlet:
+        login-username: yupaits
+        login-password: druid123
+  redis:
+    host: localhost
+    port: 6379
+    password:
+  rabbitmq:
+    host: localhost
+    username: guest
+    password: guest
+
+---
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=false&characterEncoding=utf8
+    username: root
+    password: sql123
+    druid:
+      stat-view-servlet:
+        login-username: yupaits
+        login-password: druid123
+  redis:
+    host: localhost
+    port: 6379
+    password:
+  rabbitmq:
+    host: localhost
+    username: guest
+    password: guest
+---

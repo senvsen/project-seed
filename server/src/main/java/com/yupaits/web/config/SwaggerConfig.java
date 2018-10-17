@@ -15,6 +15,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
+ * Swagger接口文档配置
  * @author yupaits
  * @date 2018/10/16
  */
@@ -32,6 +33,11 @@ public class SwaggerConfig {
     @Bean
     public Docket authApi() {
         return genDocket("auth");
+    }
+
+    @Bean
+    public Docket sessionApi() {
+        return genDocket("session");
     }
 
     /**

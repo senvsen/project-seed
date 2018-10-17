@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Http拦截器，将request对象存入ThreadLocal中
  * @author yupaits
  * @date 2018/10/16
  */
