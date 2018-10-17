@@ -32,7 +32,6 @@
         <module>commons</module>
         <module>generator</module>
         <module>server</module>
-        <module>ui</module>
     </modules>
 
     <dependencies>
