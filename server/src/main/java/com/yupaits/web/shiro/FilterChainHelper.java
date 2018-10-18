@@ -2,8 +2,8 @@ package com.yupaits.web.shiro;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.Maps;
-import com.yupaits.auth.entity.FilterChain;
-import com.yupaits.auth.service.IFilterChainService;
+import com.yupaits.sys.entity.FilterChain;
+import com.yupaits.sys.service.IFilterChainService;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;

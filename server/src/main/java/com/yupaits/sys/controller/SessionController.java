@@ -1,14 +1,13 @@
-package com.yupaits.session.controller;
+package com.yupaits.sys.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yupaits.commons.result.Result;
-import com.yupaits.session.service.SessionService;
+import com.yupaits.sys.service.SessionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -33,8 +32,9 @@ public class SessionController {
     @ApiImplicitParams({@ApiImplicitParam(name = "page", value = "当前页码", dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "size", value = "每页数量", dataType = "int", paramType = "query")})
     @GetMapping("/page")
-    public Result getSessionPage(@PageableDefault Pageable pageable) {
-        return sessionService.getSessionPage(pageable);
+    public Result getSessionPage(@RequestParam(required = false) int page,
+                                 @RequestParam(required = false) int size) {
+        return sessionService.getSessionPage(new Page(page, size));
     }
 
     @ApiOperation("强制结束会话")

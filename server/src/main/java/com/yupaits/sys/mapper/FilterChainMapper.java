@@ -1,15 +1,15 @@
-package com.yupaits.auth.mapper;
+package com.yupaits.sys.mapper;
 
-import com.yupaits.auth.entity.FilterChain;
+import com.yupaits.sys.entity.FilterChain;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- *  Mapper 接口
+ * 权限过滤链 Mapper 接口
  * </p>
  *
  * @author yupaits
- * @since 2018-10-17
+ * @since 2018-10-18
  */
 public interface FilterChainMapper extends BaseMapper<FilterChain> {
 

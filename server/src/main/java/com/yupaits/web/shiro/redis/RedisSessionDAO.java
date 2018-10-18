@@ -15,7 +15,7 @@ import java.util.Collection;
 public class RedisSessionDAO extends AbstractSessionDAO {
 
     private final Cache<Serializable, Session> redisCache;
-    public static final String SHIRO_SESSION_STORE = "shiro:session:";
+    public static final String SHIRO_SESSION_STORE = "shiro:session";
 
     public RedisSessionDAO(RedisCacheManager redisCacheManager) {
         this.redisCache = redisCacheManager.getCache(SHIRO_SESSION_STORE);
@@ -35,6 +35,9 @@ public class RedisSessionDAO extends AbstractSessionDAO {
 
     @Override
     public void update(Session session) throws UnknownSessionException {
+        if (session == null || session.getId() == null) {
+            throw new UnknownSessionException();
+        }
         redisCache.put(session.getId(), session);
     }
 

@@ -2,8 +2,8 @@ package com.yupaits.web.shiro;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.Maps;
-import com.yupaits.auth.entity.FilterChain;
-import com.yupaits.auth.service.IFilterChainService;
+import com.yupaits.sys.entity.FilterChain;
+import com.yupaits.sys.service.IFilterChainService;
 import com.yupaits.web.shiro.redis.RedisCacheManager;
 import com.yupaits.web.shiro.redis.RedisSessionDAO;
 import org.apache.shiro.codec.Base64;

@@ -1,4 +1,4 @@
-package com.yupaits.auth.controller;
+package com.yupaits.sys.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ * 权限过滤链 前端控制器
  * </p>
  *
  * @author yupaits
- * @since 2018-10-17
+ * @since 2018-10-18
  */
 @RestController
-@RequestMapping("/auth/filter-chain")
+@RequestMapping("/sys/filter-chain")
 public class FilterChainController {
 
 }

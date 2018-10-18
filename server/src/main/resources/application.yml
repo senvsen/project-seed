@@ -55,9 +55,9 @@ api:
   - name: auth
     title: Auth模块接口
     description: 权限模块接口文档
-  - name: session
-    title: Session管理接口
-    description: Session会话管理接口文档
+  - name: sys
+    title: 系统管理接口
+    description: 系统管理接口文档
 
 ---
 spring:
@@ -66,10 +66,6 @@ spring:
     url: jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=false&characterEncoding=utf8
     username: root
     password: sql123
-    druid:
-      stat-view-servlet:
-        login-username: yupaits
-        login-password: druid123
   redis:
     host: localhost
     port: 6379
@@ -86,10 +82,6 @@ spring:
     url: jdbc:mysql://localhost:3306/test?useUnicode=true&useSSL=false&characterEncoding=utf8
     username: root
     password: sql123
-    druid:
-      stat-view-servlet:
-        login-username: yupaits
-        login-password: druid123
   redis:
     host: localhost
     port: 6379

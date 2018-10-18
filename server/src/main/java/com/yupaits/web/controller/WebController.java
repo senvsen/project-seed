@@ -19,4 +19,19 @@ public class WebController {
     public String loginPage() {
         return "login";
     }
+
+    @GetMapping("/404")
+    public String page404() {
+        return "error/404";
+    }
+
+    @GetMapping("/403")
+    public String page403() {
+        return "error/403";
+    }
+
+    @GetMapping("/500")
+    public String page500() {
+        return "error/500";
+    }
 }

@@ -19,6 +19,9 @@ public class MetaObjectHandlerImpl implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         metaObject.setValue("createdAt", LocalDateTime.now());
         metaObject.setValue("createdBy", HttpUtils.getUserId());
+        metaObject.setValue("updatedAt", LocalDateTime.now());
+        metaObject.setValue("updatedBy", HttpUtils.getUserId());
+        metaObject.setValue("deleted", false);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket sessionApi() {
-        return genDocket("session");
+        return genDocket("sys");
     }
 
     /**

@@ -1,18 +1,18 @@
-package com.yupaits.auth.service.impl;
+package com.yupaits.sys.service.impl;
 
-import com.yupaits.auth.entity.FilterChain;
-import com.yupaits.auth.mapper.FilterChainMapper;
-import com.yupaits.auth.service.IFilterChainService;
+import com.yupaits.sys.entity.FilterChain;
+import com.yupaits.sys.mapper.FilterChainMapper;
+import com.yupaits.sys.service.IFilterChainService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
  * <p>
- *  服务实现类
+ * 权限过滤链 服务实现类
  * </p>
  *
  * @author yupaits
- * @since 2018-10-17
+ * @since 2018-10-18
  */
 @Service
 public class FilterChainServiceImpl extends ServiceImpl<FilterChainMapper, FilterChain> implements IFilterChainService {

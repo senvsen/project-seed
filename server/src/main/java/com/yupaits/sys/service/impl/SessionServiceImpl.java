@@ -1,9 +1,9 @@
-package com.yupaits.session.service.impl;
+package com.yupaits.sys.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yupaits.commons.result.Result;
 import com.yupaits.commons.result.ResultWrapper;
-import com.yupaits.session.service.SessionService;
+import com.yupaits.sys.service.SessionService;
 import com.yupaits.web.shiro.redis.RedisCacheManager;
 import com.yupaits.web.shiro.redis.RedisSessionDAO;
 import org.apache.shiro.cache.Cache;

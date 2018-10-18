@@ -14,6 +14,8 @@
     <properties>
         <commons-lang3.version>3.6</commons-lang3.version>
         <commons-collections4.version>4.1</commons-collections4.version>
+        <jpinyin.version>1.1.8</jpinyin.version>
+        <poi.version>3.17</poi.version>
     </properties>
 
     <dependencies>
@@ -27,6 +29,23 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>${commons-collections4.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.stuxuhai</groupId>
+            <artifactId>jpinyin</artifactId>
+            <version>${jpinyin.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
         </dependency>
     </dependencies>
 

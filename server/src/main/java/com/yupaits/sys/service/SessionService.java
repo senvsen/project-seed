@@ -1,4 +1,4 @@
-package com.yupaits.session.service;
+package com.yupaits.sys.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yupaits.commons.result.Result;

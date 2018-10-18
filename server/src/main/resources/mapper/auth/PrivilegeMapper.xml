@@ -4,27 +4,21 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.yupaits.auth.entity.Privilege">
-    <result column="id" property="id" />
-    <result column="created_at" property="createdAt" />
-    <result column="created_by" property="createdBy" />
-    <result column="updated_at" property="updatedAt" />
-    <result column="updated_by" property="updatedBy" />
-    <result column="deleted" property="deleted" />
+        <id column="id" property="id" />
         <result column="privilege_type" property="privilegeType" />
         <result column="privilege_key" property="privilegeKey" />
         <result column="name" property="name" />
         <result column="description" property="description" />
+        <result column="created_at" property="createdAt" />
+        <result column="created_by" property="createdBy" />
+        <result column="updated_at" property="updatedAt" />
+        <result column="updated_by" property="updatedBy" />
+        <result column="deleted" property="deleted" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id,
-        created_at,
-        created_by,
-        updated_at,
-        updated_by,
-        deleted,
-        privilege_type, privilege_key, name, description
+        id, privilege_type, privilege_key, name, description, created_at, created_by, updated_at, updated_by, deleted
     </sql>
 
 </mapper>
