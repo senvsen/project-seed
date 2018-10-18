@@ -10,7 +10,11 @@ public enum ResultCode {
     /**
      * 默认的失败响应码
      */
-    FAIL(10000, "FAIL");
+    FAIL(10000, ""),
+    PARAMS_ERROR(10001, "参数校验失败"),
+    DATA_NOT_FOUND(10002, "查找的数据不存在或已被删除"),
+    DATA_CANNOT_DELETE(10003, "数据无法删除"),
+    DATA_CONFLICT(10004, "意外的数据冲突");
 
     private final int code;
     private final String msg;
