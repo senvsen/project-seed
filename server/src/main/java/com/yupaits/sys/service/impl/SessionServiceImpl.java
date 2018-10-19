@@ -1,7 +1,6 @@
 package com.yupaits.sys.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Lists;
 import com.yupaits.commons.result.Result;
 import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.sys.service.SessionService;
@@ -10,7 +9,6 @@ import com.yupaits.web.shiro.redis.RedisSessionDAO;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SimpleSession;
-import org.apache.shiro.web.session.HttpServletSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

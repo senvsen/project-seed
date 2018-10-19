@@ -29,11 +29,11 @@ public class SessionController {
     }
 
     @ApiOperation("获取会话分页信息")
-    @ApiImplicitParams({@ApiImplicitParam(name = "page", value = "当前页码", dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "size", value = "每页数量", dataType = "int", paramType = "query")})
+    @ApiImplicitParams({@ApiImplicitParam(name = "page", value = "当前页码", defaultValue = "1", dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "size", value = "每页数量", defaultValue = "10", dataType = "int", paramType = "query")})
     @GetMapping("/page")
-    public Result getSessionPage(@RequestParam(required = false) int page,
-                                 @RequestParam(required = false) int size) {
+    public Result getSessionPage(@RequestParam(required = false, defaultValue = "1") int page,
+                                 @RequestParam(required = false, defaultValue = "10") int size) {
         return sessionService.getSessionPage(new Page(page, size));
     }
 

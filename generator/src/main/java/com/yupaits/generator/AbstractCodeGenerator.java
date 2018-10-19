@@ -45,7 +45,7 @@ public abstract class AbstractCodeGenerator {
     private static final String JDBC_DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
 
     //项目在硬盘的路径
-    public static final String PROJECT_PATH = "E:" + File.separator + "Demo" + File.separator + "project-seed";
+    public static final String PROJECT_PATH = "D:" + File.separator + "Projects" + File.separator + "project-seed";
     //Java文件路径
     public static final String JAVA_PATH = "/src/main/java";
     //资源文件路径
@@ -77,6 +77,7 @@ public abstract class AbstractCodeGenerator {
     private static final String RESULT_CODE_CLASS = "com.yupaits.commons.result.ResultCode";
     private static final String SERIALIZER_CLASS = "com.yupaits.commons.core.serializer.LongSerializer";
     private static final String DESERIALIZER_CLASS = "com.yupaits.commons.core.serializer.LongDeserializer";
+    private static final String VALIDATE_UTILS_CLASS = "com.yupaits.commons.utils.ValidateUtils";
 
     private static final String MYBATIS_PLUS_PACKAGE_PREFIX = "com.baomidou.mybatisplus";
 
@@ -167,6 +168,7 @@ public abstract class AbstractCodeGenerator {
                 classMap.put("superDto", BASE_DTO_CLASS);
                 classMap.put("serializer", SERIALIZER_CLASS);
                 classMap.put("deserializer", DESERIALIZER_CLASS);
+                classMap.put("validateUtils", VALIDATE_UTILS_CLASS);
                 classNameMap.put("superDto", className(BASE_DTO_CLASS));
                 classNameMap.put("serializer", className(SERIALIZER_CLASS));
                 classNameMap.put("deserializer", className(DESERIALIZER_CLASS));
