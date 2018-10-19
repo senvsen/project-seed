@@ -15,11 +15,11 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
-    * 权限
-    * </p>
+ * 权限
+ * </p>
  *
  * @author yupaits
- * @since 2018-10-18
+ * @since 2018-10-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

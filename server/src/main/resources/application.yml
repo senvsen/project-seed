@@ -41,6 +41,7 @@ mybatis-plus:
       db-type: mysql
       logic-delete-value: 1
       logic-not-delete-value: 0
+      id-type: id_worker
   type-enums-package: com.yupaits.commons.consts.enums
 
 api:

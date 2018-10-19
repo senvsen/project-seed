@@ -18,7 +18,7 @@ import java.io.Serializable;
  */
 @Api(tags = "会话管理")
 @RestController
-@RequestMapping("/session")
+@RequestMapping("/sys/session")
 public class SessionController {
 
     private final SessionService sessionService;

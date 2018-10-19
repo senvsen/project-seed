@@ -4,25 +4,29 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableFill;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Data;
-import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 代码生成器
@@ -50,6 +54,7 @@ public abstract class AbstractCodeGenerator {
     private static final String TEMPLATE_FILE_PATH = PROJECT_PATH + "/generator" + RESOURCES_PATH + "/templates";
     //Mapper xml文件路径
     private static final String MAPPER_XML_PATH = RESOURCES_PATH + "/mapper/";
+    private static final String HTML_TEMPLATES_PATH = RESOURCES_PATH + "/templates/";
 
     private static final String BASE_PACKAGE = "com.yupaits";
     private static final String BASE_PACKAGE_PATH = "/com/yupaits/";
@@ -60,9 +65,20 @@ public abstract class AbstractCodeGenerator {
     private static final String VERSION_FIELD_NAME = "version";
 
     //控制台交互
+    private static final String REST_CONTROLLER_STYLE_TIP = "是否设置控制器为RESTful风格";
+    private static final String RELATED_TABLE_TIP = "是否为中间关联表";
     private static final String DELETED_COLUMN_TIP = "是否存在逻辑删除deleted字段";
     private static final String VERSION_COLUMN_TIP = "是否存在乐观锁version字段";
     private static final String TRUE_VAL = "y";
+
+    private static final String RESULT_CLASS = "com.yupaits.commons.result.Result";
+    private static final String RESULT_WRAPPER_CLASS = "com.yupaits.commons.result.ResultWrapper";
+    private static final String MODEL_WRAPPER_CLASS = "com.yupaits.commons.result.ModelWrapper";
+    private static final String RESULT_CODE_CLASS = "com.yupaits.commons.result.ResultCode";
+    private static final String SERIALIZER_CLASS = "com.yupaits.commons.core.serializer.LongSerializer";
+    private static final String DESERIALIZER_CLASS = "com.yupaits.commons.core.serializer.LongDeserializer";
+
+    private static final String MYBATIS_PLUS_PACKAGE_PREFIX = "com.baomidou.mybatisplus";
 
     private AutoGenerator mpg = new AutoGenerator();
     private GlobalConfig globalConfig = new GlobalConfig();
@@ -96,6 +112,7 @@ public abstract class AbstractCodeGenerator {
         globalConfig.setSwagger2(true);
         globalConfig.setActiveRecord(true);
         globalConfig.setIdType(IdType.ID_WORKER);
+        globalConfig.setDateType(DateType.TIME_PACK);
         mpg.setGlobalConfig(globalConfig);
 
         //数据源配置
@@ -114,7 +131,6 @@ public abstract class AbstractCodeGenerator {
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);
-        strategy.setRestControllerStyle(true);
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setInclude(scanner("表名"));
         strategy.setTableFillList(Lists.newArrayList(
@@ -130,20 +146,49 @@ public abstract class AbstractCodeGenerator {
         if (scannerBool(VERSION_COLUMN_TIP)) {
             strategy.setVersionFieldName(VERSION_FIELD_NAME);
         }
+        strategy.setRestControllerStyle(scannerBool(REST_CONTROLLER_STYLE_TIP));
         strategy.setTablePrefix(packageConfig.getModuleName() + "_");
         mpg.setStrategy(strategy);
 
-        //生成自定义文件配置
+        //注入自定义配置
         InjectionConfig cfg = new InjectionConfig() {
             @Override
             public void initMap() {
-                this.setMap(Maps.newHashMap());
-                this.getMap().put("dtoPackage", BASE_PACKAGE + "." + packageConfig.getModuleName() + ".dto");
-                this.getMap().put("voPackage", BASE_PACKAGE + "." + packageConfig.getModuleName() + ".vo");
-                this.getMap().put("superDto", BASE_DTO_CLASS.substring(BASE_DTO_CLASS.lastIndexOf(StringPool.DOT) + 1));
+                TableInfo tableInfo = this.getConfig().getTableInfoList().get(0);
+                Map<String, Object> map = Maps.newHashMap();
+                Map<String, String> classMap = Maps.newHashMap();
+                Map<String, String> classNameMap = Maps.newHashMap();
+                Map<String, String> packageMap = Maps.newHashMap();
+                Map<String, String> objMap = Maps.newHashMap();
+                classMap.put("result", RESULT_CLASS);
+                classMap.put("resultWrapper", RESULT_WRAPPER_CLASS);
+                classMap.put("modelWrapper", MODEL_WRAPPER_CLASS);
+                classMap.put("resultCode", RESULT_CODE_CLASS);
+                classMap.put("superDto", BASE_DTO_CLASS);
+                classMap.put("serializer", SERIALIZER_CLASS);
+                classMap.put("deserializer", DESERIALIZER_CLASS);
+                classNameMap.put("superDto", className(BASE_DTO_CLASS));
+                classNameMap.put("serializer", className(SERIALIZER_CLASS));
+                classNameMap.put("deserializer", className(DESERIALIZER_CLASS));
+                classNameMap.put("create", tableInfo.getEntityName() + "Create");
+                classNameMap.put("update", tableInfo.getEntityName() + "Update");
+                classNameMap.put("vo", tableInfo.getEntityName() + "VO");
+                packageMap.put("dto", BASE_PACKAGE + "." + packageConfig.getModuleName() + ".dto");
+                packageMap.put("vo", BASE_PACKAGE + "." + packageConfig.getModuleName() + ".vo");
+                objMap.put("service", beanName(tableInfo.getEntityName(), "Service"));
+                objMap.put("create", beanName(tableInfo.getEntityName(), "Create"));
+                objMap.put("update", beanName(tableInfo.getEntityName(), "Update"));
+                objMap.put("vo", beanName(tableInfo.getEntityName(), "VO"));
+                objMap.put("entity", beanName(tableInfo.getEntityName(), ""));
+                map.put("class", classMap);
+                map.put("className", classNameMap);
+                map.put("package", packageMap);
+                map.put("obj", objMap);
+                this.setMap(map);
             }
         };
-        List<FileOutConfig> focList = new ArrayList<>();
+        //自定义文件生成配置
+        List<FileOutConfig> focList = Lists.newArrayList();
         //生成Mapper.xml文件
         focList.add(new FileOutConfig("/templates/mapper.xml.ftl") {
             @Override
@@ -152,13 +197,14 @@ public abstract class AbstractCodeGenerator {
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
-        if (StringUtils.isNotEmpty(strategy.getSuperEntityClass())) {
+        if (!scannerBool(RELATED_TABLE_TIP)) {
             //生成DTO Create类
             focList.add(new FileOutConfig("/templates/dto.create.java.ftl") {
                 @Override
                 public String outputFile(TableInfo tableInfo) {
-//                    tableInfo.getImportPackages().remove(com.baomidou.mybatisplus.annotation.TableName.class.getCanonicalName());
-//                    tableInfo.setImportPackages(BASE_DTO_CLASS);
+                    cfg.getMap().put("relateTable", false);
+                    cfg.getMap().put("fieldPackages", fieldPackages(tableInfo.getImportPackages()));
+                    cfg.getMap().put("hasDeserializer", hasDeserializer(tableInfo.getFields()));
                     return PROJECT_PATH + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
                             + "/dto/" + tableInfo.getEntityName() + "Create" + StringPool.DOT_JAVA;
                 }
@@ -167,31 +213,31 @@ public abstract class AbstractCodeGenerator {
             focList.add(new FileOutConfig("/templates/dto.update.java.ftl") {
                 @Override
                 public String outputFile(TableInfo tableInfo) {
-//                    tableInfo.getCommonFields().stream().filter(TableField::isKeyFlag).findFirst().ifPresent(idField -> {
-//                        if (!tableInfo.getFields().contains(idField)) {
-//                            tableInfo.getFields().add(0, idField);
-//                        }
-//                    });
+                    cfg.getMap().put("fieldPackages", fieldPackages(tableInfo.getImportPackages()));
                     return PROJECT_PATH + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
                             + "/dto/" + tableInfo.getEntityName() + "Update" + StringPool.DOT_JAVA;
                 }
             });
-            //生成VO类
-            focList.add(new FileOutConfig("/templates/vo.java.ftl") {
+        }
+        //生成VO类
+        focList.add(new FileOutConfig("/templates/vo.java.ftl") {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                cfg.getMap().put("fieldPackages", fieldPackages(tableInfo.getImportPackages()));
+                return PROJECT_PATH + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
+                        + "/vo/" + tableInfo.getEntityName() + "VO" + StringPool.DOT_JAVA;
+            }
+        });
+        //非RestController时生成Thymeleaf的html模板文件
+        if (!strategy.isRestControllerStyle()) {
+            focList.add(new FileOutConfig("/templates/html.ftl") {
                 @Override
                 public String outputFile(TableInfo tableInfo) {
-//                    tableInfo.getImportPackages().remove(BASE_DTO_CLASS);
-//                    tableInfo.setImportPackages(java.io.Serializable.class.getCanonicalName());
-//                    tableInfo.setImportPackages(java.time.LocalDateTime.class.getCanonicalName());
-//                    tableInfo.getCommonFields().stream().filter(tableField -> {
-//                        return !tableField.isKeyFlag() && !DELETED_FIELD_NAME.equals(tableField.getPropertyName());
-//                    }).forEach(tableField -> {
-//                        if (!tableInfo.getFields().contains(tableField)) {
-//                            tableInfo.getFields().add(tableField);
-//                        }
-//                    });
-                    return PROJECT_PATH + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
-                            + "/vo/" + tableInfo.getEntityName() + "VO" + StringPool.DOT_JAVA;
+                    //noinspection unchecked
+                    String fileName = MapUtils.getString((Map<String, String>) MapUtils.getMap(cfg.getMap(),"obj"),
+                            "entity") + ".html";
+                    return PROJECT_PATH + "/server" + HTML_TEMPLATES_PATH + packageConfig.getModuleName()
+                            + "/" + fileName;
                 }
             });
         }
@@ -203,6 +249,44 @@ public abstract class AbstractCodeGenerator {
         mpg.setTemplate(templateConfig);
         //设置文件模板引擎
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+    }
+
+    /**
+     * 根据类的路径获取类名
+     */
+    private String className(String clazz) {
+        return StringUtils.substringAfterLast(clazz, StringPool.DOT);
+    }
+
+    /**
+     * 使用EntityName和Bean的后缀生成Bean的名称
+     */
+    private String beanName(String entityName, String suffix) {
+        return com.baomidou.mybatisplus.core.toolkit.StringUtils.firstToLowerCase(entityName) + suffix;
+    }
+
+    /**
+     * 获取需要导入的Field类型Package路径
+     */
+    private Set<String> fieldPackages(Set<String> packages) {
+        return packages.stream().filter(pkg -> !StringUtils.startsWith(pkg, MYBATIS_PLUS_PACKAGE_PREFIX)
+                && !StringUtils.equalsAny(pkg,
+                LocalDateTime.class.getCanonicalName(),
+                Serializable.class.getCanonicalName()
+        )).collect(Collectors.toSet());
+    }
+
+    /**
+     * 判断CreateDTO类是否需要导入Deserializer相关的类
+     */
+    private boolean hasDeserializer(List<TableField> tableFields) {
+        for (TableField tableField : tableFields) {
+            if (!tableField.isKeyFlag() && tableField.getFill() == null
+                    && StringUtils.equals(tableField.getPropertyType(), "Long")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
