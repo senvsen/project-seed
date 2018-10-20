@@ -28,7 +28,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 </#if>
 <#if swagger2>
-@ApiModel(value = "${cfg.className.update}", description = "${cfg.className.update}DTO对象")
+@ApiModel(value = "${cfg.className.update}", description = "${cfg.className.update}对象")
 </#if>
 public class ${cfg.className.update} extends ${cfg.className.superDto} {
 

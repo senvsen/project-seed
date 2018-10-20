@@ -45,7 +45,8 @@ public abstract class AbstractCodeGenerator {
     private static final String JDBC_DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
 
     //项目在硬盘的路径
-    public static final String PROJECT_PATH = "D:" + File.separator + "Projects" + File.separator + "project-seed";
+//    public static final String PROJECT_PATH = "D:" + File.separator + "Projects" + File.separator + "project-seed";
+    public static final String PROJECT_PATH = "E:" + File.separator + "Demo" + File.separator + "project-seed";
     //Java文件路径
     public static final String JAVA_PATH = "/src/main/java";
     //资源文件路径
@@ -78,6 +79,8 @@ public abstract class AbstractCodeGenerator {
     private static final String SERIALIZER_CLASS = "com.yupaits.commons.core.serializer.LongSerializer";
     private static final String DESERIALIZER_CLASS = "com.yupaits.commons.core.serializer.LongDeserializer";
     private static final String VALIDATE_UTILS_CLASS = "com.yupaits.commons.utils.ValidateUtils";
+    private static final String FOREIGN_ID_CLASS = "com.yupaits.commons.core.identity.ForeignId;";
+    private static final String RELATED_ID_CLASS = "com.yupaits.commons.core.identity.RelatedId;";
 
     private static final String MYBATIS_PLUS_PACKAGE_PREFIX = "com.baomidou.mybatisplus";
 
@@ -106,12 +109,13 @@ public abstract class AbstractCodeGenerator {
     private void init() {
         //全局配置
         globalConfig.setAuthor(AUTHOR);
-        globalConfig.setFileOverride(true);
+        globalConfig.setFileOverride(false);
         globalConfig.setOpen(false);
         globalConfig.setBaseResultMap(true);
         globalConfig.setBaseColumnList(true);
         globalConfig.setSwagger2(true);
         globalConfig.setActiveRecord(true);
+        globalConfig.setEnableCache(true);
         globalConfig.setIdType(IdType.ID_WORKER);
         globalConfig.setDateType(DateType.TIME_PACK);
         mpg.setGlobalConfig(globalConfig);
@@ -169,6 +173,8 @@ public abstract class AbstractCodeGenerator {
                 classMap.put("serializer", SERIALIZER_CLASS);
                 classMap.put("deserializer", DESERIALIZER_CLASS);
                 classMap.put("validateUtils", VALIDATE_UTILS_CLASS);
+                classMap.put("foreignId", FOREIGN_ID_CLASS);
+                classMap.put("relatedId", RELATED_ID_CLASS);
                 classNameMap.put("superDto", className(BASE_DTO_CLASS));
                 classNameMap.put("serializer", className(SERIALIZER_CLASS));
                 classNameMap.put("deserializer", className(DESERIALIZER_CLASS));
@@ -204,7 +210,7 @@ public abstract class AbstractCodeGenerator {
             focList.add(new FileOutConfig("/templates/dto.create.java.ftl") {
                 @Override
                 public String outputFile(TableInfo tableInfo) {
-                    cfg.getMap().put("relateTable", false);
+                    cfg.getMap().put("notRelateTable", true);
                     cfg.getMap().put("fieldPackages", fieldPackages(tableInfo.getImportPackages()));
                     cfg.getMap().put("hasDeserializer", hasDeserializer(tableInfo.getFields()));
                     return PROJECT_PATH + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()

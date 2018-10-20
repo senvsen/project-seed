@@ -28,9 +28,9 @@ import java.time.LocalDateTime;
 @Data
 </#if>
 <#if swagger2>
-@ApiModel(value = "${entity}VO", description = "${entity}VO对象")
+@ApiModel(value = "${cfg.className.vo}", description = "${cfg.className.vo}对象")
 </#if>
-public class ${entity}VO implements Serializable {
+public class ${cfg.className.vo} implements Serializable {
 
     private static final long serialVersionUID = 1L;
 <#-- ----------  BEGIN 字段循环遍历  ---------->

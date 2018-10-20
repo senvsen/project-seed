@@ -23,8 +23,5 @@ module.exports = {
       title: '500 | ' + appName
     }
   },
-  baseUrl: "/",
-  assetsDir: 'static'
+  baseUrl: "/"
 };
-
-export default appName

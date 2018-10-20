@@ -3,12 +3,16 @@ package com.yupaits.web.shiro;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yupaits.auth.entity.*;
 import com.yupaits.auth.mapper.*;
+import com.yupaits.commons.consts.SecurityConsts;
 import lombok.Data;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +41,14 @@ public class UserRealm extends AuthorizingRealm {
         this.roleMapper = roleMapper;
         this.rolePrivilegeMapper = rolePrivilegeMapper;
         this.privilegeMapper = privilegeMapper;
+        this.setCredentialsMatcher(credentialsMatcher());
+    }
+
+    private HashedCredentialsMatcher credentialsMatcher() {
+        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+        credentialsMatcher.setHashAlgorithmName(Sha256Hash.ALGORITHM_NAME);
+        credentialsMatcher.setHashIterations(SecurityConsts.ITERATIONS);
+        return credentialsMatcher;
     }
 
     @Override
@@ -49,7 +61,8 @@ public class UserRealm extends AuthorizingRealm {
         if (!user.getEnabled()) {
             throw new DisabledAccountException(String.format("%s已被禁用", token.getUsername()));
         }
-        return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
+        ByteSource salt = ByteSource.Util.bytes(user.getUsername() + SecurityConsts.CREDENTIALS_SALT);
+        return new SimpleAuthenticationInfo(user, user.getPassword(), salt, getName());
     }
 
     @Override

@@ -56,8 +56,7 @@ public class FilterChainHelper {
      */
     private Map<String, String> loadFilterChains() {
         Map<String, String> filterChains = Maps.newLinkedHashMap();
-        List<FilterChain> filterChainList = filterChainService.list(
-                new QueryWrapper<FilterChain>().eq("deleted", false).orderByAsc("sort_code"));
+        List<FilterChain> filterChainList = filterChainService.list(new QueryWrapper<>());
         filterChainList.forEach(filterChain -> {
             filterChains.put(filterChain.getUrl(), filterChain.getFilter());
         });

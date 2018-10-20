@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yupaits.auth.mapper.UserMapper">
 
+    <!-- 开启二级缓存 -->
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.yupaits.auth.entity.User">
         <id column="id" property="id" />

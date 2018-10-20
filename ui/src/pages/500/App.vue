@@ -11,7 +11,7 @@
   export default {
     methods: {
       gotoIndex() {
-        window.location.replace('/');
+        window.location.replace('/index');
       }
     }
   }

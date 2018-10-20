@@ -13,7 +13,6 @@
 
     <properties>
         <druid-starter.version>1.1.10</druid-starter.version>
-        <shiro.version>1.4.0</shiro.version>
         <commons-pool2.version>2.4.3</commons-pool2.version>
         <jackson-yaml.version>2.8.10</jackson-yaml.version>
     </properties>
@@ -50,12 +49,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
-            <version>${shiro.version}</version>
         </dependency>
 
         <dependency>

@@ -17,7 +17,8 @@ public enum ResultCode {
     DATA_CONFLICT(11004, "意外的数据冲突"),
     CREATE_FAIL(20001, "创建记录失败"),
     UPDATE_FAIL(20002, "更新记录失败"),
-    DELETE_FAIL(20003, "删除记录失败"),;
+    DELETE_FAIL(20003, "删除记录失败"),
+    SAVE_FAIL(20004, "保存记录失败");
 
     private final int code;
     private final String msg;

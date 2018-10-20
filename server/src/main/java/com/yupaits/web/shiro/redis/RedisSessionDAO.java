@@ -35,10 +35,9 @@ public class RedisSessionDAO extends AbstractSessionDAO {
 
     @Override
     public void update(Session session) throws UnknownSessionException {
-        if (session == null || session.getId() == null) {
-            throw new UnknownSessionException();
+        if (session != null && session.getId() != null) {
+            redisCache.put(session.getId(), session);
         }
-        redisCache.put(session.getId(), session);
     }
 
     @Override

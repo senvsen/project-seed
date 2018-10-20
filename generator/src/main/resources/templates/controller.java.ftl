@@ -2,10 +2,17 @@ package ${package.Controller};
 
 import ${package.Entity}.${entity};
 import ${package.Service}.${table.serviceName};
-<#if cfg.relateTable??>
+import ${cfg.package.vo}.${cfg.className.vo};
+<#if cfg.notRelateTable??>
 import ${cfg.package.dto}.${cfg.className.create};
 import ${cfg.package.dto}.${cfg.className.update};
-import ${cfg.package.vo}.${cfg.className.vo};
+import ${cfg.class.validateUtils};
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.Map;
+<#else>
+import ${cfg.class.foreignId};
+import ${cfg.class.relatedId};
+import com.google.common.collect.Lists;
 </#if>
 <#if restControllerStyle>
 import ${cfg.class.result};
@@ -15,7 +22,7 @@ import ${cfg.class.modelWrapper};
 import org.springframework.ui.Model;
 </#if>
 import ${cfg.class.resultCode};
-import ${cfg.class.validateUtils};
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.stereotype.Controller;
 </#if>
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 <#if swagger2>
 import io.swagger.annotations.*;
 </#if>
@@ -35,7 +41,7 @@ import ${superControllerClassPackage};
 </#if>
 
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -46,6 +52,7 @@ import java.util.Map;
  * @author ${author}
  * @since ${date}
  */
+@Slf4j
 <#if swagger2>
 @Api(tags = "${table.comment!}接口")
 </#if>
@@ -61,6 +68,9 @@ public class ${table.controllerName} extends ${superControllerClass} {
 public class ${table.controllerName} {
 </#if>
 
+    <#if !restControllerStyle>
+    private final static String VIEW = "<#if package.ModuleName??>${package.ModuleName}</#if><#if controllerMappingHyphenStyle??>/${controllerMappingHyphen}</#if>";
+    </#if>
     private final ${table.serviceName} ${cfg.obj.service};
 
     @Autowired
@@ -68,7 +78,7 @@ public class ${table.controllerName} {
         this.${cfg.obj.service} = ${cfg.obj.service};
     }
 
-<#if cfg.relateTable??>
+<#if cfg.notRelateTable??>
     <#if swagger2>
     @ApiOperation("创建${table.comment!}")
     </#if>
@@ -83,6 +93,7 @@ public class ${table.controllerName} {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
             <#else>
             ModelWrapper.fail(model, ResultCode.PARAMS_ERROR.getMsg());
+            return VIEW;
             </#if>
         }
         ${entity} ${cfg.obj.entity} = new ${entity}();
@@ -95,14 +106,14 @@ public class ${table.controllerName} {
         } else {
             ModelWrapper.fail(model, ResultCode.CREATE_FAIL);
         }
-        return "<#if package.ModuleName??>${package.ModuleName}</#if><#if controllerMappingHyphenStyle??>/${controllerMappingHyphen}</#if>";
+        return VIEW;
         </#if>
     }
 
     <#if swagger2>
     @ApiOperation("编辑${table.comment!}")
     </#if>
-    @PostMapping("/{id:\\d{19}}")
+    @PutMapping("/{id:\\d{19}}")
     <#if restControllerStyle>
     public Result update${entity}(@RequestBody ${cfg.className.update} ${cfg.obj.update}) {
     <#else>
@@ -113,6 +124,7 @@ public class ${table.controllerName} {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
             <#else>
             ModelWrapper.fail(model, ResultCode.PARAMS_ERROR.getMsg());
+            return VIEW;
             </#if>
         }
         ${entity} ${cfg.obj.entity} = new ${entity}();
@@ -125,7 +137,41 @@ public class ${table.controllerName} {
         } else {
             ModelWrapper.fail(model, ResultCode.UPDATE_FAIL);
         }
-        return "<#if package.ModuleName??>${package.ModuleName}</#if><#if controllerMappingHyphenStyle??>/${controllerMappingHyphen}</#if>";
+        return VIEW;
+        </#if>
+    }
+
+    <#if swagger2>
+    @ApiOperation("批量保存${table.comment!}")
+    </#if>
+    @PutMapping("/batch-save")
+    <#if restControllerStyle>
+    public Result batchSave${entity}(@RequestBody List<${cfg.className.update}> ${cfg.obj.update}List) {
+    <#else>
+    public String batchSave${entity}(@RequestBody List<${cfg.className.update}> ${cfg.obj.update}List, Model model) {
+    </#if>
+        if (!${cfg.className.update}.isValid(${cfg.obj.update}List)) {
+            <#if restControllerStyle>
+            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
+            <#else>
+            ModelWrapper.fail(model, ResultCode.PARAMS_ERROR.getMsg());
+            return VIEW;
+            </#if>
+        }
+        List<${entity}> ${cfg.obj.entity}List = ${cfg.obj.update}List.stream().map(${cfg.obj.update} -> {
+            ${entity} ${cfg.obj.entity} = new ${entity}();
+            BeanUtils.copyProperties(${cfg.obj.update}, ${cfg.obj.entity});
+            return ${cfg.obj.entity};
+        }).collect(Collectors.toList());
+        <#if restControllerStyle>
+        return ${cfg.obj.service}.saveOrUpdateBatch(${cfg.obj.entity}List) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.SAVE_FAIL);
+        <#else>
+        if (${cfg.obj.service}.saveOrUpdateBatch(${cfg.obj.entity}List)) {
+            ModelWrapper.success(model);
+        } else {
+            ModelWrapper.fail(model, ResultCode.SAVE_FAIL);
+        }
+        return VIEW;
         </#if>
     }
 
@@ -143,6 +189,7 @@ public class ${table.controllerName} {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
             <#else>
             ModelWrapper.fail(model, ResultCode.PARAMS_ERROR.getMsg());
+            return VIEW;
             </#if>
         }
         <#if restControllerStyle>
@@ -153,7 +200,7 @@ public class ${table.controllerName} {
         } else {
             ModelWrapper.fail(model, ResultCode.DELETE_FAIL);
         }
-        return "<#if package.ModuleName??>${package.ModuleName}</#if><#if controllerMappingHyphenStyle??>/${controllerMappingHyphen}</#if>";
+        return VIEW;
         </#if>
     }
 
@@ -171,6 +218,7 @@ public class ${table.controllerName} {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
             <#else>
             ModelWrapper.fail(model, ResultCode.PARAMS_ERROR.getMsg());
+            return VIEW;
             </#if>
         }
         <#if restControllerStyle>
@@ -181,7 +229,7 @@ public class ${table.controllerName} {
         } else {
             ModelWrapper.fail(model, ResultCode.DELETE_FAIL);
         }
-        return "<#if package.ModuleName??>${package.ModuleName}</#if><#if controllerMappingHyphenStyle??>/${controllerMappingHyphen}</#if>";
+        return VIEW;
         </#if>
     }
 
@@ -199,6 +247,7 @@ public class ${table.controllerName} {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
             <#else>
             ModelWrapper.fail(model, ResultCode.PARAMS_ERROR.getMsg());
+            return VIEW;
             </#if>
         }
         ${entity} ${cfg.obj.entity} = ${cfg.obj.service}.getById(id);
@@ -218,7 +267,7 @@ public class ${table.controllerName} {
         BeanUtils.copyProperties(${cfg.obj.entity}, ${cfg.obj.vo});
         return ResultWrapper.success(${cfg.obj.vo});
         <#else>
-        return "<#if package.ModuleName??>${package.ModuleName}</#if><#if controllerMappingHyphenStyle??>/${controllerMappingHyphen}</#if>";
+        return VIEW;
         </#if>
     }
 
@@ -239,7 +288,7 @@ public class ${table.controllerName} {
         return ResultWrapper.success(${cfg.obj.service}.list(queryWrapper));
         <#else>
         ModelWrapper.success(model, ${cfg.obj.service}.list(queryWrapper));
-        return "<#if package.ModuleName??>${package.ModuleName}</#if><#if controllerMappingHyphenStyle??>/${controllerMappingHyphen}</#if>";
+        return VIEW;
         </#if>
     }
 
@@ -269,12 +318,94 @@ public class ${table.controllerName} {
         return ResultWrapper.success(${cfg.obj.service}.pageMaps(pager, queryWrapper));
         <#else>
         ModelWrapper.success(model, ${cfg.obj.service}.pageMaps(pager, queryWrapper));
-        return "<#if package.ModuleName??>${package.ModuleName}</#if><#if controllerMappingHyphenStyle??>/${controllerMappingHyphen}</#if>";
+        return VIEW;
         </#if>
     }
 <#else>
+    <#if swagger2>
+    @ApiOperation("按条件获取${table.comment!}关系列表")
+    </#if>
+    @PostMapping("/list")
+    <#if restControllerStyle>
+    public Result get${entity}List(@RequestBody ForeignId foreignId) {
+    <#else>
+    public String get${entity}List(@RequestBody ForeignId foreignId, Model model) {
+    </#if>
+        if (!foreignId.isValid(${entity}.class)) {
+            <#if restControllerStyle>
+            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
+            <#else>
+            ModelWrapper.fail(model, ResultCode.PARAMS_ERROR.getMsg());
+            return VIEW;
+            </#if>
+        }
+        List<${cfg.className.vo}> ${cfg.obj.vo}List = ${cfg.obj.service}.list(new QueryWrapper<${entity}>()
+                .eq("deleted", false)
+                .eq(foreignId.getFieldName(), foreignId.getValue()))
+                .stream().map(${cfg.obj.entity} -> {
+                    ${cfg.className.vo} ${cfg.obj.vo} = new ${cfg.className.vo}();
+                    BeanUtils.copyProperties(${cfg.obj.entity}, ${cfg.obj.vo});
+                    return ${cfg.obj.vo};
+                }).collect(Collectors.toList());
+        <#if restControllerStyle>
+        return ResultWrapper.success(${cfg.obj.vo}List);
+        <#else>
+        ModelWrapper.success(model, ${cfg.obj.vo}List);
+        return VIEW;
+        </#if>
+    }
 
-    //TODO
+    <#if swagger2>
+    @ApiOperation("批量保存${table.comment!}关系")
+    </#if>
+    @PostMapping("/batch-save")
+    <#if restControllerStyle>
+    public Result batchSave(@RequestBody RelatedId relatedId) {
+    <#else>
+    public String batchSave(@RequestBody RelatedId relatedId, Model model) {
+    </#if>
+        if (!relatedId.isValid(${entity}.class)) {
+            <#if restControllerStyle>
+            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
+            <#else>
+            ModelWrapper.fail(model, ResultCode.PARAMS_ERROR.getMsg());
+            return VIEW;
+            </#if>
+        }
+        if (CollectionUtils.isEmpty(relatedId.getSecondIds().getValues())) {
+            ${cfg.obj.service}.remove(new QueryWrapper<${entity}>()
+                    .eq(relatedId.getFirstId().getFieldName(), relatedId.getFirstId().getValue()));
+        } else {
+            ${cfg.obj.service}.remove(new QueryWrapper<${entity}>()
+                    .eq(relatedId.getFirstId().getFieldName(), relatedId.getFirstId().getValue())
+                    .notIn(relatedId.getSecondIds().getFieldName(), relatedId.getSecondIds().getValues()));
+            List<${entity}> add${entity}List = Lists.newArrayList();
+            relatedId.getSecondIds().getValues().forEach(secondId -> {
+                ${entity} ${cfg.obj.entity} = ${cfg.obj.service}.getOne(new QueryWrapper<${entity}>()
+                        .eq("deleted", false)
+                        .eq(relatedId.getFirstId().getFieldName(), relatedId.getFirstId().getValue())
+                        .eq(relatedId.getSecondIds().getFieldName(), secondId));
+                if (${cfg.obj.entity} == null) {
+                    ${cfg.obj.entity} = new ${entity}();
+                    try {
+                        ${entity}.class.getDeclaredField(relatedId.getFirstId().getFieldName()).set(${cfg.obj.entity}, relatedId.getFirstId().getValue());
+                        ${entity}.class.getDeclaredField(relatedId.getSecondIds().getFieldName()).set(${cfg.obj.entity}, secondId);
+                        add${entity}List.add(${cfg.obj.entity});
+                    } catch (IllegalAccessException | NoSuchFieldException e) {
+                        log.warn("创建${table.comment!}关系出错, 参数: {}[{}], {}[{}]", relatedId.getFirstId().getFieldName(),
+                                relatedId.getFirstId().getValue(), relatedId.getSecondIds().getFieldName(), secondId, e);
+                    }
+                }
+            });
+            ${cfg.obj.service}.saveBatch(add${entity}List);
+        }
+        <#if restControllerStyle>
+        return ResultWrapper.success();
+        <#else>
+        ModelWrapper.success(model);
+        return VIEW;
+        </#if>
+    }
 </#if>
 
 }
