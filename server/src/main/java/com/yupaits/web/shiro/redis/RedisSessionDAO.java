@@ -3,6 +3,7 @@ package com.yupaits.web.shiro.redis;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
+import org.apache.shiro.session.mgt.SimpleSession;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 
 import java.io.Serializable;
@@ -24,7 +25,9 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     @Override
     protected Serializable doCreate(Session session) {
         Serializable sessionId = generateSessionId(session);
-        redisCache.put(sessionId, session);
+        SimpleSession simpleSession = (SimpleSession) session;
+        simpleSession.setId(sessionId);
+        redisCache.put(sessionId, simpleSession);
         return sessionId;
     }
 

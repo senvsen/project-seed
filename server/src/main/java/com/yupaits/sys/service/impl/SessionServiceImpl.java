@@ -8,14 +8,13 @@ import com.yupaits.web.shiro.redis.RedisCacheManager;
 import com.yupaits.web.shiro.redis.RedisSessionDAO;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.session.Session;
-import org.apache.shiro.session.mgt.SimpleSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -35,20 +34,13 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public Result getSessionPage(Page page) {
-        Set<Serializable> sessionKeys = redisCache.keys();
-        int total = sessionKeys.size();
+        Collection<Session> sessions = redisCache.values();
+        int total = sessions.size();
         page.setTotal(total);
         //按会话最后活动时间排序
-        List<Session> sessions = sessionKeys.stream().map(sessionKey -> {
-            SimpleSession session = (SimpleSession) redisCache.get(sessionKey);
-            session.setId(sessionKey);
-            return session;
-        }).sorted(Comparator.comparing(Session::getLastAccessTime)).collect(Collectors.toList());
-        if (page.offset() <= (total - 1)) {
-            int fromIndex = Long.valueOf(page.offset()).intValue();
-            int toIndex = Long.valueOf(page.offset() + page.getSize()).intValue();
-            page.setRecords(sessions.subList(fromIndex, toIndex > total ? total : toIndex));
-        }
+        List<Session> sessionList = sessions.stream().sorted(Comparator.comparing(Session::getLastAccessTime).reversed())
+                .limit(page.getSize()).collect(Collectors.toList());
+        page.setRecords(sessionList);
         return ResultWrapper.success(page);
     }
 

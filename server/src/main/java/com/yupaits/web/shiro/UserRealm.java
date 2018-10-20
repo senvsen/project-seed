@@ -57,12 +57,12 @@ public class UserRealm extends AuthorizingRealm {
         User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", token.getUsername()));
         if (user == null) {
             throw new UnknownAccountException(String.format("用户%s不存在", token.getUsername()));
-        }
-        if (!user.getEnabled()) {
+        } else if (!user.getEnabled()) {
             throw new DisabledAccountException(String.format("%s已被禁用", token.getUsername()));
+        } else {
+            ByteSource salt = ByteSource.Util.bytes(user.getUsername() + SecurityConsts.CREDENTIALS_SALT);
+            return new SimpleAuthenticationInfo(user, user.getPassword(), salt, getName());
         }
-        ByteSource salt = ByteSource.Util.bytes(user.getUsername() + SecurityConsts.CREDENTIALS_SALT);
-        return new SimpleAuthenticationInfo(user, user.getPassword(), salt, getName());
     }
 
     @Override

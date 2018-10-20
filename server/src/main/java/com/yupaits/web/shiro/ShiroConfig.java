@@ -49,7 +49,7 @@ public class ShiroConfig {
         factoryBean.setSuccessUrl("/index");
         factoryBean.setUnauthorizedUrl("/403");
         List<FilterChain> filterChainList = filterChainService.list(
-                new QueryWrapper<FilterChain>().eq("deleted", false).orderByAsc("sort_code"));
+                new QueryWrapper<FilterChain>().orderByAsc("sort_code"));
         Map<String, String> filterChains = Maps.newLinkedHashMap();
         filterChainList.forEach(filterChain -> {
             filterChains.put(filterChain.getUrl(), filterChain.getFilter());
@@ -83,6 +83,7 @@ public class ShiroConfig {
     public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(redisSessionDAO());
+        sessionManager.setSessionValidationSchedulerEnabled(true);
         return sessionManager;
     }
 

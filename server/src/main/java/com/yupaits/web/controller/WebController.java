@@ -52,9 +52,15 @@ public class WebController {
         String password = MapUtils.getString(loginForm, "password");
         try {
             SecurityUtils.getSubject().login(new UsernamePasswordToken(username, password));
+            return "redirect:/index";
         } catch (AuthenticationException e) {
-            return "/login";
+            return "redirect:/login";
         }
-        return "redirect:/index";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        SecurityUtils.getSubject().logout();
+        return "redirect:/login";
     }
 }
