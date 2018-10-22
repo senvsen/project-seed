@@ -1,5 +1,6 @@
 package com.yupaits.web.controller;
 
+import com.google.common.collect.Maps;
 import com.yupaits.commons.result.ModelWrapper;
 import com.yupaits.commons.result.ResultCode;
 import org.apache.commons.lang3.StringUtils;
@@ -7,10 +8,12 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Map;
 
 /**
  * @author yupaits
@@ -25,9 +28,10 @@ public class WebController {
     }
 
     @GetMapping("/login")
-    public String loginPage(@RequestParam(required = false) String error, Model model) {
-        if (error != null) {
-            ModelWrapper.fail(model, ResultCode.LOGIN_FAIL);
+    public String loginPage() {
+        if (SecurityUtils.getSubject().isAuthenticated()) {
+            //已登录的用户打开登录页面时直接跳转至主页
+            return "redirect:/index";
         }
         return "login";
     }
@@ -48,21 +52,27 @@ public class WebController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, Model model) {
-        if (StringUtils.isAnyBlank(username, password)) {
-            ModelWrapper.fail(model, ResultCode.PARAMS_ERROR);
-        }
-        try {
-            SecurityUtils.getSubject().login(new UsernamePasswordToken(username, password));
+    public String login(@RequestParam String username, @RequestParam String password,
+                        @RequestParam(required = false) Object rememberMe, RedirectAttributes model) {
+        if (SecurityUtils.getSubject().isAuthenticated()) {
+            //已登录的用户再次执行登录操作时不做验证直接登录
             return "redirect:/index";
-        } catch (AuthenticationException e) {
-            return "redirect:/login?error";
         }
-    }
-
-    @GetMapping("/logout")
-    public String logout() {
-        SecurityUtils.getSubject().logout();
-        return "redirect:/login";
+        ResultCode resultCode;
+        if (StringUtils.isAnyBlank(username, password)) {
+            resultCode = ResultCode.PARAMS_ERROR;
+        } else {
+            try {
+                SecurityUtils.getSubject().login(new UsernamePasswordToken(username, password, rememberMe != null));
+                return "redirect:/index";
+            } catch (AuthenticationException e) {
+                resultCode = ResultCode.LOGIN_FAIL;
+            }
+        }
+        Map<String, String> data = Maps.newHashMap();
+        data.put("username", username);
+        data.put("password", password);
+        ModelWrapper.fail(model, resultCode, data);
+        return "redirect:/login?error";
     }
 }

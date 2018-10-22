@@ -32,7 +32,7 @@ public class ShiroConfig {
     private final RedisTemplate redisTemplate;
     private final UserRealm userRealm;
     private final IFilterChainService filterChainService;
-    private static byte[] rememberMeCipherKey = Base64.decode("eXVwYWl0cw==");
+    private static byte[] rememberMeCipherKey = Base64.decode("aG93Y2FuaWdldHlvdWh5ag==");
 
     @Autowired
     public ShiroConfig(RedisTemplate redisTemplate, UserRealm userRealm, IFilterChainService filterChainService) {

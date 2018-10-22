@@ -1,0 +1,15 @@
+.container.is-fluid {
+    height: 100vh;
+    margin: 0;
+}
+.card {
+    background: rgba(255,255,255,.75);
+}
+.login-page {
+    background: url("http://area.sinaapp.com/bingImg");
+    /*background: #e8e8e8;*/
+}
+.login-card {
+    margin-top: 8rem;
+    width: 26rem;
+}

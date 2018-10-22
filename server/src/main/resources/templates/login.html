@@ -1,12 +1,90 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="icon" href="/favicon.ico">
-    <title th:text="'登录 | ' + #{app.name}">登录</title>
+    <link rel="icon" th:href="@{~/favicon.ico}" href="../static/favicon.ico">
+    <link rel="stylesheet" th:href="@{~/css/bulma.min.css}" href="../static/css/bulma.min.css">
+    <link rel="stylesheet" th:href="@{~/css/login.css}" href="../static/css/login.css">
+    <script defer th:src="@{~/js/fontawesome.js}" src="../static/js/fontawesome.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <title th:text="#{login.title}">登录</title>
 </head>
 <body>
+<div class="container is-fluid login-page">
+    <div class="columns is-centered">
+        <div class="column is-narrow">
+            <div class="card login-card">
+                <header class="card-header">
+                    <p class="card-header-title" th:text="#{login.title}">登录</p>
+                </header>
+                <div class="card-content">
+                    <form th:action="@{/login}" th:method="post" id="login-form" ref="loginForm">
+                        <div class="notification is-danger" th:if="${ok} == false" v-if="msgVisible">
+                            <button class="delete" @click="closeMsg"></button>
+                            <span th:text="${msg}"></span>
+                        </div>
+                        <div class="field">
+                            <label class="label">用户名</label>
+                            <p class="control has-icons-left has-icons-right">
+                                <input class="input" type="text" name="username" placeholder="请输入登录用户名"
+                                       :class="username ? '' : 'is-danger'" v-model="username">
+                                <span class="icon is-left"><i class="fas fa-user"></i></span>
+                                <span v-if="!username">
+                                    <span class="icon is-right"><i class="fas fa-exclamation-triangle"></i></span>
+                                    <span class="help is-danger">用户名不能为空</span>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <label class="label">密码</label>
+                            <p class="control has-icons-left has-icons-right">
+                                <input class="input" type="password" name="password" placeholder="请输入登录密码"
+                                       :class="password ? '' : 'is-danger'" v-model="password">
+                                <span class="icon is-left"><i class="fas fa-lock"></i></span>
+                                <span v-if="!password">
+                                    <span class="icon is-right"><i class="fas fa-exclamation-triangle"></i></span>
+                                    <span class="help is-danger">密码不能为空</span>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <p class="control">
+                                <label class="checkbox">
+                                    <input type="checkbox" name="rememberMe"> 记住我
+                                </label>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <p class="control">
+                                <button class="button is-primary" type="submit">登录</button>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script th:inline="javascript" type="text/javascript">
+    const username = /*[[${data}? ${data.username}]]*/ '';
+    const password = /*[[${data}? ${data.password}]]*/ '';
+    const loginForm = new Vue({
+        el: '#login-form',
+        data: {
+            msgVisible: true,
+            username: username,
+            password: password,
+        },
+        methods: {
+            closeMsg(event) {
+                event.preventDefault();
+                this.msgVisible = false;
+            }
+        }
+    });
+</script>
 </body>
 </html>

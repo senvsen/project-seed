@@ -28,11 +28,15 @@ public class FilterChainTest {
 
     @Test
     public void testAddFilterChain() {
-        FilterChain filterChain1 = new FilterChain().setUrl("/index").setFilter("authc").setSortCode(1);
-        FilterChain filterChain2 = new FilterChain().setUrl("/auth/**").setFilter("authc").setSortCode(2);
-        FilterChain filterChain3 = new FilterChain().setUrl("/login").setFilter("anon").setSortCode(3);
-        FilterChain filterChain4 = new FilterChain().setUrl("/static/**").setFilter("anon").setSortCode(4);
-        filterChainService.saveBatch(Lists.newArrayList(filterChain1, filterChain2, filterChain3, filterChain4));
+        filterChainService.saveBatch(Lists.newArrayList(
+                new FilterChain().setUrl("/favicon.ico").setFilter("anon").setSortCode(1),
+                new FilterChain().setUrl("/login").setFilter("anon").setSortCode(2),
+                new FilterChain().setUrl("/css/**.css").setFilter("anon").setSortCode(3),
+                new FilterChain().setUrl("/js/**.js").setFilter("anon").setSortCode(4),
+                new FilterChain().setUrl("/logout").setFilter("logout").setSortCode(5),
+                new FilterChain().setUrl("/auth/**").setFilter("authc").setSortCode(6),
+                new FilterChain().setUrl("/**").setFilter("user").setSortCode(7)
+        ));
     }
 
     @Test
