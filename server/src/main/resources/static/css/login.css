@@ -1,15 +1,15 @@
+html {
+    overflow-y: auto;
+}
 .container.is-fluid {
-    height: 100vh;
+    background: url("../images/VallettaMalta_ZH-CN11321825930_1920x1080.jpg");
+    min-height: calc(100vh + 12px);
     margin: 0;
 }
 .card {
-    background: rgba(255,255,255,.75);
-}
-.login-page {
-    background: url("http://area.sinaapp.com/bingImg");
-    /*background: #e8e8e8;*/
+    background: rgba(255, 255, 255, .75);
 }
 .login-card {
-    margin-top: 8rem;
-    width: 26rem;
+    margin: 8rem 1rem 0;
+    min-width: 26rem;
 }

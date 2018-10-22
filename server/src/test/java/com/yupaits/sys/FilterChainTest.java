@@ -33,9 +33,10 @@ public class FilterChainTest {
                 new FilterChain().setUrl("/login").setFilter("anon").setSortCode(2),
                 new FilterChain().setUrl("/css/**.css").setFilter("anon").setSortCode(3),
                 new FilterChain().setUrl("/js/**.js").setFilter("anon").setSortCode(4),
-                new FilterChain().setUrl("/logout").setFilter("logout").setSortCode(5),
-                new FilterChain().setUrl("/auth/**").setFilter("authc").setSortCode(6),
-                new FilterChain().setUrl("/**").setFilter("user").setSortCode(7)
+                new FilterChain().setUrl("/images/**").setFilter("anon").setSortCode(5),
+                new FilterChain().setUrl("/logout").setFilter("logout").setSortCode(6),
+                new FilterChain().setUrl("/auth/**").setFilter("authc").setSortCode(7),
+                new FilterChain().setUrl("/**").setFilter("user").setSortCode(8)
         ));
     }
 

@@ -12,26 +12,29 @@
     <title th:text="#{login.title}">登录</title>
 </head>
 <body>
-<div class="container is-fluid login-page">
+<div class="container is-fluid">
     <div class="columns is-centered">
         <div class="column is-narrow">
             <div class="card login-card">
                 <header class="card-header">
-                    <p class="card-header-title" th:text="#{login.title}">登录</p>
+                    <p class="card-header-title is-size-5" th:text="#{login.title}">登录</p>
                 </header>
                 <div class="card-content">
                     <form th:action="@{/login}" th:method="post" id="login-form" ref="loginForm">
-                        <div class="notification is-danger" th:if="${ok} == false" v-if="msgVisible">
-                            <button class="delete" @click="closeMsg"></button>
-                            <span th:text="${msg}"></span>
-                        </div>
+                        <article class="message is-danger is-small" th:if="${ok} == false" v-if="msgVisible">
+                            <div class="message-body">
+                                <button class="delete is-pulled-right" @click="closeMsg"></button>
+                                <span class="is-size-6" th:text="${msg}"></span>
+                            </div>
+                        </article>
                         <div class="field">
                             <label class="label">用户名</label>
                             <p class="control has-icons-left has-icons-right">
                                 <input class="input" type="text" name="username" placeholder="请输入登录用户名"
-                                       :class="username ? '' : 'is-danger'" v-model="username">
+                                       :class="usernameValid ? '' : 'is-danger'" v-model="username"
+                                       @blur="checkUsername" @input="checkUsername">
                                 <span class="icon is-left"><i class="fas fa-user"></i></span>
-                                <span v-if="!username">
+                                <span v-if="!usernameValid">
                                     <span class="icon is-right"><i class="fas fa-exclamation-triangle"></i></span>
                                     <span class="help is-danger">用户名不能为空</span>
                                 </span>
@@ -41,9 +44,10 @@
                             <label class="label">密码</label>
                             <p class="control has-icons-left has-icons-right">
                                 <input class="input" type="password" name="password" placeholder="请输入登录密码"
-                                       :class="password ? '' : 'is-danger'" v-model="password">
+                                       :class="passwordValid ? '' : 'is-danger'" v-model="password"
+                                       @blur="checkPassword" @input="checkPassword">
                                 <span class="icon is-left"><i class="fas fa-lock"></i></span>
-                                <span v-if="!password">
+                                <span v-if="!passwordValid">
                                     <span class="icon is-right"><i class="fas fa-exclamation-triangle"></i></span>
                                     <span class="help is-danger">密码不能为空</span>
                                 </span>
@@ -58,7 +62,7 @@
                         </div>
                         <div class="field">
                             <p class="control">
-                                <button class="button is-primary" type="submit">登录</button>
+                                <button class="button is-primary is-fullwidth" type="submit">登录</button>
                             </p>
                         </div>
                     </form>
@@ -77,11 +81,19 @@
             msgVisible: true,
             username: username,
             password: password,
+            usernameValid: true,
+            passwordValid: true
         },
         methods: {
             closeMsg(event) {
                 event.preventDefault();
                 this.msgVisible = false;
+            },
+            checkUsername() {
+                this.usernameValid = this.username;
+            },
+            checkPassword() {
+                this.passwordValid = this.password;
             }
         }
     });
