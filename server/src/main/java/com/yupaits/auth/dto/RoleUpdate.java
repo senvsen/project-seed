@@ -1,8 +1,8 @@
 package com.yupaits.auth.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.yupaits.commons.core.serializer.LongDeserializer;
 import com.yupaits.commons.core.BaseDTO;
+import com.yupaits.commons.core.serializer.LongDeserializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

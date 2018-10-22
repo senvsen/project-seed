@@ -11,6 +11,7 @@ public enum ResultCode {
      * 默认的失败响应码
      */
     FAIL(10000, ""),
+    LOGIN_FAIL(10001, "用户名或密码错误"),
     PARAMS_ERROR(11001, "参数校验失败"),
     DATA_NOT_FOUND(11002, "查找的数据不存在或已被删除"),
     DATA_CANNOT_DELETE(11003, "数据无法删除"),

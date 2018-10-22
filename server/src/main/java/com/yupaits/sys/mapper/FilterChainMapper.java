@@ -1,7 +1,7 @@
 package com.yupaits.sys.mapper;
 
-import com.yupaits.sys.entity.FilterChain;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yupaits.sys.entity.FilterChain;
 
 /**
  * <p>

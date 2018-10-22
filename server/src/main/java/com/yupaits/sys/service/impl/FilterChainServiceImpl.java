@@ -1,9 +1,9 @@
 package com.yupaits.sys.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yupaits.sys.entity.FilterChain;
 import com.yupaits.sys.mapper.FilterChainMapper;
 import com.yupaits.sys.service.IFilterChainService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

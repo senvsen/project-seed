@@ -1,26 +1,25 @@
 package com.yupaits.auth.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yupaits.auth.dto.RoleCreate;
+import com.yupaits.auth.dto.RoleUpdate;
 import com.yupaits.auth.entity.Role;
 import com.yupaits.auth.service.IRoleService;
 import com.yupaits.auth.vo.RoleVO;
-import com.yupaits.auth.dto.RoleCreate;
-import com.yupaits.auth.dto.RoleUpdate;
-import com.yupaits.commons.utils.ValidateUtils;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import java.util.Map;
 import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.commons.result.ResultCode;
+import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.commons.utils.ValidateUtils;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.swagger.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 

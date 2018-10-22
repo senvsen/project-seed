@@ -1,9 +1,9 @@
 package com.yupaits.auth.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yupaits.auth.entity.RolePrivilege;
 import com.yupaits.auth.mapper.RolePrivilegeMapper;
 import com.yupaits.auth.service.IRolePrivilegeService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

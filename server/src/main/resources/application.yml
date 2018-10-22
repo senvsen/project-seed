@@ -31,6 +31,10 @@ spring:
       shutdown-timeout: 100ms
   rabbitmq:
     port: 5672
+  messages:
+    basename: i18n/messages
+  thymeleaf:
+    cache: false
 
 logging:
   config: classpath:log4j2.yml

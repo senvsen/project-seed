@@ -5,7 +5,7 @@ import store from './store'
 import Antd from 'ant-design-vue'
 
 import 'ant-design-vue/dist/antd.min.css'
-import '../../styles/app.css'
+import './styles/app.css'
 
 Vue.config.productionTip = false
 

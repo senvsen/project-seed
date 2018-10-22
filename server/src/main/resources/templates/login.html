@@ -1,23 +1,12 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset=utf-8>
-    <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <meta name=viewport content="width=device-width,initial-scale=1">
-    <link rel=icon href=/favicon.ico>
-    <title>登录 | Seed</title>
-    <link href=/css/chunk-vendors.6e848716.css rel=preload as=style>
-    <link href=/css/login.5c29d924.css rel=preload as=style>
-    <link href=/js/chunk-vendors.e4bcffe3.js rel=preload as=script>
-    <link href=/js/login.b527220a.js rel=preload as=script>
-    <link href=/css/chunk-vendors.6e848716.css rel=stylesheet>
-    <link href=/css/login.5c29d924.css rel=stylesheet>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/favicon.ico">
+    <title th:text="'登录 | ' + #{app.name}">登录</title>
 </head>
 <body>
-<noscript><strong>We're sorry but ui doesn't work properly without JavaScript enabled. Please enable it to
-    continue.</strong></noscript>
-<div id=app></div>
-<script src=/js/chunk-vendors.e4bcffe3.js></script>
-<script src=/js/login.b527220a.js></script>
+
 </body>
 </html>
