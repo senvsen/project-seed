@@ -16,7 +16,7 @@
   <div class="columns is-centered">
     <div class="column is-one-third">
       <div class="box login-box">
-        <p class="is-size-4" th:text="#{login.title}">登录</p>
+        <p class="has-text-weight-bold is-size-5" th:text="#{login.title}">登录</p>
         <br>
         <form th:action="@{/login}" th:method="post" id="login-form">
           <div class="message is-danger is-small" th:if="${ok} == false" v-if="msgVisible">
@@ -26,7 +26,7 @@
             </div>
           </div>
           <div class="field">
-            <label class="label">用户名</label>
+            <label class="label is-small">用户名</label>
             <p class="control has-icons-left has-icons-right">
               <input class="input" type="text" name="username" placeholder="请输入登录用户名"
                      :class="usernameValid ? '' : 'is-danger'" v-model="username"
@@ -39,7 +39,7 @@
             </p>
           </div>
           <div class="field">
-            <label class="label">密码</label>
+            <label class="label is-small">密码</label>
             <p class="control has-icons-left has-icons-right">
               <input class="input" type="password" name="password" placeholder="请输入登录密码"
                      :class="passwordValid ? '' : 'is-danger'" v-model="password"
@@ -53,7 +53,7 @@
           </div>
           <div class="field">
             <p class="control">
-              <label class="checkbox">
+              <label class="checkbox is-size-7">
                 <input type="checkbox" name="rememberMe"> 记住我
               </label>
             </p>
