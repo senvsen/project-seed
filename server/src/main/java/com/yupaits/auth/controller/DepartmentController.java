@@ -1,25 +1,28 @@
 package com.yupaits.auth.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yupaits.auth.dto.DepartmentCreate;
-import com.yupaits.auth.dto.DepartmentUpdate;
 import com.yupaits.auth.entity.Department;
 import com.yupaits.auth.service.IDepartmentService;
 import com.yupaits.auth.vo.DepartmentVO;
-import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultCode;
-import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.auth.dto.DepartmentCreate;
+import com.yupaits.auth.dto.DepartmentUpdate;
 import com.yupaits.commons.utils.ValidateUtils;
-import io.swagger.annotations.*;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.Map;
+import org.apache.commons.collections4.MapUtils;
+import com.yupaits.commons.result.Result;
+import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.commons.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -29,7 +32,7 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-20
+ * @since 2018-10-23
  */
 @Slf4j
 @Api(tags = "部门接口")
@@ -117,10 +120,17 @@ public class DepartmentController {
     @GetMapping("/list")
     public Result getDepartmentList(@RequestBody(required = false) Map<String, Object> query) {
         QueryWrapper<Department> queryWrapper = new QueryWrapper<>();
-        query.forEach((key, value) -> {
-            //TODO 设置查询条件
-        });
-        return ResultWrapper.success(departmentService.list(queryWrapper));
+        if (MapUtils.isNotEmpty(query)) {
+            query.forEach((key, value) -> {
+                //TODO 设置查询条件
+            });
+        }
+        List<DepartmentVO> departmentVOList = departmentService.list(queryWrapper).stream().map(department -> {
+            DepartmentVO departmentVO = new DepartmentVO();
+            BeanUtils.copyProperties(department, departmentVO);
+            return departmentVO;
+        }).collect(Collectors.toList());
+        return ResultWrapper.success(departmentVOList);
     }
 
     @ApiOperation("获取部门分页信息")
@@ -140,10 +150,19 @@ public class DepartmentController {
             pager.setAscs(ascs);
         }
         QueryWrapper<Department> queryWrapper = new QueryWrapper<>();
-        query.forEach((key, value) -> {
-            //TODO 设置查询条件
-        });
-        return ResultWrapper.success(departmentService.pageMaps(pager, queryWrapper));
+        if (MapUtils.isNotEmpty(query)) {
+            query.forEach((key, value) -> {
+                //TODO 设置查询条件
+            });
+        }
+        IPage<DepartmentVO> departmentVOPage = new Page<>();
+        BeanUtils.copyProperties(departmentService.page(pager, queryWrapper), departmentVOPage);
+        departmentVOPage.setRecords(pager.getRecords().stream().map(department -> {
+            DepartmentVO departmentVO = new DepartmentVO();
+            BeanUtils.copyProperties(department, departmentVO);
+            return departmentVO;
+        }).collect(Collectors.toList()));
+        return ResultWrapper.success(departmentVOPage);
     }
 
 }

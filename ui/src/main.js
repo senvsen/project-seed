@@ -2,17 +2,35 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import Antd from 'ant-design-vue'
+import config from './config'
+import api from './api'
+import Toasted from 'vue-toasted'
 
-import 'ant-design-vue/dist/antd.min.css'
-import './styles/app.css'
+import 'bulma/css/bulma.min.css'
+import '@fortawesome/fontawesome-free/css/all.css'
+import './styles/index.css'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-Vue.use(Antd)
+Vue.use(Toasted, {
+  theme: 'primary',
+  position: 'bottom-right',
+  duration: 5000,
+  action: [
+    {
+      text: '清除', onClick: (e, toastObject) => {
+        toastObject.goAway(0);
+      }
+    }
+  ],
+  iconPack: 'fontawesome'
+});
+
+Vue.prototype.$config = config;
+Vue.prototype.$api = api;
 
 new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');

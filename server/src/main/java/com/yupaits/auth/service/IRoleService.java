@@ -1,7 +1,7 @@
 package com.yupaits.auth.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.yupaits.auth.entity.Role;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.yupaits.auth.entity.Role;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-20
+ * @since 2018-10-23
  */
 public interface IRoleService extends IService<Role> {
 

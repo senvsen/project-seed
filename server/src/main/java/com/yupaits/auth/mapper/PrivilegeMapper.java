@@ -1,7 +1,7 @@
 package com.yupaits.auth.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yupaits.auth.entity.Privilege;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.yupaits.auth.entity.Privilege;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-20
+ * @since 2018-10-23
  */
 public interface PrivilegeMapper extends BaseMapper<Privilege> {
 

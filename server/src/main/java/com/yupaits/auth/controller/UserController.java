@@ -6,8 +6,10 @@ import com.yupaits.auth.vo.UserVO;
 import com.yupaits.auth.dto.UserCreate;
 import com.yupaits.auth.dto.UserUpdate;
 import com.yupaits.commons.utils.ValidateUtils;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.Map;
+import org.apache.commons.collections4.MapUtils;
 import com.yupaits.commons.result.Result;
 import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.commons.result.ResultCode;
@@ -118,10 +120,17 @@ public class UserController {
     @GetMapping("/list")
     public Result getUserList(@RequestBody(required = false) Map<String, Object> query) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        query.forEach((key, value) -> {
-            //TODO 设置查询条件
-        });
-        return ResultWrapper.success(userService.list(queryWrapper));
+        if (MapUtils.isNotEmpty(query)) {
+            query.forEach((key, value) -> {
+                //TODO 设置查询条件
+            });
+        }
+        List<UserVO> userVOList = userService.list(queryWrapper).stream().map(user -> {
+            UserVO userVO = new UserVO();
+            BeanUtils.copyProperties(user, userVO);
+            return userVO;
+        }).collect(Collectors.toList());
+        return ResultWrapper.success(userVOList);
     }
 
     @ApiOperation("获取用户分页信息")
@@ -141,10 +150,19 @@ public class UserController {
             pager.setAscs(ascs);
         }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        query.forEach((key, value) -> {
-            //TODO 设置查询条件
-        });
-        return ResultWrapper.success(userService.pageMaps(pager, queryWrapper));
+        if (MapUtils.isNotEmpty(query)) {
+            query.forEach((key, value) -> {
+                //TODO 设置查询条件
+            });
+        }
+        IPage<UserVO> userVOPage = new Page<>();
+        BeanUtils.copyProperties(userService.page(pager, queryWrapper), userVOPage);
+        userVOPage.setRecords(pager.getRecords().stream().map(user -> {
+            UserVO userVO = new UserVO();
+            BeanUtils.copyProperties(user, userVO);
+            return userVO;
+        }).collect(Collectors.toList()));
+        return ResultWrapper.success(userVOPage);
     }
 
 }

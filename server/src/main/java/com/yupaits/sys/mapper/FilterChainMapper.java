@@ -1,7 +1,7 @@
 package com.yupaits.sys.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yupaits.sys.entity.FilterChain;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.yupaits.sys.entity.FilterChain;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-20
+ * @since 2018-10-23
  */
 public interface FilterChainMapper extends BaseMapper<FilterChain> {
 

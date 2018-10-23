@@ -1,8 +1,8 @@
 package com.yupaits.sys.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.yupaits.commons.core.BaseDTO;
 import com.yupaits.commons.core.serializer.LongDeserializer;
+import com.yupaits.commons.core.BaseDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author yupaits
- * @date 2018-10-20
+ * @date 2018-10-23
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

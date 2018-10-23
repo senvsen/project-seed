@@ -1,9 +1,9 @@
 package com.yupaits.sys.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yupaits.sys.entity.FilterChain;
 import com.yupaits.sys.mapper.FilterChainMapper;
 import com.yupaits.sys.service.IFilterChainService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-20
+ * @since 2018-10-23
  */
 @Service
 public class FilterChainServiceImpl extends ServiceImpl<FilterChainMapper, FilterChain> implements IFilterChainService {

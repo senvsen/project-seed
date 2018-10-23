@@ -1,25 +1,28 @@
 package com.yupaits.auth.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yupaits.auth.dto.RoleCreate;
-import com.yupaits.auth.dto.RoleUpdate;
 import com.yupaits.auth.entity.Role;
 import com.yupaits.auth.service.IRoleService;
 import com.yupaits.auth.vo.RoleVO;
-import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultCode;
-import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.auth.dto.RoleCreate;
+import com.yupaits.auth.dto.RoleUpdate;
 import com.yupaits.commons.utils.ValidateUtils;
-import io.swagger.annotations.*;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.Map;
+import org.apache.commons.collections4.MapUtils;
+import com.yupaits.commons.result.Result;
+import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.commons.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -29,7 +32,7 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-20
+ * @since 2018-10-23
  */
 @Slf4j
 @Api(tags = "角色接口")
@@ -117,10 +120,17 @@ public class RoleController {
     @GetMapping("/list")
     public Result getRoleList(@RequestBody(required = false) Map<String, Object> query) {
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
-        query.forEach((key, value) -> {
-            //TODO 设置查询条件
-        });
-        return ResultWrapper.success(roleService.list(queryWrapper));
+        if (MapUtils.isNotEmpty(query)) {
+            query.forEach((key, value) -> {
+                //TODO 设置查询条件
+            });
+        }
+        List<RoleVO> roleVOList = roleService.list(queryWrapper).stream().map(role -> {
+            RoleVO roleVO = new RoleVO();
+            BeanUtils.copyProperties(role, roleVO);
+            return roleVO;
+        }).collect(Collectors.toList());
+        return ResultWrapper.success(roleVOList);
     }
 
     @ApiOperation("获取角色分页信息")
@@ -140,10 +150,19 @@ public class RoleController {
             pager.setAscs(ascs);
         }
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
-        query.forEach((key, value) -> {
-            //TODO 设置查询条件
-        });
-        return ResultWrapper.success(roleService.pageMaps(pager, queryWrapper));
+        if (MapUtils.isNotEmpty(query)) {
+            query.forEach((key, value) -> {
+                //TODO 设置查询条件
+            });
+        }
+        IPage<RoleVO> roleVOPage = new Page<>();
+        BeanUtils.copyProperties(roleService.page(pager, queryWrapper), roleVOPage);
+        roleVOPage.setRecords(pager.getRecords().stream().map(role -> {
+            RoleVO roleVO = new RoleVO();
+            BeanUtils.copyProperties(role, roleVO);
+            return roleVO;
+        }).collect(Collectors.toList()));
+        return ResultWrapper.success(roleVOPage);
     }
 
 }

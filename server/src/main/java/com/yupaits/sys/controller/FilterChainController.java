@@ -1,25 +1,28 @@
 package com.yupaits.sys.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultCode;
-import com.yupaits.commons.result.ResultWrapper;
-import com.yupaits.commons.utils.ValidateUtils;
-import com.yupaits.sys.dto.FilterChainCreate;
-import com.yupaits.sys.dto.FilterChainUpdate;
 import com.yupaits.sys.entity.FilterChain;
 import com.yupaits.sys.service.IFilterChainService;
 import com.yupaits.sys.vo.FilterChainVO;
-import io.swagger.annotations.*;
+import com.yupaits.sys.dto.FilterChainCreate;
+import com.yupaits.sys.dto.FilterChainUpdate;
+import com.yupaits.commons.utils.ValidateUtils;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.Map;
+import org.apache.commons.collections4.MapUtils;
+import com.yupaits.commons.result.Result;
+import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.commons.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -29,7 +32,7 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-20
+ * @since 2018-10-23
  */
 @Slf4j
 @Api(tags = "权限过滤链接口")
@@ -119,10 +122,17 @@ public class FilterChainController {
     @GetMapping("/list")
     public Result getFilterChainList(@RequestBody(required = false) Map<String, Object> query) {
         QueryWrapper<FilterChain> queryWrapper = new QueryWrapper<>();
-        query.forEach((key, value) -> {
-            //TODO 设置查询条件
-        });
-        return ResultWrapper.success(filterChainService.list(queryWrapper));
+        if (MapUtils.isNotEmpty(query)) {
+            query.forEach((key, value) -> {
+                //TODO 设置查询条件
+            });
+        }
+        List<FilterChainVO> filterChainVOList = filterChainService.list(queryWrapper).stream().map(filterChain -> {
+            FilterChainVO filterChainVO = new FilterChainVO();
+            BeanUtils.copyProperties(filterChain, filterChainVO);
+            return filterChainVO;
+        }).collect(Collectors.toList());
+        return ResultWrapper.success(filterChainVOList);
     }
 
     @ApiOperation("获取权限过滤链分页信息")
@@ -142,10 +152,19 @@ public class FilterChainController {
             pager.setAscs(ascs);
         }
         QueryWrapper<FilterChain> queryWrapper = new QueryWrapper<>();
-        query.forEach((key, value) -> {
-            //TODO 设置查询条件
-        });
-        return ResultWrapper.success(filterChainService.pageMaps(pager, queryWrapper));
+        if (MapUtils.isNotEmpty(query)) {
+            query.forEach((key, value) -> {
+                //TODO 设置查询条件
+            });
+        }
+        IPage<FilterChainVO> filterChainVOPage = new Page<>();
+        BeanUtils.copyProperties(filterChainService.page(pager, queryWrapper), filterChainVOPage);
+        filterChainVOPage.setRecords(pager.getRecords().stream().map(filterChain -> {
+            FilterChainVO filterChainVO = new FilterChainVO();
+            BeanUtils.copyProperties(filterChain, filterChainVO);
+            return filterChainVO;
+        }).collect(Collectors.toList()));
+        return ResultWrapper.success(filterChainVOPage);
     }
 
 }

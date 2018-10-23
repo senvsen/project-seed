@@ -7,8 +7,10 @@ import ${cfg.package.vo}.${cfg.className.vo};
 import ${cfg.package.dto}.${cfg.className.create};
 import ${cfg.package.dto}.${cfg.className.update};
 import ${cfg.class.validateUtils};
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.Map;
+import org.apache.commons.collections4.MapUtils;
 <#else>
 import ${cfg.class.foreignId};
 import ${cfg.class.relatedId};
@@ -280,13 +282,20 @@ public class ${table.controllerName} {
     public String get${entity}List(@RequestBody(required = false) Map<String, Object> query, Model model) {
     </#if>
         QueryWrapper<${entity}> queryWrapper = new QueryWrapper<>();
-        query.forEach((key, value) -> {
-            //TODO 设置查询条件
-        });
+        if (MapUtils.isNotEmpty(query)) {
+            query.forEach((key, value) -> {
+                //TODO 设置查询条件
+            });
+        }
+        List<${cfg.className.vo}> ${cfg.obj.vo}List = ${cfg.obj.service}.list(queryWrapper).stream().map(${cfg.obj.entity} -> {
+            ${cfg.className.vo} ${cfg.obj.vo} = new ${cfg.className.vo}();
+            BeanUtils.copyProperties(${cfg.obj.entity}, ${cfg.obj.vo});
+            return ${cfg.obj.vo};
+        }).collect(Collectors.toList());
         <#if restControllerStyle>
-        return ResultWrapper.success(${cfg.obj.service}.list(queryWrapper));
+        return ResultWrapper.success(${cfg.obj.vo}List);
         <#else>
-        ModelWrapper.success(model, ${cfg.obj.service}.list(queryWrapper));
+        ModelWrapper.success(model, ${cfg.obj.vo}List);
         return VIEW;
         </#if>
     }
@@ -310,13 +319,22 @@ public class ${table.controllerName} {
             pager.setAscs(ascs);
         }
         QueryWrapper<${entity}> queryWrapper = new QueryWrapper<>();
-        query.forEach((key, value) -> {
-            //TODO 设置查询条件
-        });
+        if (MapUtils.isNotEmpty(query)) {
+            query.forEach((key, value) -> {
+                //TODO 设置查询条件
+            });
+        }
+        IPage<${cfg.className.vo}> ${cfg.obj.vo}Page = new Page<>();
+        BeanUtils.copyProperties(${cfg.obj.service}.page(pager, queryWrapper), ${cfg.obj.vo}Page);
+        ${cfg.obj.vo}Page.setRecords(pager.getRecords().stream().map(${cfg.obj.entity} -> {
+            ${cfg.className.vo} ${cfg.obj.vo} = new ${cfg.className.vo}();
+            BeanUtils.copyProperties(${cfg.obj.entity}, ${cfg.obj.vo});
+            return ${cfg.obj.vo};
+        }).collect(Collectors.toList()));
         <#if restControllerStyle>
-        return ResultWrapper.success(${cfg.obj.service}.pageMaps(pager, queryWrapper));
+        return ResultWrapper.success(${cfg.obj.vo}Page);
         <#else>
-        ModelWrapper.success(model, ${cfg.obj.service}.pageMaps(pager, queryWrapper));
+        ModelWrapper.success(model, ${cfg.obj.vo}Page);
         return VIEW;
         </#if>
     }

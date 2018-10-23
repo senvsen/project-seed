@@ -1,25 +1,28 @@
 package com.yupaits.auth.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yupaits.auth.dto.PrivilegeCreate;
-import com.yupaits.auth.dto.PrivilegeUpdate;
 import com.yupaits.auth.entity.Privilege;
 import com.yupaits.auth.service.IPrivilegeService;
 import com.yupaits.auth.vo.PrivilegeVO;
-import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultCode;
-import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.auth.dto.PrivilegeCreate;
+import com.yupaits.auth.dto.PrivilegeUpdate;
 import com.yupaits.commons.utils.ValidateUtils;
-import io.swagger.annotations.*;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.Map;
+import org.apache.commons.collections4.MapUtils;
+import com.yupaits.commons.result.Result;
+import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.commons.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -29,7 +32,7 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-20
+ * @since 2018-10-23
  */
 @Slf4j
 @Api(tags = "权限接口")
@@ -117,10 +120,17 @@ public class PrivilegeController {
     @GetMapping("/list")
     public Result getPrivilegeList(@RequestBody(required = false) Map<String, Object> query) {
         QueryWrapper<Privilege> queryWrapper = new QueryWrapper<>();
-        query.forEach((key, value) -> {
-            //TODO 设置查询条件
-        });
-        return ResultWrapper.success(privilegeService.list(queryWrapper));
+        if (MapUtils.isNotEmpty(query)) {
+            query.forEach((key, value) -> {
+                //TODO 设置查询条件
+            });
+        }
+        List<PrivilegeVO> privilegeVOList = privilegeService.list(queryWrapper).stream().map(privilege -> {
+            PrivilegeVO privilegeVO = new PrivilegeVO();
+            BeanUtils.copyProperties(privilege, privilegeVO);
+            return privilegeVO;
+        }).collect(Collectors.toList());
+        return ResultWrapper.success(privilegeVOList);
     }
 
     @ApiOperation("获取权限分页信息")
@@ -140,10 +150,19 @@ public class PrivilegeController {
             pager.setAscs(ascs);
         }
         QueryWrapper<Privilege> queryWrapper = new QueryWrapper<>();
-        query.forEach((key, value) -> {
-            //TODO 设置查询条件
-        });
-        return ResultWrapper.success(privilegeService.pageMaps(pager, queryWrapper));
+        if (MapUtils.isNotEmpty(query)) {
+            query.forEach((key, value) -> {
+                //TODO 设置查询条件
+            });
+        }
+        IPage<PrivilegeVO> privilegeVOPage = new Page<>();
+        BeanUtils.copyProperties(privilegeService.page(pager, queryWrapper), privilegeVOPage);
+        privilegeVOPage.setRecords(pager.getRecords().stream().map(privilege -> {
+            PrivilegeVO privilegeVO = new PrivilegeVO();
+            BeanUtils.copyProperties(privilege, privilegeVO);
+            return privilegeVO;
+        }).collect(Collectors.toList()));
+        return ResultWrapper.success(privilegeVOPage);
     }
 
 }

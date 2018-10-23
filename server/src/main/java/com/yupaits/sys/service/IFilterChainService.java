@@ -1,7 +1,7 @@
 package com.yupaits.sys.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.yupaits.sys.entity.FilterChain;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.yupaits.sys.entity.FilterChain;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-20
+ * @since 2018-10-23
  */
 public interface IFilterChainService extends IService<FilterChain> {
 
