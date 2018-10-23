@@ -28,16 +28,21 @@ public class FilterChainTest {
 
     @Test
     public void testAddFilterChain() {
-        filterChainService.saveBatch(Lists.newArrayList(
-                new FilterChain().setUrl("/favicon.ico").setFilter("anon").setSortCode(1),
-                new FilterChain().setUrl("/login").setFilter("anon").setSortCode(2),
-                new FilterChain().setUrl("/css/**.css").setFilter("anon").setSortCode(3),
-                new FilterChain().setUrl("/js/**.js").setFilter("anon").setSortCode(4),
-                new FilterChain().setUrl("/images/**").setFilter("anon").setSortCode(5),
-                new FilterChain().setUrl("/logout").setFilter("logout").setSortCode(6),
-                new FilterChain().setUrl("/auth/**").setFilter("authc").setSortCode(7),
-                new FilterChain().setUrl("/**").setFilter("user").setSortCode(8)
-        ));
+        List<FilterChain> filterChains = Lists.newArrayList(
+                new FilterChain().setUrl("/favicon.ico").setFilter("anon"),
+                new FilterChain().setUrl("/login").setFilter("anon"),
+                new FilterChain().setUrl("/css/**.css").setFilter("anon"),
+                new FilterChain().setUrl("/js/**.js").setFilter("anon"),
+                new FilterChain().setUrl("/img/**").setFilter("anon"),
+                new FilterChain().setUrl("/logout").setFilter("logout"),
+                new FilterChain().setUrl("/auth/**").setFilter("authc"),
+                new FilterChain().setUrl("/**").setFilter("user")
+        );
+        int sortCode = 1;
+        for (FilterChain filterChain : filterChains) {
+            filterChain.setSortCode(sortCode++);
+        }
+        filterChainService.saveBatch(filterChains);
     }
 
     @Test

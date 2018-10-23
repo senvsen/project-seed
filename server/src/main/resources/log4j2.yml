@@ -4,7 +4,7 @@ Configuration:
   Properties:
     Property:
     - name: log.base
-      value: logs
+      value: /logs
     - name: app.name
       value: app
     - name: log.pattern
