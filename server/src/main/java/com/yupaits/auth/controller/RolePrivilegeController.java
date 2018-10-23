@@ -1,31 +1,24 @@
 package com.yupaits.auth.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.google.common.collect.Lists;
 import com.yupaits.auth.entity.RolePrivilege;
 import com.yupaits.auth.service.IRolePrivilegeService;
 import com.yupaits.auth.vo.RolePrivilegeVO;
-import com.yupaits.commons.core.identity.ForeignId;
-import com.yupaits.commons.core.identity.RelatedId;
+import com.yupaits.commons.core.identity.ForeignId;;
+import com.yupaits.commons.core.identity.RelatedId;;
 import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultCode;
 import com.yupaits.commons.result.ResultWrapper;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.yupaits.commons.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-;
-;
 
 
 /**
@@ -34,7 +27,7 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-20
+ * @since 2018-10-23
  */
 @Slf4j
 @Api(tags = "角色-权限接口")
@@ -75,31 +68,10 @@ public class RolePrivilegeController {
         if (CollectionUtils.isEmpty(relatedId.getSecondIds().getValues())) {
             rolePrivilegeService.remove(new QueryWrapper<RolePrivilege>()
                     .eq(relatedId.getFirstId().getFieldName(), relatedId.getFirstId().getValue()));
+            return ResultWrapper.success();
         } else {
-            rolePrivilegeService.remove(new QueryWrapper<RolePrivilege>()
-                    .eq(relatedId.getFirstId().getFieldName(), relatedId.getFirstId().getValue())
-                    .notIn(relatedId.getSecondIds().getFieldName(), relatedId.getSecondIds().getValues()));
-            List<RolePrivilege> addRolePrivilegeList = Lists.newArrayList();
-            relatedId.getSecondIds().getValues().forEach(secondId -> {
-                RolePrivilege rolePrivilege = rolePrivilegeService.getOne(new QueryWrapper<RolePrivilege>()
-                        .eq("deleted", false)
-                        .eq(relatedId.getFirstId().getFieldName(), relatedId.getFirstId().getValue())
-                        .eq(relatedId.getSecondIds().getFieldName(), secondId));
-                if (rolePrivilege == null) {
-                    rolePrivilege = new RolePrivilege();
-                    try {
-                        RolePrivilege.class.getDeclaredField(relatedId.getFirstId().getFieldName()).set(rolePrivilege, relatedId.getFirstId().getValue());
-                        RolePrivilege.class.getDeclaredField(relatedId.getSecondIds().getFieldName()).set(rolePrivilege, secondId);
-                        addRolePrivilegeList.add(rolePrivilege);
-                    } catch (IllegalAccessException | NoSuchFieldException e) {
-                        log.warn("创建角色-权限关系出错, 参数: {}[{}], {}[{}]", relatedId.getFirstId().getFieldName(),
-                                relatedId.getFirstId().getValue(), relatedId.getSecondIds().getFieldName(), secondId, e);
-                    }
-                }
-            });
-            rolePrivilegeService.saveBatch(addRolePrivilegeList);
+            return rolePrivilegeService.batchSave(relatedId) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.SAVE_FAIL);
         }
-        return ResultWrapper.success();
     }
 
 }

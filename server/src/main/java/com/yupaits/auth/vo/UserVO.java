@@ -1,5 +1,6 @@
 package com.yupaits.auth.vo;
 
+import java.time.LocalDate;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.yupaits.commons.core.serializer.LongSerializer;
 import io.swagger.annotations.ApiModel;
@@ -7,7 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author yupaits
- * @date 2018-10-20
+ * @date 2018-10-23
  */
 @Data
 @ApiModel(value = "UserVO", description = "UserVO对象")

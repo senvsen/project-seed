@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.Serializable;
 
 /**
+ * 会话管理控制器
  * @author yupaits
  * @date 2018/10/17
  */

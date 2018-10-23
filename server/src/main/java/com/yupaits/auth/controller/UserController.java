@@ -1,25 +1,26 @@
 package com.yupaits.auth.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yupaits.auth.dto.UserCreate;
-import com.yupaits.auth.dto.UserUpdate;
 import com.yupaits.auth.entity.User;
 import com.yupaits.auth.service.IUserService;
 import com.yupaits.auth.vo.UserVO;
-import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultCode;
-import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.auth.dto.UserCreate;
+import com.yupaits.auth.dto.UserUpdate;
 import com.yupaits.commons.utils.ValidateUtils;
-import io.swagger.annotations.*;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.Map;
+import com.yupaits.commons.result.Result;
+import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.commons.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.annotations.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-20
+ * @since 2018-10-23
  */
 @Slf4j
 @Api(tags = "用户接口")

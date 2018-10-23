@@ -109,7 +109,7 @@ public abstract class AbstractCodeGenerator {
     private void init() {
         //全局配置
         globalConfig.setAuthor(AUTHOR);
-        globalConfig.setFileOverride(false);
+        globalConfig.setFileOverride(true);
         globalConfig.setOpen(false);
         globalConfig.setBaseResultMap(true);
         globalConfig.setBaseColumnList(true);

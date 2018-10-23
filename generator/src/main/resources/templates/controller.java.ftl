@@ -12,7 +12,6 @@ import java.util.Map;
 <#else>
 import ${cfg.class.foreignId};
 import ${cfg.class.relatedId};
-import com.google.common.collect.Lists;
 </#if>
 <#if restControllerStyle>
 import ${cfg.class.result};
@@ -375,36 +374,24 @@ public class ${table.controllerName} {
         if (CollectionUtils.isEmpty(relatedId.getSecondIds().getValues())) {
             ${cfg.obj.service}.remove(new QueryWrapper<${entity}>()
                     .eq(relatedId.getFirstId().getFieldName(), relatedId.getFirstId().getValue()));
+            <#if restControllerStyle>
+            return ResultWrapper.success();
+            <#else>
+            ModelWrapper.success(model);
+            return VIEW;
+            </#if>
         } else {
-            ${cfg.obj.service}.remove(new QueryWrapper<${entity}>()
-                    .eq(relatedId.getFirstId().getFieldName(), relatedId.getFirstId().getValue())
-                    .notIn(relatedId.getSecondIds().getFieldName(), relatedId.getSecondIds().getValues()));
-            List<${entity}> add${entity}List = Lists.newArrayList();
-            relatedId.getSecondIds().getValues().forEach(secondId -> {
-                ${entity} ${cfg.obj.entity} = ${cfg.obj.service}.getOne(new QueryWrapper<${entity}>()
-                        .eq("deleted", false)
-                        .eq(relatedId.getFirstId().getFieldName(), relatedId.getFirstId().getValue())
-                        .eq(relatedId.getSecondIds().getFieldName(), secondId));
-                if (${cfg.obj.entity} == null) {
-                    ${cfg.obj.entity} = new ${entity}();
-                    try {
-                        ${entity}.class.getDeclaredField(relatedId.getFirstId().getFieldName()).set(${cfg.obj.entity}, relatedId.getFirstId().getValue());
-                        ${entity}.class.getDeclaredField(relatedId.getSecondIds().getFieldName()).set(${cfg.obj.entity}, secondId);
-                        add${entity}List.add(${cfg.obj.entity});
-                    } catch (IllegalAccessException | NoSuchFieldException e) {
-                        log.warn("创建${table.comment!}关系出错, 参数: {}[{}], {}[{}]", relatedId.getFirstId().getFieldName(),
-                                relatedId.getFirstId().getValue(), relatedId.getSecondIds().getFieldName(), secondId, e);
-                    }
-                }
-            });
-            ${cfg.obj.service}.saveBatch(add${entity}List);
+            <#if restControllerStyle>
+            return ${cfg.obj.service}.batchSave(relatedId) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.SAVE_FAIL);
+            <#else>
+            if (${cfg.obj.service}.batchSave(relatedId)) {
+                ModelWrapper.success(model);
+            } else {
+                ModelWrapper.fail(model, ResultCode.SAVE_FAIL);
+            }
+            return VIEW;
+            </#if>
         }
-        <#if restControllerStyle>
-        return ResultWrapper.success();
-        <#else>
-        ModelWrapper.success(model);
-        return VIEW;
-        </#if>
     }
 </#if>
 
