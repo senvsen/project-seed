@@ -4,7 +4,7 @@
       <i-frame-page :src="$route.path"/>
     </div>
     <div v-else-if="$store.getters.pageType === 'manage'">
-      <manage-page></manage-page>
+      <manage-page/>
     </div>
     <div v-else>
       <router-view/>
