@@ -3,8 +3,56 @@ html {
   min-height: 100vh;
 }
 
-.layout {
-  padding: 24px;
+.sidebar {
+  min-height: calc(100vh - 101px);
+  border-right: 1px solid hsl(0, 0%, 86%);
+}
+
+.footer {
+  height: 48px;
+  line-height: 48px;
+  padding: 0;
+}
+
+.color-box {
+  border-radius: 2px;
+  box-shadow: 0 2px 3px 0 rgba(0,0,0,.1), inset 0 0 0 1px rgba(0,0,0,.1);
+  display: inline-block;
+  float: left;
+  margin-right: 8px;
+  height: 16px;
+  width: 16px;
+}
+
+.color-box.is-primary {
+  background: hsl(171, 100%, 41%);
+}
+.color-box.is-white {
+  background: hsl(0, 0%, 100%);
+}
+.color-box.is-dark {
+  background: hsl(0, 0%, 21%);
+}
+.color-box.is-success {
+  background: hsl(141, 71%, 48%);
+}
+.color-box.is-warning {
+  background: hsl(48, 100%, 67%);
+}
+.color-box.is-danger {
+  background: hsl(348, 100%, 61%);
+}
+.color-box.is-info {
+  background: hsl(204, 86%, 53%);
+}
+
+.notify-box {
+  min-width: 20rem;
+  padding: 8px;
+}
+
+.border-bottom {
+  border-bottom: 1px solid hsl(0, 0%, 86%);
 }
 
 .mt-1 {

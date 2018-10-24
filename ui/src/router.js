@@ -1,23 +1,55 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from './store'
+import config from './config'
+
+import Page from './views/Page'
 
 Vue.use(Router);
 
-export default new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      // component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+const route = {
+  path: '/',
+  component: Page,
+  children: []
+};
+config.sidebar.forEach(subMenu => {
+  subMenu.options.forEach(option => {
+    if (option.children) {
+      option.children.forEach(item => {
+        if (item.link) {
+          const page = {
+            path: item.link,
+            component: Page,
+            meta: {}
+          };
+          if (item.pageType) {
+            page.meta.pageType = item.pageType;
+          }
+          route.children.push(page);
+        }
+      });
+    } else if (option.link) {
+      const page = {
+        path: option.link,
+        component: Page,
+        meta: {}
+      };
+      if (option.pageType) {
+        page.meta.pageType = option.pageType;
+      }
+      route.children.push(page);
     }
-  ]
-})
+  });
+});
+
+const router = new Router({
+  routes: [route]
+});
+
+router.beforeEach((to, from, next) => {
+  store.dispatch('setPageType', to.meta.pageType ? to.meta.pageType : '');
+  store.dispatch('setCurrentPage', to.path);
+  next();
+});
+
+export default router

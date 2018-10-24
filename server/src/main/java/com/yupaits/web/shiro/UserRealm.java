@@ -3,6 +3,7 @@ package com.yupaits.web.shiro;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yupaits.auth.entity.*;
 import com.yupaits.auth.mapper.*;
+import com.yupaits.auth.vo.UserVO;
 import com.yupaits.commons.consts.SecurityConsts;
 import lombok.Data;
 import org.apache.shiro.authc.*;
@@ -13,6 +14,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -61,13 +63,15 @@ public class UserRealm extends AuthorizingRealm {
             throw new DisabledAccountException(String.format("%s已被禁用", token.getUsername()));
         } else {
             ByteSource salt = ByteSource.Util.bytes(user.getUsername() + SecurityConsts.CREDENTIALS_SALT);
-            return new SimpleAuthenticationInfo(user, user.getPassword(), salt, getName());
+            UserVO userVO = new UserVO();
+            BeanUtils.copyProperties(user, userVO);
+            return new SimpleAuthenticationInfo(userVO, user.getPassword(), salt, getName());
         }
     }
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        User user = (User) principalCollection.getPrimaryPrincipal();
+        UserVO user = (UserVO) principalCollection.getPrimaryPrincipal();
         UserRolesAndPermissions userRolesAndPermissions = getFromUser(user);
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         authorizationInfo.addRoles(userRolesAndPermissions.getRoles());
@@ -91,7 +95,7 @@ public class UserRealm extends AuthorizingRealm {
      * @param user 用户信息
      * @return 用户拥有的角色和权限信息
      */
-    public UserRolesAndPermissions getFromUser(User user) {
+    public UserRolesAndPermissions getFromUser(UserVO user) {
         List<Role> roleList = roleMapper.selectBatchIds(userRoleMapper.selectList(new QueryWrapper<UserRole>()
                 .eq("user_id", user.getId()))
                 .stream().map(UserRole::getRoleId).collect(Collectors.toList()));
