@@ -1,1 +1,1 @@
-${entity}
+${table.comment}

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import config from './config'
 
 Vue.use(Vuex);
 
@@ -9,6 +10,9 @@ export default new Vuex.Store({
     locale: 'zh_CN',
     pageType: '',
     currentPage: '/',
+    menuKey: 'system',
+    sidebar: config.nav.menu.system.sidebar,
+    breadcrumb: []
   },
   getters: {
     theme(state) {
@@ -22,6 +26,15 @@ export default new Vuex.Store({
     },
     currentPage(state) {
       return state.currentPage;
+    },
+    menuKey(state) {
+      return state.menuKey;
+    },
+    sidebar(state) {
+      return state.sidebar;
+    },
+    breadcrumb(state) {
+      return state.breadcrumb;
     }
   },
   mutations: {
@@ -36,6 +49,15 @@ export default new Vuex.Store({
     },
     setCurrentPage(state, page) {
       state.currentPage = page;
+    },
+    setMenuKey(state, menuKey) {
+      state.menuKey = menuKey;
+    },
+    setSidebar(state, sidebar) {
+      state.sidebar = sidebar;
+    },
+    setBreadcrumb(state, breadcrumb) {
+      state.breadcrumb = breadcrumb;
     }
   },
   actions: {
@@ -50,6 +72,15 @@ export default new Vuex.Store({
     },
     setCurrentPage({commit}, page) {
       commit('setCurrentPage', page);
+    },
+    setMenuKey({commit}, menuKey) {
+      commit('setMenuKey', menuKey);
+    },
+    setSidebar({commit}, sidebar) {
+      commit('setSidebar', sidebar);
+    },
+    setBreadcrumb({commit}, breadcrumb) {
+      commit('setBreadcrumb', breadcrumb);
     }
   }
 })

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,16 +23,27 @@ import java.util.Map;
 @Controller
 public class WebController {
 
-    @GetMapping({"/index", "/"})
+    @Value("${restful.enabled:true}")
+    private Boolean restful;
+
+    @GetMapping("/index")
     public String index() {
         return "index";
+    }
+
+    @GetMapping({"/home", "/"})
+    public String home() {
+        if (restful) {
+            return "redirect:/index";
+        }
+        return "home";
     }
 
     @GetMapping("/login")
     public String loginPage() {
         if (SecurityUtils.getSubject().isAuthenticated()) {
             //已登录的用户打开登录页面时直接跳转至主页
-            return "redirect:/index";
+            return "redirect:/home";
         }
         return "login";
     }
@@ -56,7 +68,7 @@ public class WebController {
                         @RequestParam(required = false) Object rememberMe, RedirectAttributes model) {
         if (SecurityUtils.getSubject().isAuthenticated()) {
             //已登录的用户再次执行登录操作时不做验证直接登录
-            return "redirect:/index";
+            return "redirect:/home";
         }
         ResultCode resultCode;
         if (StringUtils.isAnyBlank(username, password)) {
@@ -64,7 +76,7 @@ public class WebController {
         } else {
             try {
                 SecurityUtils.getSubject().login(new UsernamePasswordToken(username, password, rememberMe != null));
-                return "redirect:/index";
+                return "redirect:/home";
             } catch (AuthenticationException e) {
                 resultCode = ResultCode.LOGIN_FAIL;
             }

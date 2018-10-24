@@ -46,7 +46,7 @@ public class ShiroConfig {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
         factoryBean.setSecurityManager(securityManager());
         factoryBean.setLoginUrl("/login");
-        factoryBean.setSuccessUrl("/index");
+        factoryBean.setSuccessUrl("/home");
         factoryBean.setUnauthorizedUrl("/403");
         List<FilterChain> filterChainList = filterChainService.list(
                 new QueryWrapper<FilterChain>().orderByAsc("sort_code"));

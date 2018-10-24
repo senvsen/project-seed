@@ -13,6 +13,13 @@
       </div>
 
       <div id="app-navbar" class="navbar-menu">
+        <div class="navbar-start">
+          <a v-for="(option, key) in $config.nav.menu" :key="key" @click="menuSelect(key)" class="navbar-item is-size-7"
+             :class="{'is-active': $store.getters.menuKey === key}">
+            {{option.label}}
+          </a>
+        </div>
+
         <div class="navbar-end">
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link is-size-7">
@@ -72,13 +79,16 @@
     </nav>
 
     <div class="columns is-marginless">
-      <div class="column sidebar is-2-desktop is-3-touch">
+      <div class="column sidebar is-2-desktop is-3-tablet is-mobile">
         <aside class="menu">
-          <div v-for="menu in $config.sidebar" :key="menu.label">
+          <div v-for="menu in $store.getters.sidebar" :key="menu.label">
             <p class="menu-label">{{menu.label}}</p>
             <ul class="menu-list" v-if="menu.options">
               <li v-for="option in menu.options" :key="option.label">
-                <a class="is-size-7" :href="option.link" v-if="option.isDirect">
+                <a class="is-size-7" v-if="option.children || !option.link">
+                  <i :class="option.icon" class="fa-sm mr-1" v-if="option.icon"></i>{{option.label}}
+                </a>
+                <a class="is-size-7" :href="option.link" v-else-if="option.isDirect">
                   <i :class="option.icon" class="fa-sm mr-1" v-if="option.icon"></i>{{option.label}}
                 </a>
                 <a class="is-size-7" :class="{'is-active': $store.getters.currentPage === option.link}" @click="goPage(option.link)" v-else>
@@ -159,6 +169,10 @@
       },
       goPage(link) {
         this.$router.push(link);
+      },
+      menuSelect(menuKey) {
+        this.$store.dispatch('setMenuKey', menuKey);
+        this.$store.dispatch('setSidebar', this.$config.nav.menu[menuKey].sidebar);
       }
     }
   }

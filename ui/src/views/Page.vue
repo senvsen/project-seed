@@ -4,19 +4,20 @@
       <i-frame-page :src="$route.path"/>
     </div>
     <div v-else-if="$store.getters.pageType === 'manage'">
-      Manage
+      <manage-page></manage-page>
     </div>
     <div v-else>
-      Custom
+      <router-view/>
     </div>
   </div>
 </template>
 
 <script>
   import IFramePage from "../components/IFramePage";
+  import ManagePage from "../components/ManagePage";
   export default {
     name: "Page",
-    components: {IFramePage},
+    components: {ManagePage, IFramePage}
   }
 </script>
 
