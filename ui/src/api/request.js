@@ -1,5 +1,23 @@
 import Vue from 'vue'
 import axios from 'axios'
+import utils from '../utils'
+import Toasted from 'vue-toasted'
+
+import '@fortawesome/fontawesome-free'
+
+Vue.use(Toasted, {
+  theme: 'primary',
+  position: 'bottom-right',
+  duration: 5000,
+  action: [
+    {
+      text: '清除', onClick: (e, toastObject) => {
+        toastObject.goAway(0);
+      }
+    }
+  ],
+  iconPack: 'fontawesome'
+});
 
 const request = axios.create({
   baseURL: ''
@@ -20,7 +38,7 @@ request.interceptors.response.use(res => {
     return Promise.reject(error);
   }
   if (error.response.status === 401) {
-    window.location.replace('/login');
+    utils.http.goPage('/login');
   }
   if (error.response.data.code) {
     Vue.toasted.error(`${error.response.data.code} - ${error.response.data.msg}`, {icon: 'times-circle'});

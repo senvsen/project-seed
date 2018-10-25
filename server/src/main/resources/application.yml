@@ -64,9 +64,6 @@ api:
     title: 系统管理接口
     description: 系统管理接口文档
 
-restful:
-  enabled: true
-
 ---
 spring:
   profiles: dev

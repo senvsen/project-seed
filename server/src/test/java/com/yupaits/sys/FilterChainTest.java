@@ -34,6 +34,7 @@ public class FilterChainTest {
                 new FilterChain().setUrl("/css/**.css").setFilter("anon"),
                 new FilterChain().setUrl("/js/**.js").setFilter("anon"),
                 new FilterChain().setUrl("/img/**").setFilter("anon"),
+                new FilterChain().setUrl("/fonts/**").setFilter("anon"),
                 new FilterChain().setUrl("/logout").setFilter("logout"),
                 new FilterChain().setUrl("/auth/**").setFilter("authc"),
                 new FilterChain().setUrl("/**").setFilter("user")
