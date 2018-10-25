@@ -19,6 +19,6 @@
 <style scoped>
   .iframe-content {
     width: 100%;
-    min-height: calc(100vh - 107px);
+    min-height: calc(100vh - 91px);
   }
 </style>

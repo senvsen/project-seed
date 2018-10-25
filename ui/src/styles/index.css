@@ -13,14 +13,19 @@ body {
 }
 
 .sidebar {
-  min-height: calc(100vh - 101px);
+  min-height: calc(100vh - 46px);
   border-right: 1px solid hsl(0, 0%, 86%);
 }
 
+.page-content {
+  min-height: calc(100% - 40px);
+}
+
 .footer {
-  height: 48px;
-  line-height: 48px;
+  height: 40px;
+  line-height: 40px;
   padding: 0;
+  margin: 0;
 }
 
 .color-box {
@@ -56,12 +61,8 @@ body {
 }
 
 .notify-box {
-  min-width: 20rem;
+  min-width: 24rem;
   padding: 8px;
-}
-
-.border-bottom {
-  border-bottom: 1px solid hsl(0, 0%, 86%);
 }
 
 .mt-1 {

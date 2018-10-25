@@ -6,6 +6,7 @@ import config from '../../config'
 import api from '../../api/index'
 import VueBlu from 'vue-blu'
 
+import 'bulma/css/bulma.min.css'
 import 'vue-blu/dist/css/vue-blu.min.css'
 import '../../styles/index.css'
 

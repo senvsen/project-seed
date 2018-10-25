@@ -6,7 +6,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    theme: 'is-primary',
+    navTheme: 'is-primary',
+    sideTheme: 'is-dark',
     locale: 'zh_CN',
     pageType: '',
     currentPage: '/',
@@ -15,8 +16,11 @@ export default new Vuex.Store({
     breadcrumb: []
   },
   getters: {
-    theme(state) {
-      return state.theme;
+    navTheme(state) {
+      return state.navTheme;
+    },
+    sideTheme(state) {
+      return state.sideTheme;
     },
     locale(state) {
       return state.locale;
@@ -38,8 +42,11 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    setTheme(state, theme) {
-      state.theme = theme;
+    setNavTheme(state, theme) {
+      state.navTheme = theme;
+    },
+    setSideTheme(state, theme) {
+      state.sideTheme = theme;
     },
     setLocale(state, locale) {
       state.locale = locale;
@@ -61,8 +68,11 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    setTheme({commit}, theme) {
-      commit('setTheme', theme);
+    setNavTheme({commit}, theme) {
+      commit('setNavTheme', theme);
+    },
+    setSideTheme({commit}, theme) {
+      commit('setSideTheme', theme);
     },
     setLocale({commit}, locale) {
       commit('setLocale', locale);

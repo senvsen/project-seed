@@ -5,15 +5,21 @@ const config = {
     avatar: 'https://avatars3.githubusercontent.com/u/12194490?s=460&v=4',
     theme: {
       label: '主题', icon: 'fa fa-palette',
-      options: [
-        {label: '主色', theme: 'is-primary'},
-        {label: '亮色', theme: 'is-white'},
-        {label: '暗色', theme: 'is-dark'},
-        {label: '绿色', theme: 'is-success'},
-        {label: '黄色', theme: 'is-warning'},
-        {label: '红色', theme: 'is-danger'},
-        {label: '蓝色', theme: 'is-info'},
-      ]
+      options: {
+        nav:[
+          {label: '导航-主色', theme: 'is-primary'},
+          {label: '导航-亮色', theme: 'is-light'},
+          {label: '导航-暗色', theme: 'is-dark'},
+          {label: '导航-绿色', theme: 'is-success'},
+          {label: '导航-黄色', theme: 'is-warning'},
+          {label: '导航-红色', theme: 'is-danger'},
+          {label: '导航-蓝色', theme: 'is-info'},
+        ],
+        sidebar: [
+          {label: '边栏-暗色', theme: 'is-dark'},
+          {label: '边栏-亮色', theme: 'is-light'},
+        ]
+      }
     },
     language: {
       label: '语言', icon: 'fa fa-globe',
@@ -28,7 +34,7 @@ const config = {
     userMenu: [
       {label: '个人中心', icon: 'fa fa-user', isDivided: false, link: '/profile'},
       {label: '修改密码', icon: 'fa fa-lock', isDivided: false, link: '/modify-password'},
-      {label: '退出登录', icon: 'fa fa-sign-out-alt', isDivided: true, link: '/logout', isDirect: true},
+      {label: '退出登录', icon: 'fa fa-sign-out', isDivided: true, link: '/logout', isDirect: true},
       {label: '报告错误', icon: 'fa fa-bug', isDivided: true, link: '/bug-report'},
     ]
   },
