@@ -62,7 +62,7 @@
           <!--用户下拉菜单-->
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
-              <img :src="$config.nav.avatar" class="mr-1" height="28" width="28">
+              <img :src="$config.nav.avatar" class="mr-1" height="24" width="24">
               <span>User</span>
             </a>
             <div class="navbar-dropdown is-right is-size-6">
@@ -71,9 +71,9 @@
                 <a class="navbar-item" :href="option.link" v-if="option.isDirect">
                   <i class="mr-1" :class="option.icon" v-if="option.icon"></i>{{option.label}}
                 </a>
-                <a class="navbar-item" @click="$router.push(option.link)" v-else>
+                <router-link class="navbar-item" :to="option.link" v-else>
                   <i class="mr-1" :class="option.icon" v-if="option.icon"></i>{{option.label}}
-                </a>
+                </router-link>
               </div>
             </div>
           </div>

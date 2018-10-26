@@ -3,10 +3,10 @@
     <div v-if="$store.getters.pageType === 'iframe'">
       <i-frame-page :src="$route.path"/>
     </div>
-    <div v-else-if="$store.getters.pageType === 'manage'">
+    <div class="is-page" v-else-if="$store.getters.pageType === 'manage'">
       <manage-page/>
     </div>
-    <div v-else>
+    <div class="is-page" v-else>
       <router-view/>
     </div>
   </div>
@@ -22,5 +22,7 @@
 </script>
 
 <style scoped>
-
+  .is-page {
+    padding: 1rem;
+  }
 </style>

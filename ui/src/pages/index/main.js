@@ -3,7 +3,8 @@ import App from './App'
 import router from './router'
 import store from './store'
 import config from '../../config'
-import api from '../../api/index'
+import api from '../../api'
+import utils from '../../utils'
 import VueBlu from 'vue-blu'
 
 import 'bulma/css/bulma.min.css'
@@ -16,6 +17,7 @@ Vue.use(VueBlu);
 
 Vue.prototype.$config = config;
 Vue.prototype.$api = api;
+Vue.prototype.$utils = utils;
 
 new Vue({
   router,
