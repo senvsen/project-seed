@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import App from './App'
-import VueBlu from 'vue-blu'
 import api from '../../api'
 import utils from '../../utils'
+import Antd from 'ant-design-vue'
 
-import 'vue-blu/dist/css/vue-blu.min.css'
+import 'ant-design-vue/dist/antd.min.css'
 import '../../styles/index.css'
 
 Vue.config.productionTip = false;
 
-Vue.use(VueBlu);
+Vue.use(Antd);
 
 Vue.prototype.$api = api;
 Vue.prototype.$utils = utils;

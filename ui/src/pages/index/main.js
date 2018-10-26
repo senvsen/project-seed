@@ -5,15 +5,14 @@ import store from './store'
 import config from '../../config'
 import api from '../../api'
 import utils from '../../utils'
-import VueBlu from 'vue-blu'
+import Antd from 'ant-design-vue'
 
-import 'bulma/css/bulma.min.css'
-import 'vue-blu/dist/css/vue-blu.min.css'
+import 'ant-design-vue/dist/antd.min.css'
 import '../../styles/index.css'
 
 Vue.config.productionTip = false;
 
-Vue.use(VueBlu);
+Vue.use(Antd);
 
 Vue.prototype.$config = config;
 Vue.prototype.$api = api;
