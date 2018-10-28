@@ -6,13 +6,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    navTheme: 'is-primary',
-    sideTheme: 'is-dark',
+    navTheme: '#fff',
+    sideTheme: 'dark',
     locale: 'zh_CN',
     pageType: '',
     currentPage: '/',
-    key: '',
-    menuKey: config.sidebar[0].options[0].label,
+    key: config.sidebar[0].link,
+    menuKey: '',
     breadcrumb: []
   },
   getters: {

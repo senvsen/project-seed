@@ -3,10 +3,6 @@ html {
   min-height: 100vh;
 }
 
-body {
-  margin: 0;
-}
-
 .error-page {
   padding-top: 30rem;
   background: no-repeat center 8rem;
@@ -49,6 +45,10 @@ body {
   text-align: right !important;
 }
 
+.has-text-danger {
+  color: #ff3860 !important;
+}
+
 .mt-1 {
   margin-top: 8px;
 }
@@ -87,4 +87,8 @@ body {
 }
 .ml-3 {
   margin-left: 24px;
+}
+
+.message-dot {
+  vertical-align: initial;
 }

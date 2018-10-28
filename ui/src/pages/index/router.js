@@ -7,12 +7,12 @@ import Page from './views/Page'
 import Dashboard from './views/custom/Dashboard'
 import CodeGen from './views/custom/CodeGen'
 
-Vue.use(Router);
-
 const customPage = {
   'dashboard': Dashboard,
   'code-gen': CodeGen
 };
+
+Vue.use(Router);
 
 const route = {
   path: '/',
@@ -20,46 +20,44 @@ const route = {
   redirect: '/dashboard',
   children: []
 };
-config.sidebar.forEach(subMenu => {
-  subMenu.options.forEach(option => {
-    if (option.children) {
-      option.children.forEach(item => {
-        if (item.link) {
-          const page = {
-            path: item.link,
-            component: Page,
-            meta: {
-              key: item.label,
-              menuKey: item.menuKey,
-              breadcrumb: item.breadcrumb
-            }
-          };
-          if (item.pageType) {
-            page.meta.pageType = item.pageType;
-          } else if (item.custom) {
-            page.component = customPage[item.custom];
-          }
-          route.children.push(page);
-        }
-      });
-    } else if (option.link) {
-      const page = {
-        path: option.link,
-        component: Page,
-        meta: {
-          menuKey: option.menuKey || option.key
-        }
-      };
-      if (option.pageType) {
-        page.meta.pageType = option.pageType;
-      } else if (option.custom) {
-        page.component = customPage[option.custom];
-      }
-      route.children.push(page);
-    }
-  });
-});
 
+config.sidebar.forEach(menu => {
+  if (menu.children) {
+    menu.children.forEach(item => {
+      if (item.link) {
+        const page = {
+          path: item.link,
+          component: Page,
+          meta: {
+            key: item.link,
+            menuKey: item.menuKey,
+            breadcrumb: item.breadcrumb
+          }
+        };
+        if (item.pageType) {
+          page.meta.pageType = item.pageType;
+        } else if (item.custom) {
+          page.component = customPage[item.custom];
+        }
+        route.children.push(page);
+      }
+    });
+  } else if (menu.link) {
+    const page = {
+      path: menu.link,
+      component: Page,
+      meta: {
+        menuKey: menu.key
+      }
+    };
+    if (menu.pageType) {
+      page.meta.pageType = menu.pageType;
+    } else if (menu.custom) {
+      page.component = customPage[menu.custom];
+    }
+    route.children.push(page);
+  }
+});
 
 const router = new Router({
   routes: [route]
@@ -68,8 +66,8 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   store.dispatch('setPageType', to.meta.pageType || '');
   store.dispatch('setCurrentPage', to.path);
-  store.dispatch('setKey', to.meta.key);
-  store.dispatch('setMenuKey', to.meta.menuKey || '仪表盘');
+  store.dispatch('setKey', to.meta.key || to.path);
+  store.dispatch('setMenuKey', to.meta.menuKey || '');
   store.dispatch('setBreadcrumb', to.meta.breadcrumb || []);
   next();
 });

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <iframe :src="src" class="iframe-content"></iframe>
+    <iframe :src="src" class="iframe-content" frameborder="0"></iframe>
   </div>
 </template>
 
@@ -18,7 +18,8 @@
 
 <style scoped>
   .iframe-content {
+    border-top: 1px solid #e8e8e8;
     width: 100%;
-    min-height: calc(100vh - 7.33rem);
+    min-height: calc(100vh - 138px);
   }
 </style>

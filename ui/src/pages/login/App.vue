@@ -24,7 +24,7 @@
             <a-form-item class="is-marginless">
               <a-checkbox v-model="loginForm.rememberMe">记住我</a-checkbox>
               <a class="login-forget" href="">忘记密码</a>
-              <a-button type="primary" class="login-btn" @click="login">登录</a-button>
+              <a-button type="primary" block @click="login">登录</a-button>
               <a href="">现在注册！</a>
             </a-form-item>
           </a-form>
@@ -98,8 +98,5 @@
   }
   .login-forget {
     float: right;
-  }
-  .login-btn {
-    width: 100%;
   }
 </style>

@@ -1,51 +1,74 @@
 <template>
   <div>
-    <nav class="navbar" :class="$store.getters.navTheme" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="/index">
-          <img :src="$config.nav.logo" width="112" height="28">
-        </a>
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="app-navbar">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-
-      <div id="app-navbar" class="navbar-menu">
-        <!--更换主题-->
-        <div class="navbar-end">
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              <i class="mr-1" :class="$config.nav.theme.icon" v-if="$config.nav.theme.icon"></i>{{$config.nav.theme.label}}
-            </a>
-            <div class="navbar-dropdown is-right is-size-6">
-              <a v-for="option in $config.nav.theme.options.nav" :key="option.label"
-                 @click="changeTheme('navTheme', option.theme)" class="navbar-item">
-                <span class="color-box" :class="option.theme"></span>
-                <i class="mr-1" :class="option.icon" v-if="option.icon"></i>{{option.label}}
-              </a>
-              <a v-for="option in $config.nav.theme.options.sidebar" :key="option.label"
-                 @click="changeTheme('sideTheme', option.theme)" class="navbar-item">
-                <span class="color-box" :class="option.theme"></span>
-                <i class="mr-1" :class="option.icon" v-if="option.icon"></i>{{option.label}}
-              </a>
-            </div>
+    <a-layout style="min-height: 100vh">
+      <a-layout-sider collapsible v-model="collapsed">
+        <div class="logo"/>
+        <sidebar/>
+      </a-layout-sider>
+      <a-layout>
+        <a-layout-header class="header" :style="{background: '#fff'}">
+          <div class="is-pulled-right">
+            <!--<a-dropdown class="mr-1">
+              <a-button :icon="$config.nav.theme.icon">
+                {{$config.nav.theme.label}} <a-icon type="down"/>
+              </a-button>
+              <a-menu slot="overlay">
+                <a-menu-item v-for="option in $config.nav.theme.options.nav" :key="option.theme"
+                             @click.native="changeTheme('navTheme', option.theme)">
+                  {{option.label}}
+                </a-menu-item>
+                <a-menu-item v-for="option in $config.nav.theme.options.sidebar" :key="option.theme"
+                             @click.native="changeTheme('sideTheme', option.theme)">
+                  {{option.label}}
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>-->
+            <a-dropdown class="mr-1">
+              <a-button :icon="$config.nav.language.icon">
+                {{$config.nav.language.label}} <a-icon type="down"/>
+              </a-button>
+              <a-menu slot="overlay">
+                <a-menu-item v-for="lang in $config.nav.language.options" :key="lang.label">{{lang.label}}</a-menu-item>
+              </a-menu>
+            </a-dropdown>
+            <a-dropdown placement="bottomRight" class="mr-1">
+              <a-button icon="message">
+                <a-badge class="message-dot" dot>消息</a-badge>
+                <a-icon type="down"/>
+              </a-button>
+              <div slot="overlay">
+                <a-card>
+                  你有99+条消息
+                </a-card>
+              </div>
+            </a-dropdown>
+            <a-dropdown placement="bottomRight">
+              <a-button>
+                yupaits <a-icon type="down"/>
+              </a-button>
+                <a-menu slot="overlay">
+                  <a-menu-item>
+                    <div class="has-text-centered">
+                      <img src="https://avatars3.githubusercontent.com/u/12194490?s=460&v=4" alt="avatar" width="48px">
+                    </div>
+                  </a-menu-item>
+                  <a-menu-item v-for="option in $config.nav.userMenu" :key="option.label">
+                    <a-icon :type="option.icon"/>{{option.label}}
+                  </a-menu-item>
+                </a-menu>
+            </a-dropdown>
           </div>
-
-          <!--切换语言-->
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              <i class="mr-1" :class="$config.nav.language.icon" v-if="$config.nav.language.icon"></i>{{$config.nav.language.label}}
-            </a>
-            <div class="navbar-dropdown is-right is-size-6">
-              <a v-for="option in $config.nav.language.options" :key="option.label" @click="changeLocale(option.link)" class="navbar-item">
-                <i class="mr-1" :class="option.icon" v-if="option.icon"></i>{{option.label}}
-              </a>
-            </div>
-          </div>
-
-          <!--消息中心-->
+        </a-layout-header>
+        <a-layout-content>
+          <router-view/>
+        </a-layout-content>
+        <a-layout-footer style="text-align: center">
+          {{$config.appName}} ©2018 Created by <a href="https://github.com/YupaiTS" target="_blank">YupaiTS</a>
+        </a-layout-footer>
+      </a-layout>
+    </a-layout>
+    <!--<nav class="navbar" :class="$store.getters.navTheme" role="navigation" aria-label="main navigation">
+          &lt;!&ndash;消息中心&ndash;&gt;
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
               <i class="mr-1" :class="$config.nav.notify.icon" v-if="$config.nav.notify.icon"></i>{{$config.nav.notify.label}}
@@ -59,7 +82,7 @@
             </div>
           </div>
 
-          <!--用户下拉菜单-->
+          &lt;!&ndash;用户下拉菜单&ndash;&gt;
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
               <img :src="$config.nav.avatar" class="mr-1" height="24" width="24">
@@ -80,44 +103,22 @@
         </div>
       </div>
     </nav>
-
-    <div class="columns is-marginless">
-      <!--侧边栏菜单-->
-      <div class="column is-paddingless is-2-desktop is-3-tablet is-mobile">
-        <div class="menu sidebar" :class="$store.getters.sideTheme">
-          <menus v-for="menu in $config.sidebar" :key="menu.label" :label="menu.label">
-            <menu-item v-for="option in menu.options" :key="option.key" :icon="option.icon"
-                       :is-active="$store.getters.menuKey === option.label" @click.native.prevent="menuSelect(option)">
-              {{option.label}}
-              <menus slot="sub" v-if="option.children">
-                <menu-item v-for="item in option.children" :key="item.label" :icon="item.icon"
-                           :is-active="$store.getters.key === item.label" @click.native.prevent="menuSelect(item)">
-                  {{item.label}}
-                </menu-item>
-              </menus>
-            </menu-item>
-          </menus>
-        </div>
-      </div>
-
-      <!--内容区-->
-      <div class="column is-paddingless">
-        <div class="page-content">
-          <router-view/>
-        </div>
-
-        <!--页脚-->
-        <div class="footer has-text-centered">
-          {{$config.appName}} ©2018 Created by <a href="https://github.com/YupaiTS" target="_blank">YupaiTS</a>
-        </div>
-      </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
 <script>
+  import Sidebar from "../../components/Sidebar";
+  import ManagePage from "../../components/ManagePage";
+
   export default {
     name: 'App',
+    components: {ManagePage, Sidebar},
+    data() {
+      return {
+        collapsed: false,
+      }
+    },
     created() {
       this.init();
     },
@@ -132,7 +133,7 @@
         document.addEventListener('DOMContentLoaded', () => {
           const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
           if ($navbarBurgers.length > 0) {
-            $navbarBurgers.forEach( el => {
+            $navbarBurgers.forEach(el => {
               el.addEventListener('click', () => {
                 const target = el.dataset.target;
                 const $target = document.getElementById(target);
@@ -185,5 +186,16 @@
 </script>
 
 <style>
+  .header {
+    padding: 0 16px!important;
+  }
+  .logo {
+    height: 32px;
+    background: rgba(255, 255, 255, .2);
+    margin: 16px;
+  }
 
+  .user-menu {
+    cursor: pointer;
+  }
 </style>
