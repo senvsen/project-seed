@@ -1,9 +1,9 @@
 <template>
-  <a-menu :theme="$store.getters.sideTheme" mode="inline"
+  <a-menu theme="dark" mode="inline"
           :defaultOpenKeys="[$store.getters.menuKey]"
           :selectedKeys="[$store.getters.key]"
           @select="item => $router.push(item.key)">
-    <template v-for="menu in $config.sidebar">
+    <template v-for="menu in $t('sidebar')">
       <a-sub-menu v-if="menu.children" :key="menu.key">
         <span slot="title">
           <a-icon :type="menu.icon"/>

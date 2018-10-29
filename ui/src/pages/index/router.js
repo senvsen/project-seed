@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
-import config from '../../config'
+import index from '../../i18n/index'
 
 import Page from './views/Page'
 import Dashboard from './views/custom/Dashboard'
@@ -21,7 +21,7 @@ const route = {
   children: []
 };
 
-config.sidebar.forEach(menu => {
+index.t('sidebar').forEach(menu => {
   if (menu.children) {
     menu.children.forEach(item => {
       if (item.link) {
@@ -30,8 +30,7 @@ config.sidebar.forEach(menu => {
           component: Page,
           meta: {
             key: item.link,
-            menuKey: item.menuKey,
-            breadcrumb: item.breadcrumb
+            menuKey: item.menuKey
           }
         };
         if (item.pageType) {
@@ -65,10 +64,8 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   store.dispatch('setPageType', to.meta.pageType || '');
-  store.dispatch('setCurrentPage', to.path);
   store.dispatch('setKey', to.meta.key || to.path);
   store.dispatch('setMenuKey', to.meta.menuKey || '');
-  store.dispatch('setBreadcrumb', to.meta.breadcrumb || []);
   next();
 });
 

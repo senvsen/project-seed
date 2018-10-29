@@ -1,35 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import config from '../../config'
+import i18n from '../../i18n'
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    navTheme: '#fff',
-    sideTheme: 'dark',
     locale: 'zh_CN',
     pageType: '',
-    currentPage: '/',
-    key: config.sidebar[0].link,
+    key: i18n.t('sidebar')[0].link,
     menuKey: '',
-    breadcrumb: []
   },
   getters: {
-    navTheme(state) {
-      return state.navTheme;
-    },
-    sideTheme(state) {
-      return state.sideTheme;
-    },
     locale(state) {
       return state.locale;
     },
     pageType(state) {
       return state.pageType;
-    },
-    currentPage(state) {
-      return state.currentPage;
     },
     key(state) {
       return state.key;
@@ -37,25 +24,13 @@ export default new Vuex.Store({
     menuKey(state) {
       return state.menuKey;
     },
-    breadcrumb(state) {
-      return state.breadcrumb;
-    }
   },
   mutations: {
-    setNavTheme(state, theme) {
-      state.navTheme = theme;
-    },
-    setSideTheme(state, theme) {
-      state.sideTheme = theme;
-    },
     setLocale(state, locale) {
       state.locale = locale;
     },
     setPageType(state, pageType) {
       state.pageType = pageType;
-    },
-    setCurrentPage(state, page) {
-      state.currentPage = page;
     },
     setKey(state, key) {
       state.key = key;
@@ -63,25 +38,13 @@ export default new Vuex.Store({
     setMenuKey(state, menuKey) {
       state.menuKey = menuKey;
     },
-    setBreadcrumb(state, breadcrumb) {
-      state.breadcrumb = breadcrumb;
-    }
   },
   actions: {
-    setNavTheme({commit}, theme) {
-      commit('setNavTheme', theme);
-    },
-    setSideTheme({commit}, theme) {
-      commit('setSideTheme', theme);
-    },
     setLocale({commit}, locale) {
       commit('setLocale', locale);
     },
     setPageType({commit}, pageType) {
       commit('setPageType', pageType);
-    },
-    setCurrentPage({commit}, page) {
-      commit('setCurrentPage', page);
     },
     setKey({commit}, key) {
       commit('setKey', key);
@@ -89,8 +52,5 @@ export default new Vuex.Store({
     setMenuKey({commit}, menuKey) {
       commit('setMenuKey', menuKey);
     },
-    setBreadcrumb({commit}, breadcrumb) {
-      commit('setBreadcrumb', breadcrumb);
-    }
   }
 })

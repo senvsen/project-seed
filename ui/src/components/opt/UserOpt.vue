@@ -1,12 +1,10 @@
 <template>
-  <div>
-    代码生成
-  </div>
+  
 </template>
 
 <script>
   export default {
-    name: "CodeGen"
+    name: "UserOpt"
   }
 </script>
 

@@ -1,12 +1,12 @@
 <template>
   <div>
-    代码生成
+    <a-input placeholder="请填写手机号码"></a-input>
   </div>
 </template>
 
 <script>
   export default {
-    name: "CodeGen"
+    name: "UserSearch"
   }
 </script>
 
