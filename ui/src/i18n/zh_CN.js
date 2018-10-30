@@ -1,6 +1,5 @@
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
 import enUS from 'ant-design-vue/lib/locale-provider/en_US'
-import config from '../config'
 
 const zh_CN = {
   appName: '种子应用',
@@ -52,21 +51,21 @@ const zh_CN = {
   sidebar: [
     {label: '概览', icon: 'dashboard', link: '/dashboard', custom: 'dashboard'},
     {label: '系统安全', icon: 'safety', key: 'auth', children: [
-        {label: '用户管理', link: '/user', pageType: 'manage', menuKey: 'auth', breadcrumb: ['系统安全', '用户管理']},
-        {label: '部门管理', link: '/department', pageType: 'manage', menuKey: 'auth', breadcrumb: ['系统安全', '部门管理']},
-        {label: '角色管理', link: '/role', pageType: 'manage', menuKey: 'auth', breadcrumb: ['系统安全', '角色管理']},
-        {label: '权限管理', link: '/privilege', pageType: 'manage', menuKey: 'auth', breadcrumb: ['系统安全', '权限管理']},
-        {label: '鉴权规则', link: '/filter-chain', pageType: 'manage', menuKey: 'auth', breadcrumb: ['系统安全', '鉴权规则']},
+        {label: '用户管理', icon: 'user', link: '/user', pageType: 'manage', menuKey: 'auth', breadcrumb: ['系统安全', '用户管理']},
+        {label: '部门管理', icon: 'appstore-o', link: '/department', pageType: 'manage', menuKey: 'auth', breadcrumb: ['系统安全', '部门管理']},
+        {label: '角色管理', icon: 'idcard', link: '/role', pageType: 'manage', menuKey: 'auth', breadcrumb: ['系统安全', '角色管理']},
+        {label: '权限管理', icon: 'profile', link: '/privilege', pageType: 'manage', menuKey: 'auth', breadcrumb: ['系统安全', '权限管理']},
+        {label: '鉴权规则', icon: 'filter', link: '/filter-chain', pageType: 'manage', menuKey: 'auth', breadcrumb: ['系统安全', '鉴权规则']},
       ]
     },
     {label: '系统监控', icon: 'line-chart', key: 'monitor', children: [
-        {label: 'Druid监控', link: '/druid/index.html', pageType: 'iframe', menuKey: 'monitor'}
+        {label: 'Druid监控', icon: 'database',link: '/druid/index.html', pageType: 'iframe', menuKey: 'monitor'}
       ]
     },
     {label: '消息推送', icon: 'message', key: 'msg'},
     {label: '开发工具', icon: 'tool', key: 'dev-tool', children: [
-        {label: '接口文档', link: '/swagger-ui.html', pageType: 'iframe', menuKey: 'dev-tool'},
-        {label: '代码生成器', link: '/code-gen', menuKey: 'dev-tool', custom: 'code-gen', breadcrumb: ['开发工具', '代码生成器']}
+        {label: '接口文档', icon: 'api', link: '/swagger-ui.html', pageType: 'iframe', menuKey: 'dev-tool'},
+        {label: '代码生成器', icon: 'code-o', link: '/code-gen', menuKey: 'dev-tool', custom: 'code-gen', breadcrumb: ['开发工具', '代码生成器']}
       ]
     },
   ],

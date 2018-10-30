@@ -51,21 +51,21 @@ const en = {
   sidebar: [
     {label: 'Overview', icon: 'dashboard', link: '/dashboard', custom: 'dashboard'},
     {label: 'Security', icon: 'safety', key: 'auth', children: [
-        {label: 'User', link: '/user', pageType: 'manage', menuKey: 'auth'},
-        {label: 'Department', link: '/department', pageType: 'manage', menuKey: 'auth'},
-        {label: 'Role', link: '/role', pageType: 'manage', menuKey: 'auth'},
-        {label: 'Privilege', link: '/privilege', pageType: 'manage', menuKey: 'auth'},
-        {label: 'Authorization', link: '/filter-chain', pageType: 'manage', menuKey: 'auth'},
+        {label: 'User', icon: 'user', link: '/user', pageType: 'manage', menuKey: 'auth'},
+        {label: 'Department', icon: 'appstore-o', link: '/department', pageType: 'manage', menuKey: 'auth'},
+        {label: 'Role', icon: 'idcard', link: '/role', pageType: 'manage', menuKey: 'auth'},
+        {label: 'Privilege', icon: 'profile', link: '/privilege', pageType: 'manage', menuKey: 'auth'},
+        {label: 'Authorization', icon: 'filter', link: '/filter-chain', pageType: 'manage', menuKey: 'auth'},
       ]
     },
     {label: 'Monitor', icon: 'line-chart', key: 'monitor', children: [
-        {label: 'Druid Monitor', link: '/druid/index.html', pageType: 'iframe', menuKey: 'monitor'}
+        {label: 'Druid Monitor', icon: 'database', link: '/druid/index.html', pageType: 'iframe', menuKey: 'monitor'}
       ]
     },
     {label: 'Notification', icon: 'message', key: 'msg'},
     {label: 'Developer Tool', icon: 'tool', key: 'dev-tool', children: [
-        {label: 'API', link: '/swagger-ui.html', pageType: 'iframe', menuKey: 'dev-tool'},
-        {label: 'Code Generator', link: '/code-gen', menuKey: 'dev-tool', custom: 'code-gen'}
+        {label: 'API', icon: 'api', link: '/swagger-ui.html', pageType: 'iframe', menuKey: 'dev-tool'},
+        {label: 'Code Generator', icon: 'code-o', link: '/code-gen', menuKey: 'dev-tool', custom: 'code-gen'}
       ]
     },
   ],

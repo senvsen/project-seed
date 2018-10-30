@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import index from '../../i18n/index'
+import i18n from '../../i18n'
 import api from '../../api'
 import utils from '../../utils'
 import config from '../../config'
@@ -22,6 +22,6 @@ Vue.prototype.$utils = utils;
 new Vue({
   router,
   store,
-  i18n: index,
+  i18n,
   render: h => h(App)
 }).$mount('#app');
