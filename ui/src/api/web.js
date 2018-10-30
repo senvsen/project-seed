@@ -1,9 +1,7 @@
 import request from './request'
 
-const web = {
+export default {
   login(loginForm) {
     return request.post('/login', loginForm);
   }
-};
-
-export default web
+}

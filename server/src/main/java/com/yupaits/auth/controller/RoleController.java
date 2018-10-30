@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-23
+ * @since 2018-10-30
  */
 @Slf4j
 @Api(tags = "角色接口")
@@ -117,7 +117,7 @@ public class RoleController {
     }
 
     @ApiOperation("按条件获取角色列表")
-    @GetMapping("/list")
+    @PostMapping("/list")
     public Result getRoleList(@RequestBody(required = false) Map<String, Object> query) {
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
         if (MapUtils.isNotEmpty(query)) {

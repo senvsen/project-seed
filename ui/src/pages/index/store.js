@@ -1,20 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import i18n from '../../i18n'
+import messages from '../../messages'
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    locale: 'zh_CN',
     pageType: '',
-    key: i18n.t('sidebar')[0].link,
+    key: messages.sidebar[0].link,
     menuKey: '',
   },
   getters: {
-    locale(state) {
-      return state.locale;
-    },
     pageType(state) {
       return state.pageType;
     },
@@ -26,9 +22,6 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    setLocale(state, locale) {
-      state.locale = locale;
-    },
     setPageType(state, pageType) {
       state.pageType = pageType;
     },
@@ -40,9 +33,6 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    setLocale({commit}, locale) {
-      commit('setLocale', locale);
-    },
     setPageType({commit}, pageType) {
       commit('setPageType', pageType);
     },

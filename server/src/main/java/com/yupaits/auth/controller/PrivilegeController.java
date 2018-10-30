@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-23
+ * @since 2018-10-30
  */
 @Slf4j
 @Api(tags = "权限接口")
@@ -117,7 +117,7 @@ public class PrivilegeController {
     }
 
     @ApiOperation("按条件获取权限列表")
-    @GetMapping("/list")
+    @PostMapping("/list")
     public Result getPrivilegeList(@RequestBody(required = false) Map<String, Object> query) {
         QueryWrapper<Privilege> queryWrapper = new QueryWrapper<>();
         if (MapUtils.isNotEmpty(query)) {

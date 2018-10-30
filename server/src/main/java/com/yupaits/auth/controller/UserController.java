@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-23
+ * @since 2018-10-30
  */
 @Slf4j
 @Api(tags = "用户接口")
@@ -117,7 +117,7 @@ public class UserController {
     }
 
     @ApiOperation("按条件获取用户列表")
-    @GetMapping("/list")
+    @PostMapping("/list")
     public Result getUserList(@RequestBody(required = false) Map<String, Object> query) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         if (MapUtils.isNotEmpty(query)) {

@@ -23,7 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <shiro.version>1.4.0</shiro.version>
-        <mybatis-plus.version>3.0.1</mybatis-plus.version>
+        <mybatis-plus.version>3.0.5</mybatis-plus.version>
         <freemarker.version>2.3.28</freemarker.version>
         <lombok.version>1.16.20</lombok.version>
         <swagger2.version>2.8.0</swagger2.version>

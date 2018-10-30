@@ -1,4 +1,4 @@
-const http = {
+export default {
   //在新的标签页打开url
   openPage: (url) => {
     window.open(url).location;
@@ -11,6 +11,4 @@ const http = {
   jumpPage(url) {
     window.location.href = url;
   }
-};
-
-export default http
+}

@@ -119,7 +119,7 @@ public class FilterChainController {
     }
 
     @ApiOperation("按条件获取权限过滤链列表")
-    @GetMapping("/list")
+    @PostMapping("/list")
     public Result getFilterChainList(@RequestBody(required = false) Map<String, Object> query) {
         QueryWrapper<FilterChain> queryWrapper = new QueryWrapper<>();
         if (MapUtils.isNotEmpty(query)) {

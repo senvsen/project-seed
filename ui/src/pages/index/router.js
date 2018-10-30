@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
-import i18n from '../../i18n'
+import messages from '../../messages'
 
 import Page from './views/Page'
 import Dashboard from './views/custom/Dashboard'
@@ -21,7 +21,7 @@ const route = {
   children: []
 };
 
-i18n.t('sidebar').forEach(menu => {
+messages.sidebar.forEach(menu => {
   if (menu.children) {
     menu.children.forEach(item => {
       if (item.link) {

@@ -3,8 +3,8 @@
     <div class="columns is-centered">
       <div class="column is-narrow has-text-centered">
         <div class="title is-size-1">403</div>
-        <p class="subtitle has-text-grey-light is-size-5">{{$t('errorPage.tip.403')}}</p>
-        <a class="button is-primary" href="/index">{{$t('errorPage.btnContent')}}</a>
+        <p class="subtitle has-text-grey-light is-size-5">{{$messages.errorPage.tip.error403}}</p>
+        <a class="button is-primary" href="/index">{{$messages.errorPage.btnContent}}</a>
       </div>
     </div>
   </div>

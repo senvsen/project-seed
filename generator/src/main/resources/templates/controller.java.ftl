@@ -275,7 +275,7 @@ public class ${table.controllerName} {
     <#if swagger2>
     @ApiOperation("按条件获取${table.comment!}列表")
     </#if>
-    @GetMapping("/list")
+    @PostMapping("/list")
     <#if restControllerStyle>
     public Result get${entity}List(@RequestBody(required = false) Map<String, Object> query) {
     <#else>

@@ -2,10 +2,11 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import i18n from '../../i18n'
 import api from '../../api'
 import utils from '../../utils'
-import config from '../../config'
+import messages from '../../messages'
+import handler from '../../handler'
+import page from '../../components/page'
 import Antd from 'ant-design-vue'
 
 import 'ant-design-vue/dist/antd.min.css'
@@ -16,12 +17,13 @@ Vue.config.productionTip = false;
 Vue.use(Antd);
 
 Vue.prototype.$api = api;
-Vue.prototype.$config = config;
+Vue.prototype.$messages = messages;
 Vue.prototype.$utils = utils;
+Vue.prototype.$handler = handler;
+Vue.prototype.$page = page;
 
 new Vue({
   router,
   store,
-  i18n,
   render: h => h(App)
 }).$mount('#app');

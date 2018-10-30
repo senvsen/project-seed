@@ -4,24 +4,41 @@
     <div class="manage-content">
       <a-row class="table-toolbar">
         <div class="is-pulled-right">
+          <a-button icon="reload" class="mr-1" @click="refreshTable">
+            {{$messages.toolbar.refreshBtn}}
+          </a-button>
           <a-button icon="search" @click="showSearch">
-            {{$t('toolbar.searchBtn')}}
+            {{$messages.toolbar.searchBtn}}
           </a-button>
         </div>
         <div>
-          <a-button icon="plus" class="mr-1" @click="addRecord">{{$t('toolbar.createBtn')}}</a-button>
-          <a-popconfirm :title="$t('operation.batchDeleteTip', {label: $t('pageLabel')[$route.path]})" trigger="click" placement="rightBottom" @confirm="handleBatchDelete"
-                     :okText="$t('operation.confirmText')" :cancelText="$t('operation.cancelText')" v-if="selectedKeys.length > 0">
-            <a-button icon="delete" class="mr-1">{{$t('toolbar.batchDeleteBtn')}}</a-button>
+          <a-button icon="plus" class="mr-1" @click="addRecord">{{$messages.toolbar.createBtn}}</a-button>
+          <a-popconfirm :title="$messages.operation.batchDeleteTip" trigger="click" placement="rightBottom" @confirm="handleBatchDelete"
+                        :okText="$messages.operation.confirmText" :cancelText="$messages.operation.cancelText" v-if="selectedKeys.length > 0">
+            <a-button icon="delete" class="mr-1">{{$messages.toolbar.batchDeleteBtn}}</a-button>
           </a-popconfirm>
         </div>
       </a-row>
       <a-table size="small"
-               :columns="$t('columns')[$route.path]"
+               :columns="$messages.columns[pageKey].tableColumns"
                :dataSource="data"
                :rowKey="record => record.id"
                :rowSelection="{selectedRowKeys: selectedKeys, onChange: onSelectChange}"
                :pagination="false" :loading="loading" :scroll="{y: 'calc(100vh - 365px)'}">
+        <template slot="expandedRowRender" slot-scope="record">
+          <a-row>
+            <a-col :span="12" v-for="column in $messages.columns[pageKey].expandedColumns" :key="column.title">
+              <a-row>
+                <a-col :span="6" class="has-text-right">
+                  {{column.title}}：
+                </a-col>
+                <a-col :span="18">
+                  {{record[column.dataIndex]}}
+                </a-col>
+              </a-row>
+            </a-col>
+          </a-row>
+        </template>
         <template slot="createdAt" slot-scope="record">
           {{$utils.date(record.createdAt).format('YYYY-MM-DD HH:mm:ss')}}
         </template>
@@ -29,10 +46,10 @@
           {{$utils.date(record.updatedAt).format('YYYY-MM-DD HH:mm:ss')}}
         </template>
         <template slot="opt" slot-scope="record">
-          <a-button size="small" class="mr-1" @click="editRecord(record)">{{$t('operation.editBtn')}}</a-button>
-          <a-popconfirm :title="$t('operation.deleteTip', {label: $t('pageLabel')[$route.path]})" trigger="click" placement="top" @confirm="handleDeleteRecord(record)"
-                        :okText="$t('operation.confirmText')" :cancelText="$t('operation.cancelText')">
-            <a-button size="small" class="mr-1">{{$t('operation.deleteBtn')}}</a-button>
+          <a-button size="small" class="mr-1" @click="editRecord(record)">{{$messages.operation.editBtn}}</a-button>
+          <a-popconfirm :title="$messages.operation.deleteTip" trigger="click" placement="top" @confirm="handleDeleteRecord(record)"
+                        :okText="$messages.operation.confirmText" :cancelText="$messages.operation.cancelText">
+            <a-button size="small" class="mr-1">{{$messages.operation.deleteBtn}}</a-button>
           </a-popconfirm>
           <slot name="ext-opt" v-bind:record="record"></slot>
         </template>
@@ -41,9 +58,9 @@
                     v-model="pager.current"
                     :total="pager.total"
                     :pageSize.sync="pager.pageSize"
-                    :pageSizeOptions="$t('pager').pageSizeOptions"
-                    :showQuickJumper="$t('pager').showQuickJumper"
-                    :showSizeChanger="$t('pager').showSizeChanger"
+                    :pageSizeOptions="$messages.pager.pageSizeOptions"
+                    :showQuickJumper="$messages.pager.showQuickJumper"
+                    :showSizeChanger="$messages.pager.showSizeChanger"
                     @change="handlePagerChange"/>
     </div>
 
@@ -52,8 +69,7 @@
              :visible="modal.visible"
              @ok="modal.ok"
              @cancel="() => {modal.visible = false}">
-      <a-form>
-      </a-form>
+      <slot name="form"></slot>
     </a-modal>
 
     <a-drawer placement="right"
@@ -62,18 +78,18 @@
               :visible="searchVisible"
               width="560">
       <template slot="title">
-        <a-icon type="search"/> {{$t('search.title')}}
+        <a-icon type="search"/> {{$messages.search.title}}
       </template>
       <a-form layout="vertical" hide-required-mark>
         <a-row :gutter="16">
           <a-col :span="12">
-            <a-form-item :label="$t('search.idLabel')">
-              <a-input :placeholder="$t('search.idPlaceholder')" class="search-input mr-1"></a-input>
+            <a-form-item :label="$messages.search.idLabel">
+              <a-input :placeholder="$messages.search.idPlaceholder" class="search-input mr-1"></a-input>
             </a-form-item>
           </a-col>
           <a-col :span="12">
-            <a-form-item :label="$t('search.keywordLabel')">
-              <a-input :placeholder="$t('search.keywordPlaceholder')" class="search-input mr-1"></a-input>
+            <a-form-item :label="$messages.search.keywordLabel">
+              <a-input :placeholder="$messages.search.keywordPlaceholder" class="search-input mr-1"></a-input>
             </a-form-item>
           </a-col>
           <slot name="advanced-search"></slot>
@@ -81,10 +97,10 @@
       </a-form>
       <div class="drawer-opt">
         <a-button class="mr-1" @click="searchClose">
-          {{$t('search.closeBtn')}}
+          {{$messages.search.closeBtn}}
         </a-button>
         <a-button type="primary" class="mr-1" @click="handleSearch">
-          {{$t('search.confirmBtn')}}
+          {{$messages.search.confirmBtn}}
         </a-button>
       </div>
     </a-drawer>
@@ -98,15 +114,20 @@
     components: {Breadcrumb},
     data() {
       return {
-        data: [],
+        data: [{name: '张三'}],
         advancedSearch: false,
         pager: {
           current: 1,
           total: 1,
-          pageSize: this.$t('pager').pageSize
+          pageSize: this.$messages.pager.pageSize
         },
         loading: false,
         searchVisible: false,
+        query: {},
+        sortable: {
+          ascs: [],
+          descs: []
+        },
         selectedKeys: [],
         modal: {
           title: '',
@@ -117,18 +138,23 @@
       }
     },
     created() {
-      let data = [];
-      for (let i = 0; i < 10; i++) {
-        data.push(
-          {id: i, name: 'Mr.' + i, createdAt: this.$utils.date().subtract(1, 'hour')},
-        )
+      this.fetchData();
+    },
+    computed: {
+      pageKey() {
+        return this.$store.getters.key;
       }
-      this.data = data;
+    },
+    watch: {
+      pageKey: function () {
+        this.fetchData();
+      }
     },
     methods: {
       fetchData() {
         this.loading = true;
-        this.$config[this.$route.path].fetchData().then(res => {
+        this.$handler[this.pageKey].fetchData(this.pager.current, this.pager.pageSize, this.query,
+          this.sortable.ascs, this.sortable.descs).then(res => {
           this.data = res.data.records;
           this.pager.current = res.data.current;
           this.pager.total = res.data.total;
@@ -145,7 +171,7 @@
       },
       addRecord() {
         this.modal = {
-          title: this.$t('modal.createTitle', {label: this.$t('pageLabel')[this.$route.path]}),
+          title: this.$messages.modal.createTitle + this.$messages.pageLabel[this.pageKey],
           visible: true,
           ok: this.handleAddRecord
         };
@@ -153,22 +179,33 @@
       editRecord(record) {
         this.record = JSON.parse(JSON.stringify(record));
         this.modal = {
-          title: this.$t('modal.editTitle', {label: this.$t('pageLabel')[this.$route.path]}),
+          title: this.$messages.modal.editTitle + this.$messages.pageLabel[this.pageKey],
           visible: true,
           ok: this.handleEditRecord
         };
       },
       handleAddRecord() {
-        this.$config[this.$route.path].handleAdd();
+        this.$handler[this.pageKey].handleAdd(this.record).then(() => {
+          this.$message.success(this.$messages.successResult.create);
+        });
       },
       handleEditRecord() {
-        this.$config[this.$route.path].handleEdit();
+        this.$handler[this.pageKey].handleEdit(this.record).then(() => {
+          this.$message.success(this.$messages.successResult.edit);
+        });
       },
       handleDeleteRecord(record) {
-        alert('删除');
+        this.$handler[this.pageKey].handleDelete(record.id).then(() => {
+          this.$message.success(this.$messages.successResult.delete);
+        });
       },
       handleBatchDelete() {
-        alert('批量删除');
+        this.$handler[this.pageKey].handleBatchDelete(this.selectedKeys).then(() => {
+          this.$message.success(this.$messages.successResult.batchDelete);
+        });
+      },
+      refreshTable() {
+        this.fetchData();
       },
       handleSearch() {
         this.searchVisible = false;
