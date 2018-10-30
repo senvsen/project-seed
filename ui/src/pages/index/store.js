@@ -9,6 +9,8 @@ export default new Vuex.Store({
     pageType: '',
     key: messages.sidebar[0].link,
     menuKey: '',
+    record: {},
+    search: {}
   },
   getters: {
     pageType(state) {
@@ -20,6 +22,12 @@ export default new Vuex.Store({
     menuKey(state) {
       return state.menuKey;
     },
+    record(state) {
+      return state.record;
+    },
+    search(state) {
+      return state.search;
+    }
   },
   mutations: {
     setPageType(state, pageType) {
@@ -31,6 +39,12 @@ export default new Vuex.Store({
     setMenuKey(state, menuKey) {
       state.menuKey = menuKey;
     },
+    setRecord(state, record) {
+      state.record = record;
+    },
+    setSearch(state, search) {
+      state.search = search;
+    },
   },
   actions: {
     setPageType({commit}, pageType) {
@@ -41,6 +55,12 @@ export default new Vuex.Store({
     },
     setMenuKey({commit}, menuKey) {
       commit('setMenuKey', menuKey);
+    },
+    setRecord({commit}, record) {
+      commit('setRecord', record);
+    },
+    setSearch({commit}, search) {
+      commit('setSearch', search);
     },
   }
 })

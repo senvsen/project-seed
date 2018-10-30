@@ -90,7 +90,7 @@ export default {
     idPlaceholder: '请填写ID',
     keywordLabel: '关键字：',
     keywordPlaceholder: '请填写查找关键字',
-    closeBtn: '取消',
+    resetBtn: '重置',
     confirmBtn: '查找',
   },
   columns: {

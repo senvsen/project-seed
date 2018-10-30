@@ -6,7 +6,7 @@
     <div v-else-if="$store.getters.pageType === 'manage'">
       <manage-page>
         <component slot="form" :is="formComponent"></component>
-        <component slot="ext-opt" slot-scope="{record}" :is="optComponent"></component>
+        <component slot="ext-opt" slot-scope="{record}" :row-data="record" :is="optComponent"></component>
         <component slot="advanced-search" :is="searchComponent"></component>
       </manage-page>
     </div>
@@ -26,7 +26,7 @@
       return {
         formComponent: undefined,
         optComponent: undefined,
-        searchComponent: undefined
+        searchComponent: undefined,
       }
     },
     created() {
@@ -38,7 +38,7 @@
       }
     },
     watch: {
-      pageKey: function () {
+      pageKey() {
         this.setComponents();
       }
     },

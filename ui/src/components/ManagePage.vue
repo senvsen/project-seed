@@ -26,7 +26,7 @@
                :rowSelection="{selectedRowKeys: selectedKeys, onChange: onSelectChange}"
                :pagination="false" :loading="loading" :scroll="{y: 'calc(100vh - 365px)'}">
         <template slot="expandedRowRender" slot-scope="record">
-          <a-row>
+          <a-row :gutter="16">
             <a-col :span="12" v-for="column in $messages.columns[pageKey].expandedColumns" :key="column.title">
               <a-row>
                 <a-col :span="6" class="has-text-right">
@@ -81,23 +81,11 @@
         <a-icon type="search"/> {{$messages.search.title}}
       </template>
       <a-form layout="vertical" hide-required-mark>
-        <a-row :gutter="16">
-          <a-col :span="12">
-            <a-form-item :label="$messages.search.idLabel">
-              <a-input :placeholder="$messages.search.idPlaceholder" class="search-input mr-1"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="12">
-            <a-form-item :label="$messages.search.keywordLabel">
-              <a-input :placeholder="$messages.search.keywordPlaceholder" class="search-input mr-1"></a-input>
-            </a-form-item>
-          </a-col>
-          <slot name="advanced-search"></slot>
-        </a-row>
+        <slot name="advanced-search"></slot>
       </a-form>
       <div class="drawer-opt">
-        <a-button class="mr-1" @click="searchClose">
-          {{$messages.search.closeBtn}}
+        <a-button class="mr-1" @click="searchReset">
+          {{$messages.search.resetBtn}}
         </a-button>
         <a-button type="primary" class="mr-1" @click="handleSearch">
           {{$messages.search.confirmBtn}}
@@ -114,7 +102,7 @@
     components: {Breadcrumb},
     data() {
       return {
-        data: [{name: '张三'}],
+        data: [{id: '123', name: '张三'}],
         advancedSearch: false,
         pager: {
           current: 1,
@@ -133,8 +121,7 @@
           title: '',
           visible: false,
           ok: () => {}
-        },
-        record: {}
+        }
       }
     },
     created() {
@@ -146,15 +133,16 @@
       }
     },
     watch: {
-      pageKey: function () {
+      pageKey() {
+        this.$store.dispatch('setSearch', {});
         this.fetchData();
       }
     },
     methods: {
       fetchData() {
         this.loading = true;
-        this.$handler[this.pageKey].fetchData(this.pager.current, this.pager.pageSize, this.query,
-          this.sortable.ascs, this.sortable.descs).then(res => {
+        this.$handler[this.pageKey].fetchData(this.pager.current, this.pager.pageSize,
+          this.$store.getters.search, this.sortable.ascs, this.sortable.descs).then(res => {
           this.data = res.data.records;
           this.pager.current = res.data.current;
           this.pager.total = res.data.total;
@@ -169,7 +157,11 @@
       searchClose() {
         this.searchVisible = false;
       },
+      searchReset() {
+        this.$store.dispatch('setSearch', {});
+      },
       addRecord() {
+        this.$store.dispatch('setRecord', {});
         this.modal = {
           title: this.$messages.modal.createTitle + this.$messages.pageLabel[this.pageKey],
           visible: true,
@@ -177,7 +169,7 @@
         };
       },
       editRecord(record) {
-        this.record = JSON.parse(JSON.stringify(record));
+        this.$store.dispatch('setRecord', JSON.parse(JSON.stringify(record)));
         this.modal = {
           title: this.$messages.modal.editTitle + this.$messages.pageLabel[this.pageKey],
           visible: true,
@@ -185,12 +177,12 @@
         };
       },
       handleAddRecord() {
-        this.$handler[this.pageKey].handleAdd(this.record).then(() => {
+        this.$handler[this.pageKey].handleAdd(this.$store.getters.record).then(() => {
           this.$message.success(this.$messages.successResult.create);
         });
       },
       handleEditRecord() {
-        this.$handler[this.pageKey].handleEdit(this.record).then(() => {
+        this.$handler[this.pageKey].handleEdit(this.$store.getters.record.id, this.$store.getters.record).then(() => {
           this.$message.success(this.$messages.successResult.edit);
         });
       },

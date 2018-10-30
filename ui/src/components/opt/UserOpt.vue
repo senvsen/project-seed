@@ -6,7 +6,16 @@
 
 <script>
   export default {
-    name: "UserOpt"
+    name: "UserOpt",
+    props: {
+      rowData: {
+        type: Object,
+        required: true
+      }
+    },
+    created() {
+      console.log(this.rowData);
+    }
   }
 </script>
 
