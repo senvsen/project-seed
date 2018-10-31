@@ -3,7 +3,8 @@ import utils from '../utils'
 import {message} from 'ant-design-vue'
 
 const request = axios.create({
-  baseURL: ''
+  baseURL: '',
+  headers: {'X-Requested-With': 'XMLHttpRequest'}
 });
 
 request.interceptors.response.use(res => {

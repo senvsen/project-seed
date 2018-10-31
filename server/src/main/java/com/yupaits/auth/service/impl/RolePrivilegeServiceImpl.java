@@ -1,17 +1,19 @@
 package com.yupaits.auth.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import com.yupaits.auth.entity.RolePrivilege;
 import com.yupaits.auth.mapper.RolePrivilegeMapper;
 import com.yupaits.auth.service.IRolePrivilegeService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
-import com.yupaits.commons.core.identity.RelatedId;;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.google.common.collect.Lists;
-import org.springframework.transaction.annotation.Transactional;
+import com.yupaits.commons.core.identity.RelatedId;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+;
 
 /**
  * <p>

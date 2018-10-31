@@ -1,24 +1,30 @@
 package com.yupaits.auth.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yupaits.auth.entity.UserRole;
 import com.yupaits.auth.service.IUserRoleService;
 import com.yupaits.auth.vo.UserRoleVO;
-import com.yupaits.commons.core.identity.ForeignId;;
-import com.yupaits.commons.core.identity.RelatedId;;
+import com.yupaits.commons.core.identity.ForeignId;
+import com.yupaits.commons.core.identity.RelatedId;
 import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.commons.result.ResultCode;
+import com.yupaits.commons.result.ResultWrapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.swagger.annotations.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+;
+;
 
 
 /**

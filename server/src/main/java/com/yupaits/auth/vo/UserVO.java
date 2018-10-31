@@ -1,6 +1,5 @@
 package com.yupaits.auth.vo;
 
-import java.time.LocalDate;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.yupaits.commons.core.serializer.LongSerializer;
 import io.swagger.annotations.ApiModel;
@@ -8,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -30,9 +30,6 @@ public class UserVO implements Serializable {
 
     @ApiModelProperty(value = "用户名")
     private String username;
-
-    @ApiModelProperty(value = "密码")
-    private String password;
 
     @ApiModelProperty(value = "姓名")
     private String name;

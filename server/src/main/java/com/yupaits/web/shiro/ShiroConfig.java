@@ -9,6 +9,7 @@ import com.yupaits.web.shiro.redis.RedisSessionDAO;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.mgt.DefaultFilter;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
@@ -48,6 +49,8 @@ public class ShiroConfig {
         factoryBean.setLoginUrl("/login");
         factoryBean.setSuccessUrl("/index");
         factoryBean.setUnauthorizedUrl("/403");
+        //使用自定义的ShiroAuthcFilter覆盖默认的FormAuthenticationFilter，解决异步请求前端无法处理302重定向的问题
+        factoryBean.getFilters().put(DefaultFilter.authc.name(), new ShiroAuthcFilter());
         List<FilterChain> filterChainList = filterChainService.list(
                 new QueryWrapper<FilterChain>().orderByAsc("sort_code"));
         Map<String, String> filterChains = Maps.newLinkedHashMap();

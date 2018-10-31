@@ -102,7 +102,7 @@
     components: {Breadcrumb},
     data() {
       return {
-        data: [{id: 111, username: 'HelloMrZhang'}],
+        data: [],
         pager: {
           current: 1,
           total: 1,

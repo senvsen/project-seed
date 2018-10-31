@@ -1,8 +1,10 @@
 package com.yupaits.auth.service;
 
-import com.yupaits.auth.entity.RolePrivilege;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yupaits.commons.core.identity.RelatedId;;
+import com.yupaits.auth.entity.RolePrivilege;
+import com.yupaits.commons.core.identity.RelatedId;
+
+;
 
 /**
  * <p>

@@ -1,7 +1,7 @@
 package com.yupaits.auth.mapper;
 
-import com.yupaits.auth.entity.RolePrivilege;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yupaits.auth.entity.RolePrivilege;
 
 /**
  * <p>

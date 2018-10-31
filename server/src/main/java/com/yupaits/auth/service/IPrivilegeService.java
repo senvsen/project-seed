@@ -1,7 +1,7 @@
 package com.yupaits.auth.service;
 
-import com.yupaits.auth.entity.Privilege;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yupaits.auth.entity.Privilege;
 
 /**
  * <p>

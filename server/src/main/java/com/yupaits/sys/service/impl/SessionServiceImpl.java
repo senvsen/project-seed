@@ -6,6 +6,7 @@ import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.sys.service.SessionService;
 import com.yupaits.web.shiro.redis.RedisCacheManager;
 import com.yupaits.web.shiro.redis.RedisSessionDAO;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
  * @author yupaits
  * @date 2018/10/17
  */
+@Slf4j
 @Service
 @SuppressWarnings("unchecked")
 public class SessionServiceImpl implements SessionService {
