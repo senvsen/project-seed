@@ -10,7 +10,7 @@ import com.yupaits.commons.core.identity.RelatedId;;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-30
+ * @since 2018-10-31
  */
 public interface IRolePrivilegeService extends IService<RolePrivilege> {
 

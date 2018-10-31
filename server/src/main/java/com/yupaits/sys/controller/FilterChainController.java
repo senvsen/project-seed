@@ -1,28 +1,29 @@
 package com.yupaits.sys.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yupaits.commons.result.Result;
+import com.yupaits.commons.result.ResultCode;
+import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.commons.utils.ValidateUtils;
+import com.yupaits.sys.dto.FilterChainCreate;
+import com.yupaits.sys.dto.FilterChainUpdate;
 import com.yupaits.sys.entity.FilterChain;
 import com.yupaits.sys.service.IFilterChainService;
 import com.yupaits.sys.vo.FilterChainVO;
-import com.yupaits.sys.dto.FilterChainCreate;
-import com.yupaits.sys.dto.FilterChainUpdate;
-import com.yupaits.commons.utils.ValidateUtils;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import java.util.Map;
-import org.apache.commons.collections4.MapUtils;
-import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultWrapper;
-import com.yupaits.commons.result.ResultCode;
+import com.yupaits.web.shiro.FilterChainHelper;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.swagger.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -41,10 +42,12 @@ import java.util.stream.Collectors;
 public class FilterChainController {
 
     private final IFilterChainService filterChainService;
+    private final FilterChainHelper filterChainHelper;
 
     @Autowired
-    public FilterChainController(IFilterChainService filterChainService) {
+    public FilterChainController(IFilterChainService filterChainService, FilterChainHelper filterChainHelper) {
         this.filterChainService = filterChainService;
+        this.filterChainHelper = filterChainHelper;
     }
 
     @ApiOperation("创建权限过滤链")
@@ -57,7 +60,7 @@ public class FilterChainController {
         BeanUtils.copyProperties(filterChainCreate, filterChain);
         FilterChain maxSortCodeFilterChain = filterChainService.getOne(new QueryWrapper<FilterChain>().select("sort_code").orderByDesc("sort_code"));
         filterChain.setSortCode(maxSortCodeFilterChain == null ? 1 : maxSortCodeFilterChain.getSortCode() + 1);
-        return filterChainService.save(filterChain) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.CREATE_FAIL);
+        return filterChainService.save(filterChain) ? successCallback() : ResultWrapper.fail(ResultCode.CREATE_FAIL);
     }
 
     @ApiOperation("编辑权限过滤链")
@@ -68,7 +71,7 @@ public class FilterChainController {
         }
         FilterChain filterChain = new FilterChain();
         BeanUtils.copyProperties(filterChainUpdate, filterChain);
-        return filterChainService.updateById(filterChain) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.UPDATE_FAIL);
+        return filterChainService.updateById(filterChain) ? successCallback() : ResultWrapper.fail(ResultCode.UPDATE_FAIL);
     }
 
     @ApiOperation("批量保存权限过滤链")
@@ -82,7 +85,7 @@ public class FilterChainController {
             BeanUtils.copyProperties(filterChainUpdate, filterChain);
             return filterChain;
         }).collect(Collectors.toList());
-        return filterChainService.saveOrUpdateBatch(filterChainList) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.SAVE_FAIL);
+        return filterChainService.saveOrUpdateBatch(filterChainList) ? successCallback() : ResultWrapper.fail(ResultCode.SAVE_FAIL);
     }
 
     @ApiOperation("根据ID删除权限过滤链")
@@ -91,7 +94,7 @@ public class FilterChainController {
         if (!ValidateUtils.idValid(id)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        return filterChainService.removeById(id) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
+        return filterChainService.removeById(id) ? successCallback() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
     }
 
     @ApiOperation("批量删除权限过滤链")
@@ -100,7 +103,15 @@ public class FilterChainController {
         if (CollectionUtils.isEmpty(ids)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        return filterChainService.removeByIds(ids) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
+        return filterChainService.removeByIds(ids) ? successCallback() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
+    }
+
+    /**
+     * 更新权限过滤信息之后重载Shiro鉴权过滤器
+     */
+    private Result successCallback() {
+        filterChainHelper.reloadFilterChains();
+        return ResultWrapper.success();
     }
 
     @ApiOperation("根据ID获取权限过滤链信息")
@@ -125,6 +136,9 @@ public class FilterChainController {
         if (MapUtils.isNotEmpty(query)) {
             query.forEach((key, value) -> {
                 //TODO 设置查询条件
+                if (StringUtils.equals(key, "orderByAsc")) {
+                    queryWrapper.orderByAsc(String.valueOf(value));
+                }
             });
         }
         List<FilterChainVO> filterChainVOList = filterChainService.list(queryWrapper).stream().map(filterChain -> {

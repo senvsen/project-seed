@@ -44,13 +44,14 @@ export default {
     {label: '概览', icon: 'dashboard', link: '/dashboard', custom: 'dashboard'},
     {label: '系统安全', icon: 'safety', key: 'auth', children: [
         {label: '用户管理', icon: 'user', link: '/user', pageType: 'manage', menuKey: 'auth'},
-        {label: '部门管理', icon: 'appstore-o', link: '/department', pageType: 'manage', menuKey: 'auth'},
+        {label: '部门管理', icon: 'appstore-o', link: '/department', menuKey: 'auth', custom: 'department'},
         {label: '角色管理', icon: 'idcard', link: '/role', pageType: 'manage', menuKey: 'auth'},
         {label: '权限管理', icon: 'profile', link: '/privilege', pageType: 'manage', menuKey: 'auth'},
-        {label: '鉴权规则', icon: 'filter', link: '/filter-chain', pageType: 'manage', menuKey: 'auth'},
+        {label: '鉴权规则', icon: 'filter', link: '/filter-chain', menuKey: 'auth', custom: 'filter-chain'},
       ]
     },
     {label: '系统监控', icon: 'line-chart', key: 'monitor', children: [
+        {label: 'Session管理', icon: 'link',link: '/session', menuKey: 'monitor', custom: 'session'},
         {label: 'Druid监控', icon: 'database',link: '/druid/index.html', pageType: 'iframe', menuKey: 'monitor'}
       ]
     },
@@ -64,11 +65,13 @@ export default {
   breadcrumb: {
     label: '主页',
     options: {
+      '/dashboard': ['概览'],
       '/user': ['系统安全', '用户管理'],
       '/department': ['系统安全', '部门管理'],
       '/role': ['系统安全', '角色管理'],
       '/privilege': ['系统安全', '权限管理'],
       '/filter-chain': ['系统安全', '鉴权规则'],
+      '/session': ['系统监控', 'Session管理'],
       '/code-gen': ['开发工具', '代码生成器'],
     }
   },
@@ -159,21 +162,17 @@ export default {
         {title: '更新人', dataIndex: 'updatedBy'},
       ]
     },
-    '/filter-chain': {
+    '/session': {
       tableColumns: [
-        {title: 'ID', width: '15%', dataIndex: 'id'},
-        {title: '目标URL', width: '30%', dataIndex: 'url'},
-        {title: '过滤器名称', width: '20%', dataIndex: 'filter'},
-        {title: '排序码', width: '15%', dataIndex: 'sortCode'},
-        {title: '操作', width: '20%', scopedSlots: {customRender: 'opt'}},
-      ],
-      expandedColumns: [
-        {title: '创建时间', dataIndex: 'createdAt', isDate: true},
-        {title: '创建人', dataIndex: 'createdBy'},
-        {title: '更新时间', dataIndex: 'updatedAt', isDate: true},
-        {title: '更新人', dataIndex: 'updatedBy'},
+        {title: 'SessionID', width: '20%', dataIndex: 'id'},
+        {title: '开始时间', width: '15%', scopedSlots: {customRender: 'startTimestamp'}},
+        {title: '停止时间', width: '15%', scopedSlots: {customRender: 'stopTimestamp'}},
+        {title: '最后活动时间', width: '15%', scopedSlots: {customRender: 'lastAccessTime'}},
+        {title: '状态', width: '10%', scopedSlots: {customRender: 'expired'}},
+        {title: 'Host', width: '15%', dataIndex: 'host'},
+        {title: '操作', width: '10%', scopedSlots: {customRender: 'opt'}},
       ]
-    },
+    }
   },
   operation: {
     editBtn: '编辑',
@@ -188,7 +187,6 @@ export default {
     '/department': '部门',
     '/role': '角色',
     '/privilege': '权限',
-    '/filter-chain': '规则',
   },
   modal: {
     createTitle: '创建',
@@ -200,5 +198,5 @@ export default {
     delete: '删除成功',
     batchDelete: '批量删除成功',
     save: '保存成功',
-  }
+  },
 }

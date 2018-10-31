@@ -8,16 +8,6 @@ html {
   background: no-repeat center 8rem;
 }
 
-.color-box {
-  border-radius: 2px;
-  box-shadow: 0 2px 3px 0 rgba(0,0,0,.1), inset 0 0 0 1px rgba(0,0,0,.1);
-  display: inline-block;
-  float: left;
-  margin-right: 8px;
-  height: 16px;
-  width: 16px;
-}
-
 .is-pulled-left {
   float: left !important;
 }
@@ -87,4 +77,13 @@ html {
 }
 .ml-3 {
   margin-left: 24px;
+}
+
+.page {
+  padding: 16px 16px 0;
+}
+.page-content {
+  padding: 24px;
+  background: #fff;
+  min-height: calc(100vh - 186px);
 }

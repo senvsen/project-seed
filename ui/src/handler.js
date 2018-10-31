@@ -29,11 +29,4 @@ export default {
     handleDelete: api.auth.deleteDepartment,
     handleBatchDelete: api.auth.batchDeleteDepartment,
   },
-  '/filter-chain': {
-    fetchData: api.sys.getFilterChainPage,
-    handleAdd: api.sys.addFilterChain,
-    handleEdit: api.sys.updateFilterChain,
-    handleDelete: api.sys.deleteFilterChain,
-    handleBatchDelete: api.sys.batchDeleteFilterChain,
-  }
 }

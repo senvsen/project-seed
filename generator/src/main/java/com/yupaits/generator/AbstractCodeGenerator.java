@@ -19,7 +19,6 @@ import lombok.Data;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +26,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.yupaits.generator.GeneratorConsts.*;
 
 /**
  * 代码生成器
@@ -37,78 +38,54 @@ import java.util.stream.Collectors;
 @Data
 public abstract class AbstractCodeGenerator {
 
-    //JDBC配置
-    private static final String DATABASE_NAME = "test";
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/" + DATABASE_NAME + "?useUnicode=true&useSSL=false&characterEncoding=utf8";
-    private static final String JDBC_USERNAME = "root";
-    private static final String JDBC_PASSWORD = "sql123";
-    private static final String JDBC_DRIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
-
-    //项目在硬盘的路径
-//    public static final String PROJECT_PATH = "D:" + File.separator + "Projects" + File.separator + "project-seed";
-    public static final String PROJECT_PATH = "E:" + File.separator + "Demo" + File.separator + "project-seed";
-    //Java文件路径
-    public static final String JAVA_PATH = "/src/main/java";
-    //资源文件路径
-    private static final String RESOURCES_PATH = "/src/main/resources";
-    //模板文件所在目录
-    private static final String TEMPLATE_FILE_PATH = PROJECT_PATH + "/generator" + RESOURCES_PATH + "/templates";
-    //Mapper xml文件路径
-    private static final String MAPPER_XML_PATH = RESOURCES_PATH + "/mapper/";
-    private static final String HTML_TEMPLATES_PATH = RESOURCES_PATH + "/templates/";
-
-    private static final String BASE_PACKAGE = "com.yupaits";
-    private static final String BASE_PACKAGE_PATH = "/com/yupaits/";
-    private static final String AUTHOR = "yupaits";
-
-    private static final String BASE_DTO_CLASS = "com.yupaits.commons.core.BaseDTO";
-    private static final String DELETED_FIELD_NAME = "deleted";
-    private static final String VERSION_FIELD_NAME = "version";
-
-    //控制台交互
-    private static final String REST_CONTROLLER_STYLE_TIP = "是否设置控制器为RESTful风格";
-    private static final String RELATED_TABLE_TIP = "是否为中间关联表";
-    private static final String DELETED_COLUMN_TIP = "是否存在逻辑删除deleted字段";
-    private static final String VERSION_COLUMN_TIP = "是否存在乐观锁version字段";
-    private static final String TRUE_VAL = "y";
-
-    private static final String RESULT_CLASS = "com.yupaits.commons.result.Result";
-    private static final String RESULT_WRAPPER_CLASS = "com.yupaits.commons.result.ResultWrapper";
-    private static final String MODEL_WRAPPER_CLASS = "com.yupaits.commons.result.ModelWrapper";
-    private static final String RESULT_CODE_CLASS = "com.yupaits.commons.result.ResultCode";
-    private static final String SERIALIZER_CLASS = "com.yupaits.commons.core.serializer.LongSerializer";
-    private static final String DESERIALIZER_CLASS = "com.yupaits.commons.core.serializer.LongDeserializer";
-    private static final String VALIDATE_UTILS_CLASS = "com.yupaits.commons.utils.ValidateUtils";
-    private static final String FOREIGN_ID_CLASS = "com.yupaits.commons.core.identity.ForeignId;";
-    private static final String RELATED_ID_CLASS = "com.yupaits.commons.core.identity.RelatedId;";
-
-    private static final String MYBATIS_PLUS_PACKAGE_PREFIX = "com.baomidou.mybatisplus";
-
     private AutoGenerator mpg = new AutoGenerator();
     private GlobalConfig globalConfig = new GlobalConfig();
     private PackageConfig packageConfig = new PackageConfig();
     private StrategyConfig strategy = new StrategyConfig();
 
+    private GeneratorConfig generatorConfig;
+
     /**
+     * 控制台交互构造代码生成器配置
      * @param moduleName      模块名称，为空时需要在控制台手动输入
      * @param outputDir       文件输出路径，为空时使用默认路径
      */
     public AbstractCodeGenerator(String moduleName, String outputDir) {
-        if (StringUtils.isEmpty(moduleName)) {
-            packageConfig.setModuleName(scanner("模块名"));
-        } else {
-            packageConfig.setModuleName(moduleName);
-        }
+        GeneratorConfig generatorConfig = new GeneratorConfig().setDbHost(DB_HOST)
+                .setDbUsername(JDBC_USERNAME)
+                .setDbPassword(JDBC_PASSWORD)
+                .setDatabase(DATABASE_NAME)
+                .setProjectPath(PROJECT_PATH)
+                .setDeveloper(AUTHOR)
+                .setModuleName(moduleName)
+                .setTableName(scanner("表名"))
+                .setRelatedTable(scannerBool(RELATED_TABLE_TIP))
+                .setRestful(scannerBool(REST_CONTROLLER_STYLE_TIP))
+                .setHasLogicDeleteField(scannerBool(DELETED_COLUMN_TIP))
+                .setHasVersionField(scannerBool(VERSION_COLUMN_TIP));
+        codeGenerator(generatorConfig, outputDir);
+    }
+
+    /**
+     * web网页交互构造代码生成器配置
+     */
+    public AbstractCodeGenerator(GeneratorConfig generatorConfig) {
+        codeGenerator(generatorConfig, null);
+    }
+
+    private void codeGenerator(GeneratorConfig generatorConfig, String outputDir) {
+        packageConfig.setModuleName(generatorConfig.getModuleName());
         if (StringUtils.isNotEmpty(outputDir)) {
             globalConfig.setOutputDir(outputDir);
         } else {
-            globalConfig.setOutputDir(PROJECT_PATH + "/server" + JAVA_PATH);
+            globalConfig.setOutputDir(generatorConfig.getProjectPath() + "/server" + JAVA_PATH);
         }
+        this.generatorConfig = generatorConfig;
     }
 
     private void init() {
         //全局配置
-        globalConfig.setAuthor(AUTHOR);
+        globalConfig.setAuthor(generatorConfig.getDeveloper());
         globalConfig.setFileOverride(true);
         globalConfig.setOpen(false);
         globalConfig.setBaseResultMap(true);
@@ -123,9 +100,9 @@ public abstract class AbstractCodeGenerator {
         //数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setDriverName(JDBC_DRIVER_CLASS_NAME);
-        dsc.setUrl(JDBC_URL);
-        dsc.setUsername(JDBC_USERNAME);
-        dsc.setPassword(JDBC_PASSWORD);
+        dsc.setUrl(String.format(JDBC_URL_PATTERN, generatorConfig.getDbHost(), generatorConfig.getDatabase()));
+        dsc.setUsername(generatorConfig.getDbUsername());
+        dsc.setPassword(generatorConfig.getDbPassword());
         mpg.setDataSource(dsc);
 
         //包配置
@@ -137,7 +114,7 @@ public abstract class AbstractCodeGenerator {
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);
         strategy.setControllerMappingHyphenStyle(true);
-        strategy.setInclude(scanner("表名"));
+        strategy.setInclude(generatorConfig.getTableName());
         strategy.setTableFillList(Lists.newArrayList(
                 new TableFill("created_at", FieldFill.INSERT),
                 new TableFill("created_by", FieldFill.INSERT),
@@ -145,13 +122,13 @@ public abstract class AbstractCodeGenerator {
                 new TableFill("updated_at", FieldFill.INSERT_UPDATE),
                 new TableFill("updated_by", FieldFill.INSERT_UPDATE)
         ));
-        if (scannerBool(DELETED_COLUMN_TIP)) {
+        if (generatorConfig.getHasLogicDeleteField()) {
             strategy.setLogicDeleteFieldName(DELETED_FIELD_NAME);
         }
-        if (scannerBool(VERSION_COLUMN_TIP)) {
+        if (generatorConfig.getHasVersionField()) {
             strategy.setVersionFieldName(VERSION_FIELD_NAME);
         }
-        strategy.setRestControllerStyle(scannerBool(REST_CONTROLLER_STYLE_TIP));
+        strategy.setRestControllerStyle(generatorConfig.isRestful());
         strategy.setTablePrefix(packageConfig.getModuleName() + "_");
         mpg.setStrategy(strategy);
 
@@ -205,7 +182,7 @@ public abstract class AbstractCodeGenerator {
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
-        if (!scannerBool(RELATED_TABLE_TIP)) {
+        if (!generatorConfig.isRelatedTable()) {
             //生成DTO Create类
             focList.add(new FileOutConfig("/templates/dto.create.java.ftl") {
                 @Override
@@ -302,7 +279,7 @@ public abstract class AbstractCodeGenerator {
      * @param tip 控制台输入提示
      * @return 读取到的内容
      */
-    public static String scanner(String tip) {
+    protected static String scanner(String tip) {
         Scanner scanner = new Scanner(System.in);
         StringBuilder help = new StringBuilder();
         help.append("请输入").append(tip).append("：");
@@ -321,7 +298,7 @@ public abstract class AbstractCodeGenerator {
      * @param tip 控制台提示输入
      * @return 读取到的值
      */
-    protected boolean scannerBool(String tip) {
+    private boolean scannerBool(String tip) {
         Scanner scanner = new Scanner(System.in);
         StringBuilder help = new StringBuilder();
         help.append("请选择").append(tip).append("(是: y, 否: 其他输入)?");
@@ -336,7 +313,7 @@ public abstract class AbstractCodeGenerator {
     /**
      * 生成
      */
-    protected void generate() {
+    public void generate() {
         init();
         mpg.execute();
     }

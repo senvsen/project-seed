@@ -6,7 +6,8 @@ import api from '../../api'
 import utils from '../../utils'
 import messages from '../../messages'
 import handler from '../../handler'
-import page from '../../components/page'
+import page from '../../page'
+import style from '../../styles/style.config'
 import Antd from 'ant-design-vue'
 
 import 'ant-design-vue/dist/antd.min.css'
@@ -21,6 +22,7 @@ Vue.prototype.$messages = messages;
 Vue.prototype.$utils = utils;
 Vue.prototype.$handler = handler;
 Vue.prototype.$page = page;
+Vue.prototype.$style = style;
 
 new Vue({
   router,

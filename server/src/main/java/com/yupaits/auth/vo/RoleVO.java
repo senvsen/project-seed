@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author yupaits
- * @date 2018-10-30
+ * @date 2018-10-31
  */
 @Data
 @ApiModel(value = "RoleVO", description = "RoleVO对象")

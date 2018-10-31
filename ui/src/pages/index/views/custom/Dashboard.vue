@@ -1,14 +1,17 @@
 <template>
-  <div>
-    仪表盘
+  <div class="page">
+    <breadcrumb/>
+    <div class="page-content">
+
+    </div>
   </div>
 </template>
 
 <script>
-  import ManagePage from "../../../../components/ManagePage";
+  import Breadcrumb from "../../../../components/Breadcrumb";
   export default {
     name: "Dashboard",
-    components: {ManagePage}
+    components: {Breadcrumb}
   }
 </script>
 

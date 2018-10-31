@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author yupaits
- * @date 2018-10-30
+ * @date 2018-10-31
  */
 @Data
 @ApiModel(value = "UserVO", description = "UserVO对象")
@@ -30,6 +30,9 @@ public class UserVO implements Serializable {
 
     @ApiModelProperty(value = "用户名")
     private String username;
+
+    @ApiModelProperty(value = "密码")
+    private String password;
 
     @ApiModelProperty(value = "姓名")
     private String name;

@@ -1,6 +1,6 @@
-import UserForm from './form/UserForm'
-import UserOpt from './opt/UserOpt'
-import UserSearch from './search/UserSearch'
+import UserForm from './components/form/UserForm'
+import UserOpt from './components/opt/UserOpt'
+import UserSearch from './components/search/UserSearch'
 
 export default {
   '/user': {
@@ -23,9 +23,4 @@ export default {
     optComponent: UserOpt,
     searchComponent: UserSearch
   },
-  '/filter-chain': {
-    formComponent: UserForm,
-    optComponent: UserOpt,
-    searchComponent: UserSearch
-  }
 }

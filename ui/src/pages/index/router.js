@@ -5,10 +5,16 @@ import messages from '../../messages'
 
 import Page from './views/Page'
 import Dashboard from './views/custom/Dashboard'
+import Department from './views/custom/Department'
+import FilterChain from './views/custom/FilterChain'
+import Session from './views/custom/Session'
 import CodeGen from './views/custom/CodeGen'
 
 const customPage = {
   'dashboard': Dashboard,
+  'department': Department,
+  'filter-chain': FilterChain,
+  'session': Session,
   'code-gen': CodeGen
 };
 

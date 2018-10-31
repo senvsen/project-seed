@@ -29,4 +29,13 @@ export default {
     const descsParam = descs.join('&descs=');
     return request.post(`${prefix}/filter-chain/page?page=${page}&size=${size}&descs=${descsParam}&ascs=${ascsParam}`, query);
   },
+  getSessionPage(page, size) {
+    return request.get(`${prefix}/session/page?page=${page}&size=${size}`);
+  },
+  invalidSession(sessionId) {
+    return request.delete(`${prefix}/session/${sessionId}`);
+  },
+  generateCode(generatorConfig) {
+    return request.post(`${prefix}/code-gen`, generatorConfig);
+  }
 }

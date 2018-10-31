@@ -1,7 +1,7 @@
 <template>
-  <div class="manage-page">
+  <div class="page">
     <breadcrumb/>
-    <div class="manage-content">
+    <div class="page-content">
       <a-row class="table-toolbar">
         <div class="is-pulled-right">
           <a-button icon="reload" class="mr-1" @click="refreshTable">
@@ -33,7 +33,7 @@
                   {{column.title}}：
                 </a-col>
                 <a-col :span="18">
-                  {{record[column.dataIndex]}}
+                  {{column.isDate ? $utils.date(record[column.dataIndex]).format('YYYY-MM-DD HH:mm:ss') : record[column.dataIndex]}}
                 </a-col>
               </a-row>
             </a-col>
@@ -102,8 +102,7 @@
     components: {Breadcrumb},
     data() {
       return {
-        data: [{id: '123', name: '张三'}],
-        advancedSearch: false,
+        data: [{id: 111, username: 'HelloMrZhang'}],
         pager: {
           current: 1,
           total: 1,
@@ -179,21 +178,27 @@
       handleAddRecord() {
         this.$handler[this.pageKey].handleAdd(this.$store.getters.record).then(() => {
           this.$message.success(this.$messages.successResult.create);
+          this.modal.visible = false;
+          this.fetchData();
         });
       },
       handleEditRecord() {
         this.$handler[this.pageKey].handleEdit(this.$store.getters.record.id, this.$store.getters.record).then(() => {
           this.$message.success(this.$messages.successResult.edit);
+          this.modal.visible = false;
+          this.fetchData();
         });
       },
       handleDeleteRecord(record) {
         this.$handler[this.pageKey].handleDelete(record.id).then(() => {
           this.$message.success(this.$messages.successResult.delete);
+          this.fetchData();
         });
       },
       handleBatchDelete() {
         this.$handler[this.pageKey].handleBatchDelete(this.selectedKeys).then(() => {
           this.$message.success(this.$messages.successResult.batchDelete);
+          this.fetchData();
         });
       },
       refreshTable() {
@@ -216,14 +221,6 @@
 </script>
 
 <style scoped>
-  .manage-page {
-    padding: 16px 16px 0;
-  }
-  .manage-content {
-    padding: 24px;
-    background: #fff;
-    min-height: calc(100vh - 186px);
-  }
   .table-toolbar {
     line-height: 3rem;
   }

@@ -29,7 +29,7 @@
         searchComponent: undefined,
       }
     },
-    created() {
+    mounted() {
       this.setComponents();
     },
     computed: {
@@ -44,9 +44,12 @@
     },
     methods: {
       setComponents() {
-        this.formComponent = this.$page[this.pageKey].formComponent;
-        this.optComponent = this.$page[this.pageKey].optComponent;
-        this.searchComponent = this.$page[this.pageKey].searchComponent;
+        const components = this.$page[this.pageKey];
+        if (components) {
+          this.formComponent = components.formComponent;
+          this.optComponent = components.optComponent;
+          this.searchComponent = components.searchComponent;
+        }
       }
     }
   }
