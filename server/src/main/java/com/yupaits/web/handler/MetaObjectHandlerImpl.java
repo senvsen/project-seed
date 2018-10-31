@@ -27,7 +27,7 @@ public class MetaObjectHandlerImpl implements MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        metaObject.setValue("updatedAt", LocalDateTime.now());
-        metaObject.setValue("updatedBy", ((UserVO) SecurityUtils.getSubject().getPrincipal()).getId());
+        this.setFieldValByName("updatedAt", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("updatedBy", ((UserVO) SecurityUtils.getSubject().getPrincipal()).getId(), metaObject);
     }
 }

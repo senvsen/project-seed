@@ -47,7 +47,7 @@
               <div><b>port：</b>当请求的URL端口不是8081时，跳转到schemal://serverName:8081?queryString，
                 其中schmal是协议http或https等，serverName是你访问的Host，8081是Port端口，queryString是你访问的URL里的?后面的参数</div>
               <div><b>rest：</b>根据请求的方法，相当于/admins/user/**=perms[user:method]，其中method为post，get，delete等</div>
-              <div><b>roles：</b>参数可写多个，多个时必须加上引号,且参数之间用逗号分割，如/admins/user/**=roles["admin,guest"]，
+              <div><b>roles：</b>参数可写多个，多个时必须加上引号，且参数之间用逗号分割，如/admins/user/**=roles["admin,guest"]，
                 当有多个参数时必须每个参数都通过才算通过，相当于hasAllRoles()方法</div>
               <div><b>ssl：</b>无参,表示安全的URL请求，协议为https</div>
               <div><b>user：</b>无参,表示必须存在用户，当登入操作时不做检查</div>
