@@ -107,4 +107,16 @@ export default {
     const descsParam = descs.join('&descs=');
     return request.post(`${prefix}/department/page?page=${page}&size=${size}&descs=${descsParam}&ascs=${ascsParam}`, query);
   },
+  getUserRoleList(foreignId) {
+    return request.post(`${prefix}/user-role/list`, foreignId);
+  },
+  batchSaveUserRoles(relatedId) {
+    return request.post(`${prefix}/user-role/batch-save`, relatedId);
+  },
+  getRolePrivilegeList(foreignId) {
+    return request.post(`${prefix}/role-privilege/list`, foreignId);
+  },
+  batchSaveRolePrivileges(relatedId) {
+    return request.post(`${prefix}/role-privilege/batch-save`, relatedId);
+  }
 }

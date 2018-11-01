@@ -8,19 +8,4 @@ export default {
     optComponent: UserOpt,
     searchComponent: UserSearch
   },
-  '/role': {
-    formComponent: UserForm,
-    optComponent: UserOpt,
-    searchComponent: UserSearch
-  },
-  '/privilege': {
-    formComponent: UserForm,
-    optComponent: UserOpt,
-    searchComponent: UserSearch
-  },
-  '/department': {
-    formComponent: UserForm,
-    optComponent: UserOpt,
-    searchComponent: UserSearch
-  },
 }

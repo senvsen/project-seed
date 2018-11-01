@@ -44,9 +44,7 @@ export default {
     {label: '概览', icon: 'dashboard', link: '/dashboard', custom: 'dashboard'},
     {label: '系统安全', icon: 'safety', key: 'auth', children: [
         {label: '用户管理', icon: 'user', link: '/user', pageType: 'manage', menuKey: 'auth'},
-        {label: '部门管理', icon: 'appstore-o', link: '/department', menuKey: 'auth', custom: 'department'},
-        {label: '角色管理', icon: 'idcard', link: '/role', pageType: 'manage', menuKey: 'auth'},
-        {label: '权限管理', icon: 'profile', link: '/privilege', pageType: 'manage', menuKey: 'auth'},
+        {label: 'RBAC管理', icon: 'appstore-o', link: '/rbac', menuKey: 'auth', custom: 'rbac'},
         {label: '鉴权规则', icon: 'filter', link: '/filter-chain', menuKey: 'auth', custom: 'filter-chain'},
       ]
     },
@@ -67,9 +65,7 @@ export default {
     options: {
       '/dashboard': ['概览'],
       '/user': ['系统安全', '用户管理'],
-      '/department': ['系统安全', '部门管理'],
-      '/role': ['系统安全', '角色管理'],
-      '/privilege': ['系统安全', '权限管理'],
+      '/rbac': ['系统安全', 'RBAC管理'],
       '/filter-chain': ['系统安全', '鉴权规则'],
       '/session': ['系统监控', 'Session管理'],
       '/code-gen': ['开发工具', '代码生成器'],
@@ -115,53 +111,6 @@ export default {
         {title: '更新人', dataIndex: 'updatedBy'},
       ]
     },
-    '/department': {
-      tableColumns: [
-        {title: 'ID', width: '15%', dataIndex: 'id'},
-        {title: '部门Key', width: '20%', dataIndex: 'departmentKey'},
-        {title: '部门名称', width: '25%', dataIndex: 'name'},
-        {title: '父级部门ID', width: '15%', dataIndex: 'parentId'},
-        {title: '操作', width: '20%', scopedSlots: {customRender: 'opt'}},
-      ],
-      expandedColumns: [
-        {title: '创建时间', dataIndex: 'createdAt', isDate: true},
-        {title: '创建人', dataIndex: 'createdBy'},
-        {title: '更新时间', dataIndex: 'updatedAt', isDate: true},
-        {title: '更新人', dataIndex: 'updatedBy'},
-      ]
-    },
-    '/role': {
-      tableColumns: [
-        {title: 'ID', width: '15%', dataIndex: 'id'},
-        {title: '角色Key', width: '15%', dataIndex: 'roleKey'},
-        {title: '角色名', width: '15%', dataIndex: 'name'},
-        {title: '角色描述', width: '20%', dataIndex: 'description'},
-        {title: '所属部门ID', width: '15%', dataIndex: 'departmentId'},
-        {title: '操作', width: '20%', scopedSlots: {customRender: 'opt'}},
-      ],
-      expandedColumns: [
-        {title: '创建时间', dataIndex: 'createdAt', isDate: true},
-        {title: '创建人', dataIndex: 'createdBy'},
-        {title: '更新时间', dataIndex: 'updatedAt', isDate: true},
-        {title: '更新人', dataIndex: 'updatedBy'},
-      ]
-    },
-    '/privilege': {
-      tableColumns: [
-        {title: 'ID', width: '15%', dataIndex: 'id'},
-        {title: '权限Key', width: '15%', dataIndex: 'privilegeKey'},
-        {title: '权限名', width: '20%', dataIndex: 'name'},
-        {title: '权限类型', width: '10%', dataIndex: 'privilegeType'},
-        {title: '权限描述', width: '20%', dataIndex: 'description'},
-        {title: '操作', width: '20%', scopedSlots: {customRender: 'opt'}},
-      ],
-      expandedColumns: [
-        {title: '创建时间', dataIndex: 'createdAt', isDate: true},
-        {title: '创建人', dataIndex: 'createdBy'},
-        {title: '更新时间', dataIndex: 'updatedAt', isDate: true},
-        {title: '更新人', dataIndex: 'updatedBy'},
-      ]
-    },
     '/session': {
       tableColumns: [
         {title: 'SessionID', width: '20%', dataIndex: 'id'},
@@ -184,9 +133,6 @@ export default {
   },
   pageLabel: {
     '/user': '用户',
-    '/department': '部门',
-    '/role': '角色',
-    '/privilege': '权限',
   },
   modal: {
     createTitle: '创建',

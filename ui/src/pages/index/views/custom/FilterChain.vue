@@ -1,9 +1,9 @@
 <template>
   <div class="page">
     <breadcrumb/>
-    <div class="page-content">
-      <a-row :gutter="16">
-        <a-col :span="18" :offset="3">
+    <a-row :gutter="16">
+      <a-col :span="18" :offset="3">
+        <div class="page-content">
           <a-row class="toolbar">
             <a-button icon="plus" class="mr-1" @click="addFilterChain">创建</a-button>
             <a-button icon="reload" @click="handleRefresh">刷新</a-button>
@@ -52,9 +52,9 @@
               </div>
             </div>
           </a-spin>
-        </a-col>
-      </a-row>
-    </div>
+        </div>
+      </a-col>
+    </a-row>
 
     <a-modal title="帮助信息"
              :visible="infoVisible"
