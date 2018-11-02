@@ -100,7 +100,7 @@ export default {
         {title: '姓名', width: '15%', dataIndex: 'name'},
         {title: '手机号码', width: '10%', dataIndex: 'phone'},
         {title: 'Email', width: '15%', dataIndex: 'email'},
-        {title: '性别', width: '10%', dataIndex: 'gender'},
+        {title: '性别', width: '10%', scopedSlots: {customRender: 'gender'}},
         {title: '操作', width: '20%', scopedSlots: {customRender: 'opt'}},
       ],
       expandedColumns: [

@@ -12,23 +12,21 @@ public enum Gender {
     /**
      * 男
      */
-    MALE(1, "男"),
+    MALE(1),
     /**
      * 女
      */
-    FEMALE(0, "女"),
+    FEMALE(0),
     /**
      * 保密
      */
-    SECRET(2, "保密");
+    SECRET(2);
 
     @EnumValue
     private int code;
-    private String label;
 
-    Gender(int value, String label) {
-        this.code = value;
-        this.label = label;
+    Gender(int code) {
+        this.code = code;
     }
 
     @JsonCreator
@@ -42,7 +40,7 @@ public enum Gender {
     }
 
     @JsonValue
-    public String getLabel() {
-        return this.label;
+    public int getCode() {
+        return this.code;
     }
 }

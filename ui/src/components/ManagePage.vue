@@ -39,6 +39,9 @@
             </a-col>
           </a-row>
         </template>
+        <template slot="gender" slot-scope="record">
+          {{$messages.enums.gender[record.gender]}}
+        </template>
         <template slot="createdAt" slot-scope="record">
           {{$utils.date(record.createdAt).format('YYYY-MM-DD HH:mm:ss')}}
         </template>

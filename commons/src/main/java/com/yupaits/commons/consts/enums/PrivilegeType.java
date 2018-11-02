@@ -12,23 +12,21 @@ public enum PrivilegeType {
     /**
      * 菜单
      */
-    MENU(1, "菜单"),
+    MENU(1),
     /**
      * 按钮
      */
-    BUTTON(2, "按钮"),
+    BUTTON(2),
     /**
      * API
      */
-    API(3, "API");
+    API(3);
 
     @EnumValue
     private int code;
-    private String label;
 
-    PrivilegeType(int value, String label) {
-        this.code = value;
-        this.label = label;
+    PrivilegeType(int code) {
+        this.code = code;
     }
 
     @JsonCreator
@@ -42,7 +40,7 @@ public enum PrivilegeType {
     }
 
     @JsonValue
-    public String getLabel() {
-        return this.label;
+    public int getCode() {
+        return this.code;
     }
 }

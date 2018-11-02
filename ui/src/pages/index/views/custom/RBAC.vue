@@ -88,7 +88,7 @@
                     <a-icon type="solution" class="ml-1 mr-1"/> {{privilege.privilegeKey}}
                   </a-col>
                   <a-col :span="12">
-                    {{privilege.name}}
+                    <b>{{$messages.enums.privilegeType[privilege.privilegeType]}}</b> {{privilege.name}}
                   </a-col>
                 </a-row>
               </div>
