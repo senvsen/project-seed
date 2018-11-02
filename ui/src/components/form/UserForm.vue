@@ -14,8 +14,8 @@
         <a-input v-model="user.email" placeholder="请输入Email"></a-input>
       </a-form-item>
       <a-form-item label="性别" :labelCol="$style.modalForm.label" :wrapperCol="$style.modalForm.wrapper">
-        <a-select v-model="user.gender" placeholder="请选择性别">
-          <a-select-option v-for="(label, code) in $messages.enums.gender" :key="code">{{label}}</a-select-option>
+        <a-select :value="$messages.enums.gender[user.gender]" @change="handleGenderChange" placeholder="请选择性别">
+          <a-select-option v-for="(label, code) in $messages.enums.gender" :key="code" :value="code">{{label}}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="生日" :labelCol="$style.modalForm.label" :wrapperCol="$style.modalForm.wrapper">
@@ -43,6 +43,9 @@
       }
     },
     methods: {
+      handleGenderChange(value) {
+        this.$set(this.user, 'gender', value);
+      },
       handleBirthdayChange(date, dateString) {
         this.$set(this.user, 'birthday', dateString);
       },
