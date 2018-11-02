@@ -14,6 +14,7 @@ import org.apache.commons.collections4.MapUtils;
 <#else>
 import ${cfg.class.foreignId};
 import ${cfg.class.relatedId};
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 </#if>
 <#if restControllerStyle>
 import ${cfg.class.result};
@@ -344,9 +345,9 @@ public class ${table.controllerName} {
     </#if>
     @PostMapping("/list")
     <#if restControllerStyle>
-    public Result get${entity}List(@RequestBody ForeignId foreignId) {
+    public Result get${entity}List(@RequestBody ForeignId<Long> foreignId) {
     <#else>
-    public String get${entity}List(@RequestBody ForeignId foreignId, Model model) {
+    public String get${entity}List(@RequestBody ForeignId<Long> foreignId, Model model) {
     </#if>
         if (!foreignId.isValid(${entity}.class)) {
             <#if restControllerStyle>
@@ -358,7 +359,7 @@ public class ${table.controllerName} {
         }
         List<${cfg.className.vo}> ${cfg.obj.vo}List = ${cfg.obj.service}.list(new QueryWrapper<${entity}>()
                 .eq("deleted", false)
-                .eq(foreignId.getFieldName(), foreignId.getValue()))
+                .eq(StringUtils.camelToUnderline(foreignId.getFieldName()), foreignId.getValue()))
                 .stream().map(${cfg.obj.entity} -> {
                     ${cfg.className.vo} ${cfg.obj.vo} = new ${cfg.className.vo}();
                     BeanUtils.copyProperties(${cfg.obj.entity}, ${cfg.obj.vo});
@@ -377,9 +378,9 @@ public class ${table.controllerName} {
     </#if>
     @PostMapping("/batch-save")
     <#if restControllerStyle>
-    public Result batchSave(@RequestBody RelatedId relatedId) {
+    public Result batchSave(@RequestBody RelatedId<Long> relatedId) {
     <#else>
-    public String batchSave(@RequestBody RelatedId relatedId, Model model) {
+    public String batchSave(@RequestBody RelatedId<Long> relatedId, Model model) {
     </#if>
         if (!relatedId.isValid(${entity}.class)) {
             <#if restControllerStyle>
@@ -391,7 +392,7 @@ public class ${table.controllerName} {
         }
         if (CollectionUtils.isEmpty(relatedId.getSecondIds().getValues())) {
             ${cfg.obj.service}.remove(new QueryWrapper<${entity}>()
-                    .eq(relatedId.getFirstId().getFieldName(), relatedId.getFirstId().getValue()));
+                    .eq(StringUtils.camelToUnderline(relatedId.getFirstId().getFieldName()), relatedId.getFirstId().getValue()));
             <#if restControllerStyle>
             return ResultWrapper.success();
             <#else>

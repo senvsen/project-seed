@@ -16,6 +16,7 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -122,6 +123,9 @@ public class DepartmentController {
         if (MapUtils.isNotEmpty(query)) {
             query.forEach((key, value) -> {
                 //TODO 设置查询条件
+                if (StringUtils.equals(key, "parentId")) {
+                    queryWrapper.eq("parent_id", value);
+                }
             });
         }
         List<DepartmentVO> departmentVOList = departmentService.list(queryWrapper).stream().map(department -> {

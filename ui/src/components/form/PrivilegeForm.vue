@@ -8,9 +8,7 @@
     </a-form-item>
     <a-form-item label="权限类型" :labelCol="$style.modalForm.label" :wrapperCol="$style.modalForm.wrapper" required>
       <a-select v-model="privilege.privilegeType" placeholder="请选择权限类型">
-        <a-select-option value="menu">菜单</a-select-option>
-        <a-select-option value="button">按钮</a-select-option>
-        <a-select-option value="api">API</a-select-option>
+        <a-select-option v-for="(label, code) in $messages.enums.privilegeType" :key="code" :value="code">{{label}}</a-select-option>
       </a-select>
     </a-form-item>
     <a-form-item label="权限描述" :labelCol="$style.modalForm.label" :wrapperCol="$style.modalForm.wrapper" required>

@@ -1,5 +1,6 @@
 package com.yupaits.auth.dto;
 
+import com.yupaits.commons.consts.enums.PrivilegeType;
 import com.yupaits.commons.core.BaseDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,7 +23,7 @@ public class PrivilegeCreate extends BaseDTO {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "权限类型")
-    private Integer privilegeType;
+    private PrivilegeType privilegeType;
 
     @ApiModelProperty(value = "权限Key")
     private String privilegeKey;

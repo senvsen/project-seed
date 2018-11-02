@@ -145,4 +145,16 @@ export default {
     batchDelete: '批量删除成功',
     save: '保存成功',
   },
+  enums: {
+    gender: {
+      1: '男',
+      0: '女',
+      2: '保密'
+    },
+    privilegeType: {
+      1: '菜单',
+      2: '按钮',
+      3: 'API'
+    }
+  }
 }

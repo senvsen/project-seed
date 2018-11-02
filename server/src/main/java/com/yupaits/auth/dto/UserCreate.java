@@ -1,6 +1,8 @@
 package com.yupaits.auth.dto;
 
 import java.time.LocalDate;
+
+import com.yupaits.commons.consts.enums.Gender;
 import com.yupaits.commons.core.BaseDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -38,7 +40,7 @@ public class UserCreate extends BaseDTO {
     private String email;
 
     @ApiModelProperty(value = "性别")
-    private Integer gender;
+    private Gender gender;
 
     @ApiModelProperty(value = "生日")
     private LocalDate birthday;

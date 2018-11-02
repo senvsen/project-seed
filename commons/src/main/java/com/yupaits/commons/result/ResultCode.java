@@ -15,7 +15,7 @@ public enum ResultCode {
     PARAMS_ERROR(11001, "参数校验失败"),
     DATA_NOT_FOUND(11002, "查找的数据不存在或已被删除"),
     DATA_CANNOT_DELETE(11003, "数据无法删除"),
-    DATA_CONFLICT(11004, "意外的数据冲突"),
+    DATA_CONFLICT(11004, "不允许的数据重复"),
     CREATE_FAIL(20001, "创建记录失败"),
     UPDATE_FAIL(20002, "更新记录失败"),
     DELETE_FAIL(20003, "删除记录失败"),

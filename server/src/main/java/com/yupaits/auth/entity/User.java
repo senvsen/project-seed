@@ -2,6 +2,7 @@ package com.yupaits.auth.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.yupaits.commons.consts.enums.Gender;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -60,7 +61,7 @@ public class User extends Model<User> {
     /**
      * 性别
      */
-    private Integer gender;
+    private Gender gender;
 
     /**
      * 生日

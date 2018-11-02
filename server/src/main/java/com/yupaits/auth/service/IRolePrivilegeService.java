@@ -1,10 +1,8 @@
 package com.yupaits.auth.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.yupaits.auth.entity.RolePrivilege;
-import com.yupaits.commons.core.identity.RelatedId;
-
-;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.yupaits.commons.core.identity.RelatedId;;
 
 /**
  * <p>
@@ -12,7 +10,7 @@ import com.yupaits.commons.core.identity.RelatedId;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-31
+ * @since 2018-11-02
  */
 public interface IRolePrivilegeService extends IService<RolePrivilege> {
 
@@ -21,5 +19,5 @@ public interface IRolePrivilegeService extends IService<RolePrivilege> {
      * @param relatedId 关联关系
      * @return 保存结果
      */
-    boolean batchSave(RelatedId relatedId);
+    boolean batchSave(RelatedId<Long> relatedId);
 }

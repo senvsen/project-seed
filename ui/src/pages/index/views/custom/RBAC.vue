@@ -22,8 +22,7 @@
             <div class="container">
               <department :departments="departments"
                           :selected-department="selectedDepartment"
-                          :loading-id="loadingId"
-                          @toggleSelect="dep => toggleSelectDepartment(dep)"/>
+                          @toggleSelect="(dep, index) => toggleSelectDepartment(dep, index)"/>
             </div>
           </a-spin>
         </div>
@@ -45,10 +44,10 @@
           </a-row>
           <a-spin :spinning="roleLoading">
             <div class="container">
-              <div v-for="role in roles" :key="role.id" class="item-box mb-1"
+              <div v-for="(role, index) in roles" :key="role.id" class="item-box mb-1"
                    :title="role.description"
                    :class="{'is-active': selectedRole.id === role.id}"
-                   @click="toggleSelectRole(role)">
+                   @click="toggleSelectRole(role, index)">
                 <a-row>
                   <a-col :span="10">
                     <a-icon type="user" class="mr-1"/> {{role.roleKey}}
@@ -78,10 +77,10 @@
           </a-row>
           <a-spin :spinning="privilegeLoading">
             <div class="container">
-              <div v-for="privilege in privileges" :key="privilege.id" class="item-box mb-1"
+              <div v-for="(privilege, index) in privileges" :key="privilege.id" class="item-box mb-1"
                    :title="privilege.description"
                    :class="{'is-active': selectedPrivilege.id === privilege.id}"
-                   @click="toggleSelectPrivilege(privilege)">
+                   @click="toggleSelectPrivilege(privilege, index)">
                 <a-row>
                   <a-col :span="12">
                     <a-checkbox :checked="privilegeChecked(privilege.id)" v-if="selectedRole.id"
@@ -136,27 +135,32 @@
           formComponent: undefined,
           ok: () => {}
         },
-        loadingId: ''
+        selectedIndex: {
+          department: -1,
+          role: -1,
+          privilege: -1
+        }
       }
     },
-    created() {
+    mounted() {
       this.fetchData();
     },
     methods: {
       fetchData() {
-        this.fetchDepartments(0, this.departments);
+        this.fetchDepartments('0');
         this.fetchPrivileges();
       },
-      fetchDepartments(parentId, departments) {
+      fetchDepartments(parentId, department) {
         this.departmentLoading = true;
-        this.loadingId = parentId || '';
         this.$api.auth.getDepartmentList({parentId: parentId}).then(res => {
-          departments = res.data;
+          if (parentId === '0') {
+            this.departments = res.data;
+          } else {
+            this.$set(department, 'subDepartments', res.data);
+          }
           this.departmentLoading = false;
-          this.loadingId = '';
         }).catch(() => {
           this.departmentLoading = false;
-          this.loadingId = '';
         });
       },
       fetchRoles() {
@@ -243,69 +247,92 @@
       handleAddDepartment() {
         this.$api.auth.addDepartment(this.$store.getters.record).then(() => {
           this.$message.success(this.$messages.successResult.create);
+          this.modal.visible = false;
           if (this.$store.getters.record.parentId === 0) {
-            this.fetchDepartments(0, this.departments);
+            this.fetchDepartments('0');
           } else {
-            this.fetchDepartments(this.selectedDepartment.id, this.selectedDepartment.subDepartments);
+            this.fetchDepartments(this.selectedDepartment.id, this.selectedDepartment);
           }
         });
       },
       handleAddRole() {
         this.$api.auth.addRole(this.$store.getters.record).then(() => {
           this.$message.success(this.$messages.successResult.create);
+          this.modal.visible = false;
           this.fetchRoles();
         })
       },
       handleAddPrivilege() {
         this.$api.auth.addPrivilege(this.$store.getters.record).then(() => {
           this.$message.success(this.$messages.successResult.create);
+          this.modal.visible = false;
           this.fetchPrivileges();
         });
       },
       handleEditDepartment() {
-        this.$api.auth.updateDepartment(this.$store.getters.record.id, this.$store.getters.record).then(() => {
+        const department = this.$store.getters.record;
+        this.$api.auth.updateDepartment(department.id, department).then(() => {
           this.$message.success(this.$messages.successResult.edit);
-          this.selectedDepartment = this.$store.getters.record;
+          this.selectedDepartment = department;
+          if (department.parentId === '0') {
+            this.$set(this.departments, this.selectedIndex.department, department);
+          } else {
+            const parentDepartment = this.getDepartmentById(this.departments, department.parentId);
+            this.$set(parentDepartment.subDepartments, this.selectedIndex.department, department);
+          }
+          this.modal.visible = false;
         });
       },
       handleEditRole() {
-        this.$api.auth.updateRole(this.$store.getters.record.id, this.$store.getters.record).then(() => {
+        const role = this.$store.getters.record;
+        this.$api.auth.updateRole(role.id, role).then(() => {
           this.$message.success(this.$messages.successResult.edit);
-          this.fetchRoles();
+          this.selectedRole = role;
+          this.$set(this.roles, this.selectedIndex.role, role);
+          this.modal.visible = false;
         });
       },
       handleEditPrivilege() {
-        this.$api.auth.updatePrivilege(this.$store.getters.record.id, this.$store.getters.record).then(() => {
+        const privilege = this.$store.getters.record;
+        this.$api.auth.updatePrivilege(privilege.id, privilege).then(() => {
           this.$message.success(this.$messages.successResult.edit);
-          this.fetchPrivileges();
+          this.selectedPrivilege = privilege;
+          this.$set(this.privileges, this.selectedIndex.privilege, privilege);
+          this.modal.visible = false;
         });
       },
-      toggleSelectDepartment(department) {
+      toggleSelectDepartment(department, index) {
         if (department.id === this.selectedDepartment.id) {
           this.selectedDepartment = {};
           this.roles = [];
-          this.selectedRole = {};
-          this.checkedPrivilegeIds = [];
+          this.selectedIndex.department = -1;
         } else {
           this.selectedDepartment = department;
           this.fetchRoles();
-          this.fetchDepartments(department.id, department.subDepartments);
+          this.fetchDepartments(department.id, department);
+          this.selectedIndex.department = index;
         }
+        this.selectedRole = {};
+        this.checkedPrivilegeIds = [];
       },
-      toggleSelectRole(role) {
+      toggleSelectRole(role, index) {
         if (role.id === this.selectedRole.id) {
           this.selectedRole = {};
           this.checkedPrivilegeIds = [];
+          this.selectedIndex.role = -1;
         } else {
-          this.fetchRolePrivileges();
           this.selectedRole = role;
+          this.fetchRolePrivileges();
+          this.selectedIndex.role = index;
         }
       },
-      toggleSelectPrivilege(privilege) {
+      toggleSelectPrivilege(privilege, index) {
         if (privilege.id === this.selectedPrivilege.id) {
           this.selectedPrivilege = {};
+          this.selectedIndex.privilege = -1;
         } else {
           this.selectedPrivilege = privilege;
+          this.selectedIndex.privilege = index;
         }
       },
       saveRolePrivileges() {
@@ -330,7 +357,7 @@
         this.$api.auth.deleteDepartment(this.selectedDepartment.id).then(() => {
           this.$message.success(this.$messages.successResult.delete);
           const parentDepartment = this.getDepartmentById(this.departments, this.selectedDepartment.parentId);
-          this.fetchDepartments(this.selectedDepartment.parentId, parentDepartment.subDepartments);
+          this.fetchDepartments(this.selectedDepartment.parentId, parentDepartment);
           this.selectedDepartment = {};
           this.roles = [];
           this.selectedRole = {};
@@ -352,7 +379,7 @@
             this.checkedPrivilegeIds.splice(this.checkedPrivilegeIds.indexOf(this.selectedPrivilege.id), 1);
           }
           this.selectedPrivilege = {};
-          this.fetchRolePrivileges();
+          this.fetchPrivileges();
         });
       },
       getDepartmentById(departments, id) {
@@ -378,7 +405,8 @@
   }
   .container {
     height: calc(100vh - 292px);
-    overflow: auto;
+    width: 100%;
+    overflow-y: auto;
   }
   .item-box {
     padding: 8px;

@@ -56,7 +56,7 @@ export default {
     return request.post(`${prefix}/role/page?page=${page}&size=${size}&descs=${descsParam}&ascs=${ascsParam}`, query);
   },
   addPrivilege(privilegeCreate) {
-    return request.post(`${prefix}/user`, privilegeCreate);
+    return request.post(`${prefix}/privilege`, privilegeCreate);
   },
   updatePrivilege(id, privilegeUpdate) {
     return request.put(`${prefix}/privilege/${id}`, privilegeUpdate);

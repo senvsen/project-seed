@@ -152,6 +152,7 @@ public abstract class AbstractCodeGenerator {
                 classMap.put("validateUtils", VALIDATE_UTILS_CLASS);
                 classMap.put("foreignId", FOREIGN_ID_CLASS);
                 classMap.put("relatedId", RELATED_ID_CLASS);
+                classMap.put("serviceException", SERVICE_EXCEPTION_CLASS);
                 classNameMap.put("superDto", className(BASE_DTO_CLASS));
                 classNameMap.put("serializer", className(SERIALIZER_CLASS));
                 classNameMap.put("deserializer", className(DESERIALIZER_CLASS));

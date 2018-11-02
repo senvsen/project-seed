@@ -1,6 +1,7 @@
 package com.yupaits.auth.vo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.yupaits.commons.consts.enums.Gender;
 import com.yupaits.commons.core.serializer.LongSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -41,7 +42,7 @@ public class UserVO implements Serializable {
     private String email;
 
     @ApiModelProperty(value = "性别")
-    private Integer gender;
+    private Gender gender;
 
     @ApiModelProperty(value = "生日")
     private LocalDate birthday;

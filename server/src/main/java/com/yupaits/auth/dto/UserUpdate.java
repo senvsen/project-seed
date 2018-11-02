@@ -2,6 +2,7 @@ package com.yupaits.auth.dto;
 
 import java.time.LocalDate;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.yupaits.commons.consts.enums.Gender;
 import com.yupaits.commons.core.serializer.LongDeserializer;
 import com.yupaits.commons.core.BaseDTO;
 import io.swagger.annotations.ApiModel;
@@ -44,7 +45,7 @@ public class UserUpdate extends BaseDTO {
     private String email;
 
     @ApiModelProperty(value = "性别")
-    private Integer gender;
+    private Gender gender;
 
     @ApiModelProperty(value = "生日")
     private LocalDate birthday;

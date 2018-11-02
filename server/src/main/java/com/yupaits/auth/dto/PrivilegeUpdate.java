@@ -1,6 +1,7 @@
 package com.yupaits.auth.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.yupaits.commons.consts.enums.PrivilegeType;
 import com.yupaits.commons.core.BaseDTO;
 import com.yupaits.commons.core.serializer.LongDeserializer;
 import io.swagger.annotations.ApiModel;
@@ -28,7 +29,7 @@ public class PrivilegeUpdate extends BaseDTO {
     private Long id;
 
     @ApiModelProperty(value = "权限类型")
-    private Integer privilegeType;
+    private PrivilegeType privilegeType;
 
     @ApiModelProperty(value = "权限Key")
     private String privilegeKey;

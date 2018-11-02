@@ -1,24 +1,22 @@
 <template>
   <div>
-    <div v-for="department in departments" :key="department.id">
+    <div v-for="(department, index) in departments" :key="department.id">
       <div class="item-box mb-1"
            :class="{'is-active': selectedDepartment.id === department.id}"
-           @click="toggleSelect(department)">
+           @click="toggleSelect(department, index)">
         <a-row>
           <a-col :span="10">
             <a-icon type="team" class="mr-1"/> {{department.departmentKey}}
           </a-col>
           <a-col :span="14">
             {{department.name}}
-            <a-icon type="loading" class="is-pulled-right" v-if="loadingId === department.id"/>
           </a-col>
         </a-row>
       </div>
       <div class="ml-3" v-if="department.subDepartments && department.subDepartments.length > 0">
         <department :departments="department.subDepartments"
                     :selected-department="selectedDepartment"
-                    :loading-id="loadingId"
-                    @toggleSelect="dep => toggleSelect(dep)"/>
+                    @toggleSelect="(subDepartment, subIndex) => toggleSelect(subDepartment, subIndex)"/>
       </div>
     </div>
   </div>
@@ -39,14 +37,10 @@
         type: Object,
         required: true,
       },
-      loadingId: {
-        type: String,
-        required: true
-      }
     },
     methods: {
-      toggleSelect(department) {
-        this.$emit('toggleSelect', department);
+      toggleSelect(department, index) {
+        this.$emit('toggleSelect', department, index);
       }
     }
   }

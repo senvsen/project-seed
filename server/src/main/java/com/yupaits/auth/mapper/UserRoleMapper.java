@@ -1,7 +1,7 @@
 package com.yupaits.auth.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yupaits.auth.entity.UserRole;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.yupaits.auth.entity.UserRole;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-30
+ * @since 2018-11-02
  */
 public interface UserRoleMapper extends BaseMapper<UserRole> {
 

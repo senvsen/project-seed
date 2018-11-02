@@ -1,6 +1,7 @@
 package com.yupaits.auth.vo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.yupaits.commons.consts.enums.PrivilegeType;
 import com.yupaits.commons.core.serializer.LongSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -28,7 +29,7 @@ public class PrivilegeVO implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "权限类型")
-    private Integer privilegeType;
+    private PrivilegeType privilegeType;
 
     @ApiModelProperty(value = "权限Key")
     private String privilegeKey;

@@ -2,6 +2,7 @@ package com.yupaits.auth.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.yupaits.commons.consts.enums.PrivilegeType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -34,7 +35,7 @@ public class Privilege extends Model<Privilege> {
     /**
      * 权限类型
      */
-    private Integer privilegeType;
+    private PrivilegeType privilegeType;
 
     /**
      * 权限Key

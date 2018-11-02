@@ -51,6 +51,7 @@ public class GeneratorConsts {
     static final String VALIDATE_UTILS_CLASS = "com.yupaits.commons.utils.ValidateUtils";
     static final String FOREIGN_ID_CLASS = "com.yupaits.commons.core.identity.ForeignId;";
     static final String RELATED_ID_CLASS = "com.yupaits.commons.core.identity.RelatedId;";
+    static final String SERVICE_EXCEPTION_CLASS = "com.yupaits.commons.exceptions.ServiceException;";
 
     static final String MYBATIS_PLUS_PACKAGE_PREFIX = "com.baomidou.mybatisplus";
 }

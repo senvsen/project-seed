@@ -6,36 +6,36 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * @author yupaits
- * @date 2018/10/16
+ * @date 2018/11/2
  */
-public enum Gender {
+public enum PrivilegeType {
     /**
-     * 男
+     * 菜单
      */
-    MALE(1, "男"),
+    MENU(1, "菜单"),
     /**
-     * 女
+     * 按钮
      */
-    FEMALE(0, "女"),
+    BUTTON(2, "按钮"),
     /**
-     * 保密
+     * API
      */
-    SECRET(2, "保密");
+    API(3, "API");
 
     @EnumValue
     private int code;
     private String label;
 
-    Gender(int value, String label) {
+    PrivilegeType(int value, String label) {
         this.code = value;
         this.label = label;
     }
 
     @JsonCreator
-    public static Gender fromCode(int code) {
-        for (Gender gender : Gender.values()) {
-            if (gender.code == code) {
-                return gender;
+    public static PrivilegeType fromCode(int code) {
+        for (PrivilegeType privilegeType : PrivilegeType.values()) {
+            if (privilegeType.code == code) {
+                return privilegeType;
             }
         }
         return null;
