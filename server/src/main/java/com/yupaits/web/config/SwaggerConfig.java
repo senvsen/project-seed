@@ -40,6 +40,11 @@ public class SwaggerConfig {
         return genDocket("sys");
     }
 
+    @Bean
+    public Docket scheduleApi() {
+        return genDocket("schedule");
+    }
+
     /**
      * 根据分组名称生成Docket
      * @param groupName 分组名

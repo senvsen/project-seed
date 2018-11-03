@@ -35,6 +35,8 @@ spring:
     basename: i18n/messages
   thymeleaf:
     cache: false
+  quartz:
+    job-store-type: jdbc
 
 logging:
   config: classpath:log4j2.yml
@@ -63,6 +65,9 @@ api:
   - name: sys
     title: 系统管理接口
     description: 系统管理接口文档
+  - name: schedule
+    title: 定时任务接口
+    description: 定时任务管理接口文档
 
 ---
 spring:

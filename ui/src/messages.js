@@ -50,6 +50,7 @@ export default {
     },
     {label: '系统监控', icon: 'line-chart', key: 'monitor', children: [
         {label: 'Session管理', icon: 'link',link: '/session', menuKey: 'monitor', custom: 'session'},
+        {label: '定时任务', icon: 'schedule',link: '/schedule', pageType: 'manage', menuKey: 'monitor'},
         {label: 'Druid监控', icon: 'database',link: '/druid/index.html', pageType: 'iframe', menuKey: 'monitor'}
       ]
     },
@@ -68,6 +69,7 @@ export default {
       '/rbac': ['系统安全', 'RBAC管理'],
       '/filter-chain': ['系统安全', '鉴权规则'],
       '/session': ['系统监控', 'Session管理'],
+      '/schedule': ['系统监控', '定时任务'],
       '/code-gen': ['开发工具', '代码生成器'],
     }
   },
@@ -121,6 +123,26 @@ export default {
         {title: 'Host', width: '15%', dataIndex: 'host'},
         {title: '操作', width: '10%', scopedSlots: {customRender: 'opt'}},
       ]
+    },
+    '/schedule': {
+      tableColumns: [
+        {title: 'ID', width: '15%', dataIndex: 'id'},
+        {title: '执行类路径', width: '30%', dataIndex: 'className'},
+        {title: 'CRON表达式', width: '15%', dataIndex: 'cronExpression'},
+        {title: '已暂停', width: '10%', dataIndex: 'paused'},
+        {title: '操作', width: '30%', scopedSlots: {customRender: 'opt'}},
+      ],
+      expandedColumns: [
+        {title: '任务组', dataIndex: 'jobGroup'},
+        {title: '任务名', dataIndex: 'jobName'},
+        {title: '触发器组', dataIndex: 'triggerGroup'},
+        {title: '触发器名', dataIndex: 'triggerName'},
+        {title: '定时任务描述', dataIndex: 'description'},
+        {title: '创建时间', dataIndex: 'createdAt', isDate: true},
+        {title: '创建人', dataIndex: 'createdBy'},
+        {title: '更新时间', dataIndex: 'updatedAt', isDate: true},
+        {title: '更新人', dataIndex: 'updatedBy'},
+      ]
     }
   },
   operation: {
@@ -133,6 +155,7 @@ export default {
   },
   pageLabel: {
     '/user': '用户',
+    '/schedule': '定时任务'
   },
   modal: {
     createTitle: '创建',

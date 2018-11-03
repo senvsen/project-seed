@@ -8,4 +8,11 @@ export default {
     handleDelete: api.auth.deleteUser,
     handleBatchDelete: api.auth.batchDeleteUser,
   },
+  '/schedule': {
+    fetchData: api.schedule.getJobPage,
+    handleAdd: api.schedule.addJob,
+    handleEdit: api.schedule.updateJob,
+    handleDelete: api.schedule.deleteJob,
+    handleBatchDelete: api.schedule.batchDeleteJob,
+  }
 }
