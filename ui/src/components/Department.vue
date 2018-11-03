@@ -48,7 +48,7 @@
 
 <style scoped>
   .item-box {
-    padding: 8px;
+    padding: 6px;
     border: 1px solid #e8e8e8;
     border-radius: 4px;
   }
@@ -58,9 +58,9 @@
   }
   .is-active {
     color: #f5f5f5;
-    background: #40a9ff;
+    background: #1890ff;
   }
   .is-active:hover {
-    background: #1890ff;
+    background: #40a9ff;
   }
 </style>

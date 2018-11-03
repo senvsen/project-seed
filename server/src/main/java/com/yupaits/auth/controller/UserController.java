@@ -16,6 +16,7 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -152,6 +153,19 @@ public class UserController {
         if (MapUtils.isNotEmpty(query)) {
             query.forEach((key, value) -> {
                 //TODO 设置查询条件
+                if (StringUtils.equals(key, "id") && StringUtils.isNotBlank(String.valueOf(value))) {
+                    queryWrapper.eq("id", value);
+                }
+                if (StringUtils.equals(key, "keyword")) {
+                    queryWrapper.and(i -> i.like("username", value).or().like("name", value).or()
+                            .like("phone", value).or().like("email", value));
+                }
+                if (StringUtils.equals(key, "gender") && value != null) {
+                    queryWrapper.eq("gender", value);
+                }
+                if (StringUtils.equals(key, "enabled") && value != null) {
+                    queryWrapper.eq("enabled", value);
+                }
             });
         }
         IPage<UserVO> userVOPage = new Page<>();

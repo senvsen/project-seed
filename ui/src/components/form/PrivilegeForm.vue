@@ -7,7 +7,7 @@
       <a-input v-model="privilege.name" placeholder="请填写权限名称"></a-input>
     </a-form-item>
     <a-form-item label="权限类型" :labelCol="$style.modalForm.label" :wrapperCol="$style.modalForm.wrapper" required>
-      <a-select v-model="privilege.privilegeType" placeholder="请选择权限类型">
+      <a-select :value="$messages.enums.privilegeType[privilege.privilegeType]" @change="handlePrivilegeTypeChange" placeholder="请选择权限类型">
         <a-select-option v-for="(label, code) in $messages.enums.privilegeType" :key="code" :value="code">{{label}}</a-select-option>
       </a-select>
     </a-form-item>
@@ -28,6 +28,11 @@
     watch: {
       privilege(val) {
         this.$store.dispatch('setRecord', val);
+      }
+    },
+    methods: {
+      handlePrivilegeTypeChange(value) {
+        this.$set(this.privilege, 'privilegeType', value);
       }
     }
   }

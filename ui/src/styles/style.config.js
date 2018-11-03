@@ -8,4 +8,8 @@ export default {
     label: {span: 4},
     wrapper: {span: 20}
   },
+  searchForm: {
+    label: {span: 4},
+    wrapper: {span: 20}
+  }
 }

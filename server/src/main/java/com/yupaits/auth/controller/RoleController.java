@@ -127,6 +127,9 @@ public class RoleController {
                 if (StringUtils.equals(key, "departmentId")) {
                     queryWrapper.eq("department_id", value);
                 }
+                if (StringUtils.equals(key, "keyword") && StringUtils.isNotBlank(String.valueOf(value))) {
+                    queryWrapper.and(i -> i.like("role_key", value).or().like("name", value));
+                }
             });
         }
         List<RoleVO> roleVOList = roleService.list(queryWrapper).stream().map(role -> {

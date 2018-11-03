@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ShiroAuthcFilter extends FormAuthenticationFilter {
 
-    private static final String AsyncHeader = "X-Requested-With";
-    private static final String AsyncHeaderValue = "XMLHttpRequest";
+    private static final String ASYNC_HEADER = "X-Requested-With";
+    private static final String ASYNC_HEADER_VALUE = "XMLHttpRequest";
 
     public ShiroAuthcFilter() {
         super();
@@ -39,6 +39,6 @@ public class ShiroAuthcFilter extends FormAuthenticationFilter {
     }
 
     private boolean isAsyncRequest(HttpServletRequest request) {
-        return StringUtils.equals(AsyncHeaderValue, request.getHeader(AsyncHeader));
+        return StringUtils.equals(ASYNC_HEADER_VALUE, request.getHeader(ASYNC_HEADER));
     }
 }

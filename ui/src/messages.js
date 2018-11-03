@@ -139,11 +139,13 @@ export default {
     editTitle: '编辑'
   },
   successResult: {
+    operation: '操作成功',
     create: '创建成功',
     edit: '编辑成功',
     delete: '删除成功',
     batchDelete: '批量删除成功',
     save: '保存成功',
+    update: '更新成功',
   },
   enums: {
     gender: {

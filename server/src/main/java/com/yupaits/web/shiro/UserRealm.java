@@ -56,7 +56,7 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", token.getUsername()));
+        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", token.getUsername()).eq("enabled", true));
         if (user == null) {
             throw new UnknownAccountException(String.format("用户%s不存在", token.getUsername()));
         } else if (!user.getEnabled()) {

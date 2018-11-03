@@ -13,10 +13,11 @@
         </div>
         <div>
           <a-button icon="plus" class="mr-1" @click="addRecord">{{$messages.toolbar.createBtn}}</a-button>
-          <a-popconfirm :title="$messages.operation.batchDeleteTip" trigger="click" placement="rightBottom" @confirm="handleBatchDelete"
+          <a-popconfirm :title="$messages.operation.batchDeleteTip" trigger="click" placement="top" @confirm="handleBatchDelete"
                         :okText="$messages.operation.confirmText" :cancelText="$messages.operation.cancelText" v-if="selectedKeys.length > 0">
             <a-button icon="delete" class="mr-1">{{$messages.toolbar.batchDeleteBtn}}</a-button>
           </a-popconfirm>
+          <slot name="toolbar" v-bind:selected-keys="selectedKeys"></slot>
         </div>
       </a-row>
       <a-table size="small"
@@ -83,9 +84,7 @@
       <template slot="title">
         <a-icon type="search"/> {{$messages.search.title}}
       </template>
-      <a-form layout="vertical" hide-required-mark>
-        <slot name="advanced-search"></slot>
-      </a-form>
+      <slot name="search"></slot>
       <div class="drawer-opt">
         <a-button class="mr-1" @click="searchReset">
           {{$messages.search.resetBtn}}
@@ -105,7 +104,7 @@
     components: {Breadcrumb},
     data() {
       return {
-        data: [],
+        data: [{id: '111222'}],
         pager: {
           current: 1,
           total: 1,

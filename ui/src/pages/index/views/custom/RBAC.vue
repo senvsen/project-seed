@@ -64,7 +64,7 @@
       <a-col :span="8">
         <div class="page-content">
           <a-row class="page-header">
-            <span class="header-title"><a-icon type="solution" class="ml-1 mr-1"/>权限</span>
+            <span class="header-title"><a-icon type="solution" class="mr-1"/>权限</span>
             <a-button size="small" icon="plus" class="ml-2" @click="addPrivilege">创建</a-button>
             <a-button size="small" icon="save" class="ml-1" v-if="selectedRole.id" @click="saveRolePrivileges">保存</a-button>
             <div class="is-pulled-right" v-if="selectedPrivilege.id">
@@ -88,7 +88,7 @@
                     <a-icon type="solution" class="ml-1 mr-1"/> {{privilege.privilegeKey}}
                   </a-col>
                   <a-col :span="12">
-                    <b>{{$messages.enums.privilegeType[privilege.privilegeType]}}</b> {{privilege.name}}
+                    <a-tag>{{$messages.enums.privilegeType[privilege.privilegeType]}}</a-tag> {{privilege.name}}
                   </a-col>
                 </a-row>
               </div>
@@ -121,7 +121,10 @@
       return {
         departments: [],
         roles: [],
-        privileges: [],
+        privileges: [
+          {"id":"1058276280144551938","privilegeType":2,"privilegeKey":"privilege:add","name":"添加权限","description":"添加权限信息","createdAt":"2018-11-02T16:35:02","createdBy":"1058256010751074305","updatedAt":"2018-11-02T18:05:21","updatedBy":"1058256010751074305"},
+          {"id":"1058300620688949249","privilegeType":1,"privilegeKey":"sidebar:user","name":"用户管理","description":"侧边栏用户管理菜单项","createdAt":"2018-11-02T18:11:45","createdBy":"1058256010751074305","updatedAt":"2018-11-02T18:11:45","updatedBy":"1058256010751074305"}
+        ],
         departmentLoading: false,
         roleLoading: false,
         privilegeLoading: false,
@@ -409,7 +412,7 @@
     overflow-y: auto;
   }
   .item-box {
-    padding: 8px;
+    padding: 6px;
     border: 1px solid #e8e8e8;
     border-radius: 4px;
   }
@@ -419,9 +422,9 @@
   }
   .is-active {
     color: #f5f5f5;
-    background: #40a9ff;
+    background: #1890ff;
   }
   .is-active:hover {
-    background: #1890ff;
+    background: #40a9ff;
   }
 </style>
