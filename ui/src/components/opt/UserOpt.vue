@@ -40,9 +40,7 @@
     data() {
       return {
         assignVisible: false,
-        roles: [
-          {"id":"1058264270262611969","roleKey":"admin","name":"系统管理员","description":"系统管理员，拥有最高管理权限","departmentId":"1058256237444837377","createdAt":"2018-11-02T15:47:18","createdBy":"1058256010751074305","updatedAt":"2018-11-02T16:26:36","updatedBy":"1058256010751074305"}
-        ],
+        roles: [],
         checkedRoleIds: [],
         keyword: ''
       }

@@ -8,6 +8,7 @@ import com.yupaits.auth.dto.UserUpdate;
 import com.yupaits.auth.entity.User;
 import com.yupaits.auth.service.IUserService;
 import com.yupaits.auth.vo.UserVO;
+import com.yupaits.commons.consts.SecurityConsts;
 import com.yupaits.commons.result.Result;
 import com.yupaits.commons.result.ResultCode;
 import com.yupaits.commons.result.ResultWrapper;
@@ -16,7 +17,9 @@ import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +58,23 @@ public class UserController {
         }
         User user = new User();
         BeanUtils.copyProperties(userCreate, user);
-        return userService.save(user) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.CREATE_FAIL);
+        String password = initPassword(user);
+        if (userService.save(user)) {
+            //TODO 创建用户完成发送初始密码至用户邮箱或手机短信
+            return ResultWrapper.success();
+        }
+        return ResultWrapper.fail(ResultCode.CREATE_FAIL);
+    }
+
+    /**
+     * 初始化用户密码
+     */
+    private String initPassword(User user) {
+        String randomPassword = RandomStringUtils.randomAscii(8);
+        user.setPassword(new Sha256Hash(randomPassword,
+                user.getUsername() + SecurityConsts.CREDENTIALS_SALT,
+                SecurityConsts.ITERATIONS).toHex());
+        return randomPassword;
     }
 
     @ApiOperation("编辑用户")

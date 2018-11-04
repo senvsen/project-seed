@@ -31,7 +31,7 @@ public class ScheduleTest {
                         .setJobGroup("LuckyGroup")
                         .setTriggerName("EveryHour")
                         .setTriggerGroup("Daily")
-                        .setCronExpression("0/10 * * * *")
+                        .setCronExpression("0/10 * * * * ?")
                         .setDescription("测试定时任务")
         )));
     }
