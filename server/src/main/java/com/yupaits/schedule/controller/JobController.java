@@ -1,5 +1,6 @@
 package com.yupaits.schedule.controller;
 
+import com.google.common.collect.Lists;
 import com.yupaits.schedule.entity.Job;
 import com.yupaits.schedule.helper.ScheduleJobHelper;
 import com.yupaits.schedule.service.IJobService;
@@ -18,6 +19,7 @@ import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.commons.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.Scheduler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,13 +91,15 @@ public class JobController {
         if (!JobUpdate.isValid(jobUpdateList)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
+        List<Long> jobIds = Lists.newArrayList();
         List<Job> jobList = jobUpdateList.stream().map(jobUpdate -> {
             Job job = new Job();
             BeanUtils.copyProperties(jobUpdate, job);
+            jobIds.add(jobUpdate.getId());
             return job;
         }).collect(Collectors.toList());
         if (jobService.saveOrUpdateBatch(jobList)) {
-            jobList.forEach(job -> ScheduleJobHelper.updateScheduleJob(scheduler, job));
+            jobService.listByIds(jobIds).forEach(job -> ScheduleJobHelper.updateScheduleJob(scheduler, job));
             return ResultWrapper.success();
         }
         return ResultWrapper.fail(ResultCode.SAVE_FAIL);
@@ -183,6 +187,17 @@ public class JobController {
         if (MapUtils.isNotEmpty(query)) {
             query.forEach((key, value) -> {
                 //TODO 设置查询条件
+                if (StringUtils.equals(key, "id") && StringUtils.isNotBlank(String.valueOf(value))) {
+                    queryWrapper.eq("id", value);
+                }
+                if (StringUtils.equals(key, "keyword")) {
+                    queryWrapper.and(i -> i.like("class_name", value).or().like("job_name", value)
+                            .or().like("job_group", value).or().like("trigger_name", value)
+                            .or().like("trigger_group", value));
+                }
+                if (StringUtils.equals(key, "paused") && value != null) {
+                    queryWrapper.eq("paused", value);
+                }
             });
         }
         IPage<JobVO> jobVOPage = new Page<>();
@@ -205,6 +220,8 @@ public class JobController {
         if (job == null) {
             return ResultWrapper.fail(ResultCode.DATA_NOT_FOUND);
         }
+        job.setPaused(true);
+        jobService.updateById(job);
         ScheduleJobHelper.pauseJob(scheduler, job);
         return ResultWrapper.success();
     }
@@ -219,6 +236,8 @@ public class JobController {
         if (job == null) {
             return ResultWrapper.fail(ResultCode.DATA_NOT_FOUND);
         }
+        job.setPaused(false);
+        jobService.updateById(job);
         ScheduleJobHelper.resumeJob(scheduler, job);
         return ResultWrapper.success();
     }

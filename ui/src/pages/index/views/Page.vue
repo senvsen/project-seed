@@ -7,8 +7,8 @@
       <manage-page ref="page">
         <component slot="toolbar" slot-scope="{selectedKeys}" :keys="selectedKeys" :is="toolbarComponent" @updated="handleUpdated"></component>
         <component slot="form" :is="formComponent"></component>
-        <component slot="ext-opt" slot-scope="{record}" :row-data="record" :is="optComponent"></component>
-        <component slot="search" :is="searchComponent" @updated="handleUpdated"></component>
+        <component slot="ext-opt" slot-scope="{record}" :row-data="record" :is="optComponent" @updated="handleUpdated"></component>
+        <component slot="search" :is="searchComponent"></component>
       </manage-page>
     </div>
     <div v-else>

@@ -29,4 +29,10 @@ export default {
     const descsParam = descs.join('&descs=');
     return request.post(`${prefix}/job/page?page=${page}&size=${size}&descs=${descsParam}&ascs=${ascsParam}`, query);
   },
+  pauseJob(id) {
+    return request.put(`${prefix}/job/${id}/pause`);
+  },
+  resumeJob(id) {
+    return request.put(`${prefix}/job/${id}/resume`);
+  }
 }

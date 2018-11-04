@@ -1,6 +1,6 @@
 <template>
   <span>
-    <span v-show="keys.length > 0">
+    <span v-if="keys.length > 0">
       <a-popconfirm title="确定批量禁用选中的用户吗？" trigger="click" placement="top" @confirm="handleBatchDisabled"
                     :okText="$messages.operation.confirmText" :cancelText="$messages.operation.cancelText">
         <a-button icon="close-circle-o" class="mr-1">批量禁用</a-button>
