@@ -3,10 +3,12 @@ package com.yupaits.schedule.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.yupaits.commons.core.serializer.LongDeserializer;
 import com.yupaits.commons.core.BaseDTO;
+import com.yupaits.commons.utils.ValidateUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -23,26 +25,26 @@ public class JobUpdate extends BaseDTO {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键ID")
+    @ApiModelProperty(value = "主键ID", required = true)
     @JsonDeserialize(using = LongDeserializer.class)
     private Long id;
 
-    @ApiModelProperty(value = "任务执行类路径")
+    @ApiModelProperty(value = "任务执行类路径", required = true)
     private String className;
 
-    @ApiModelProperty(value = "CRON表达式")
+    @ApiModelProperty(value = "CRON表达式", required = true)
     private String cronExpression;
 
-    @ApiModelProperty(value = "任务名称")
+    @ApiModelProperty(value = "任务名称", required = true)
     private String jobName;
 
-    @ApiModelProperty(value = "任务组")
+    @ApiModelProperty(value = "任务组", required = true)
     private String jobGroup;
 
-    @ApiModelProperty(value = "触发器名称")
+    @ApiModelProperty(value = "触发器名称", required = true)
     private String triggerName;
 
-    @ApiModelProperty(value = "触发器组")
+    @ApiModelProperty(value = "触发器组", required = true)
     private String triggerGroup;
 
     @ApiModelProperty(value = "已暂停")
@@ -54,7 +56,15 @@ public class JobUpdate extends BaseDTO {
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        if (!ValidateUtils.idValid(id) || StringUtils.isBlank(className)) {
+            return false;
+        }
+        try {
+            Class.forName(className);
+            return !StringUtils.isAnyBlank(cronExpression, jobName, jobGroup, triggerName, triggerGroup);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -21,19 +22,16 @@ public class FilterChainCreate extends BaseDTO {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "目标URL")
+    @ApiModelProperty(value = "目标URL", required = true)
     private String url;
 
-    @ApiModelProperty(value = "过滤器名称")
+    @ApiModelProperty(value = "过滤器名称", required = true)
     private String filter;
-
-    @ApiModelProperty(value = "排序码")
-    private Integer sortCode;
 
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        return !StringUtils.isAnyBlank(url, filter);
     }
 
 }

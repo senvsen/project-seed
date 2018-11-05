@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -22,22 +23,22 @@ public class PrivilegeCreate extends BaseDTO {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "权限类型")
+    @ApiModelProperty(value = "权限类型", required = true)
     private PrivilegeType privilegeType;
 
-    @ApiModelProperty(value = "权限Key")
+    @ApiModelProperty(value = "权限Key", required = true)
     private String privilegeKey;
 
-    @ApiModelProperty(value = "权限名")
+    @ApiModelProperty(value = "权限名", required = true)
     private String name;
 
-    @ApiModelProperty(value = "权限描述")
+    @ApiModelProperty(value = "权限描述", allowEmptyValue = true)
     private String description;
 
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        return privilegeType != null && !StringUtils.isAnyBlank(privilegeKey, name);
     }
 
 }

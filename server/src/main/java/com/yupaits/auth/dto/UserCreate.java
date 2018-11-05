@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -25,11 +26,8 @@ public class UserCreate extends BaseDTO {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "用户名")
+    @ApiModelProperty(value = "用户名", required = true)
     private String username;
-
-    @ApiModelProperty(value = "密码")
-    private String password;
 
     @ApiModelProperty(value = "姓名")
     private String name;
@@ -51,12 +49,12 @@ public class UserCreate extends BaseDTO {
     private String avatar;
 
     @ApiModelProperty(value = "账户可用")
-    private Boolean enabled;
+    private boolean enabled = true;
 
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        return StringUtils.isNotBlank(username);
     }
 
 }

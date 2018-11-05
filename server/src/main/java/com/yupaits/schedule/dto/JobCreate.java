@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -21,22 +22,22 @@ public class JobCreate extends BaseDTO {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "任务执行类路径")
+    @ApiModelProperty(value = "任务执行类路径", required = true)
     private String className;
 
-    @ApiModelProperty(value = "CRON表达式")
+    @ApiModelProperty(value = "CRON表达式", required = true)
     private String cronExpression;
 
-    @ApiModelProperty(value = "任务名称")
+    @ApiModelProperty(value = "任务名称", required = true)
     private String jobName;
 
-    @ApiModelProperty(value = "任务组")
+    @ApiModelProperty(value = "任务组", required = true)
     private String jobGroup;
 
-    @ApiModelProperty(value = "触发器名称")
+    @ApiModelProperty(value = "触发器名称", required = true)
     private String triggerName;
 
-    @ApiModelProperty(value = "触发器组")
+    @ApiModelProperty(value = "触发器组", required = true)
     private String triggerGroup;
 
     @ApiModelProperty(value = "已暂停")
@@ -48,7 +49,15 @@ public class JobCreate extends BaseDTO {
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        if (StringUtils.isBlank(className)) {
+            return false;
+        }
+        try {
+            Class.forName(className);
+            return !StringUtils.isAnyBlank(cronExpression, jobName, jobGroup, triggerName, triggerGroup);
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
 }

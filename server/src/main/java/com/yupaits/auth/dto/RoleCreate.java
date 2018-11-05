@@ -3,10 +3,12 @@ package com.yupaits.auth.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.yupaits.commons.core.BaseDTO;
 import com.yupaits.commons.core.serializer.LongDeserializer;
+import com.yupaits.commons.utils.ValidateUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -23,23 +25,23 @@ public class RoleCreate extends BaseDTO {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "角色Key")
+    @ApiModelProperty(value = "角色Key", required = true)
     private String roleKey;
 
-    @ApiModelProperty(value = "角色名")
+    @ApiModelProperty(value = "角色名", required = true)
     private String name;
 
-    @ApiModelProperty(value = "角色描述")
+    @ApiModelProperty(value = "角色描述", allowEmptyValue = true)
     private String description;
 
-    @ApiModelProperty(value = "所属部门ID")
+    @ApiModelProperty(value = "所属部门ID", required = true)
     @JsonDeserialize(using = LongDeserializer.class)
     private Long departmentId;
 
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        return ValidateUtils.idValid(departmentId) && !StringUtils.isAnyBlank(roleKey, name);
     }
 
 }

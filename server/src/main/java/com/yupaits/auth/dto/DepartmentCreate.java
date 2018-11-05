@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -23,20 +24,20 @@ public class DepartmentCreate extends BaseDTO {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "部门Key")
+    @ApiModelProperty(value = "部门Key", required = true)
     private String departmentKey;
 
-    @ApiModelProperty(value = "部门名称")
+    @ApiModelProperty(value = "部门名称", required = true)
     private String name;
 
-    @ApiModelProperty(value = "父级部门ID")
+    @ApiModelProperty(value = "父级部门ID", required = true)
     @JsonDeserialize(using = LongDeserializer.class)
     private Long parentId;
 
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        return parentId != null && parentId.compareTo(0L) >= 0 && !StringUtils.isAnyBlank(departmentKey, name);
     }
 
 }

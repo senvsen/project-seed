@@ -17,13 +17,13 @@ public class ModifyPasswordForm implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "原密码")
+    @ApiModelProperty(value = "原密码", required = true)
     private String oldPassword;
 
-    @ApiModelProperty(value = "新密码")
+    @ApiModelProperty(value = "新密码", required = true)
     private String newPassword;
 
-    @ApiModelProperty(value = "确认密码")
+    @ApiModelProperty(value = "确认密码", required = true)
     private String confirmPassword;
 
     @ApiModelProperty(hidden = true)
