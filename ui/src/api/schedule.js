@@ -4,7 +4,7 @@ const prefix = '/schedule';
 
 export default {
   addJob(jobCreate) {
-    return request.post(`${prefix}/job`);
+    return request.post(`${prefix}/job`, jobCreate);
   },
   updateJob(id, jobUpdate) {
     return request.put(`${prefix}/job/${id}`, jobUpdate);

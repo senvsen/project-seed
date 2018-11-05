@@ -1,34 +1,31 @@
 package com.yupaits.schedule.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
+import com.yupaits.commons.result.Result;
+import com.yupaits.commons.result.ResultCode;
+import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.commons.utils.ValidateUtils;
+import com.yupaits.schedule.dto.JobCreate;
+import com.yupaits.schedule.dto.JobUpdate;
 import com.yupaits.schedule.entity.Job;
 import com.yupaits.schedule.helper.ScheduleJobHelper;
 import com.yupaits.schedule.service.IJobService;
 import com.yupaits.schedule.vo.JobVO;
-import com.yupaits.schedule.dto.JobCreate;
-import com.yupaits.schedule.dto.JobUpdate;
-import com.yupaits.commons.utils.ValidateUtils;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-import java.util.Map;
-
-import org.apache.commons.collections4.MapUtils;
-import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultWrapper;
-import com.yupaits.commons.result.ResultCode;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.Scheduler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.swagger.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -99,7 +96,10 @@ public class JobController {
             return job;
         }).collect(Collectors.toList());
         if (jobService.saveOrUpdateBatch(jobList)) {
-            jobService.listByIds(jobIds).forEach(job -> ScheduleJobHelper.updateScheduleJob(scheduler, job));
+            List<Job> jobs = (List<Job>) jobService.listByIds(jobIds);
+            if (CollectionUtils.isNotEmpty(jobs)) {
+                jobs.forEach(job -> ScheduleJobHelper.updateScheduleJob(scheduler, job));
+            }
             return ResultWrapper.success();
         }
         return ResultWrapper.fail(ResultCode.SAVE_FAIL);

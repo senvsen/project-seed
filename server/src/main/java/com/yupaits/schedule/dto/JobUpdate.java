@@ -46,7 +46,7 @@ public class JobUpdate extends BaseDTO {
     private String triggerGroup;
 
     @ApiModelProperty(value = "已暂停")
-    private Boolean paused;
+    private boolean paused;
 
     @ApiModelProperty(value = "定时任务描述")
     private String description;

@@ -129,7 +129,7 @@ export default {
         {title: 'ID', width: '15%', dataIndex: 'id'},
         {title: '执行类路径', width: '30%', dataIndex: 'className'},
         {title: 'CRON表达式', width: '15%', dataIndex: 'cronExpression'},
-        {title: '已暂停', width: '10%', dataIndex: 'paused'},
+        {title: '状态', width: '10%', scopedSlots: {customRender: 'paused'}},
         {title: '操作', width: '30%', scopedSlots: {customRender: 'opt'}},
       ],
       expandedColumns: [

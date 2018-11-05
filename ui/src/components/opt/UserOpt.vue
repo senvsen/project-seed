@@ -45,6 +45,9 @@
         keyword: ''
       }
     },
+    created() {
+      this.fetchRoles();
+    },
     methods: {
       fetchRoles() {
         this.$api.auth.getRoleList({keyword: this.keyword}).then(res => {

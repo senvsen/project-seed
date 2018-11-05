@@ -46,18 +46,15 @@ public class ScheduleJobHelper {
             //noinspection unchecked
             Class<? extends org.quartz.Job> jobClass = (Class<? extends org.quartz.Job>) Class.forName(job.getClassName());
             JobDetail jobDetail = JobBuilder.newJob(jobClass)
-                    .withIdentity(job.getJobName(), job.getJobGroup())
+                    .withIdentity(getJobKey(job))
                     .withDescription(job.getDescription())
                     .build();
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression())
-                    .withMisfireHandlingInstructionDoNothing();
-            CronTrigger cronTrigger = TriggerBuilder.newTrigger()
-                    .withIdentity(job.getTriggerName(), job.getTriggerGroup())
+            Trigger trigger = TriggerBuilder.newTrigger()
+                    .withIdentity(getTriggerKey(job))
                     .withDescription(job.getDescription())
-                    .withSchedule(scheduleBuilder)
-                    .startNow()
+                    .withSchedule(CronScheduleBuilder.cronSchedule(job.getCronExpression()))
                     .build();
-            scheduler.scheduleJob(jobDetail, cronTrigger);
+            scheduler.scheduleJob(jobDetail, trigger);
             if (job.isPaused()) {
                 pauseJob(scheduler, job);
             }
@@ -74,21 +71,14 @@ public class ScheduleJobHelper {
         validateCronExpression(job);
         try {
             TriggerKey triggerKey = getTriggerKey(job);
-            CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(job.getCronExpression())
-                    .withMisfireHandlingInstructionDoNothing();
-            CronTrigger cronTrigger = getCronTrigger(scheduler, job);
-            if (cronTrigger != null) {
-                cronTrigger.getTriggerBuilder()
-                        .withIdentity(triggerKey)
-                        .withDescription(job.getDescription())
-                        .withSchedule(cronScheduleBuilder)
-                        .build();
-                scheduler.rescheduleJob(triggerKey, cronTrigger);
-                if (job.isPaused()) {
-                    pauseJob(scheduler, job);
-                }
-            } else {
-                log.warn("定时任务触发器不存在, 触发器: {}", getTriggerKey(job));
+            Trigger trigger = TriggerBuilder.newTrigger()
+                    .withIdentity(triggerKey)
+                    .withDescription(job.getDescription())
+                    .withSchedule(CronScheduleBuilder.cronSchedule(job.getCronExpression()))
+                    .build();
+            scheduler.rescheduleJob(triggerKey, trigger);
+            if (job.isPaused()) {
+                pauseJob(scheduler, job);
             }
         } catch (SchedulerException e) {
             log.error("更新定时任务失败, 定时任务: {}", job, e);
@@ -97,7 +87,7 @@ public class ScheduleJobHelper {
     }
 
     /**
-     * 运行任务
+     * 执行任务
      */
     public static void run(Scheduler scheduler, Job job) {
         try {

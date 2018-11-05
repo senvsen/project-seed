@@ -86,7 +86,8 @@ public abstract class AbstractCodeGenerator {
     private void init() {
         //全局配置
         globalConfig.setAuthor(generatorConfig.getDeveloper());
-        globalConfig.setFileOverride(true);
+        //设置不覆盖已存在的文件，如需更改已存在的文件请手动进行
+        globalConfig.setFileOverride(false);
         globalConfig.setOpen(false);
         globalConfig.setBaseResultMap(true);
         globalConfig.setBaseColumnList(true);

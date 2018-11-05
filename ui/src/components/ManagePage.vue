@@ -40,9 +40,6 @@
             </a-col>
           </a-row>
         </template>
-        <template slot="gender" slot-scope="record">
-          {{$messages.enums.gender[record.gender]}}
-        </template>
         <template slot="createdAt" slot-scope="record">
           {{$utils.date(record.createdAt).format('YYYY-MM-DD HH:mm:ss')}}
         </template>
@@ -56,6 +53,12 @@
             <a-button size="small" class="mr-1">{{$messages.operation.deleteBtn}}</a-button>
           </a-popconfirm>
           <slot name="ext-opt" v-bind:record="record"></slot>
+        </template>
+        <template slot="gender" slot-scope="record">
+          {{$messages.enums.gender[record.gender]}}
+        </template>
+        <template slot="paused" slot-scope="record">
+          {{record.paused ? '已暂停' : '运行中'}}
         </template>
       </a-table>
       <a-pagination size="small" class="mt-2 is-pulled-right"
