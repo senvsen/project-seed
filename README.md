@@ -69,5 +69,5 @@ Spring Boot种子项目
 - [x] 内嵌Druid监控
 - [x] 内嵌Swagger接口文档
 - [x] 通用的管理页面vue组件
-- [] 消息中心
-- [] 基于Redis的接口缓存
+- [ ] 消息中心
+- [ ] 基于Redis的接口缓存
