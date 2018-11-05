@@ -1,7 +1,7 @@
 package com.yupaits.auth.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.yupaits.auth.entity.Department;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.yupaits.auth.entity.Department;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-30
+ * @since 2018-11-05
  */
 public interface IDepartmentService extends IService<Department> {
 

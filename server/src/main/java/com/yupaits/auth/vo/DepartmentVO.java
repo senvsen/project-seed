@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author yupaits
- * @date 2018-10-30
+ * @date 2018-11-05
  */
 @Data
 @ApiModel(value = "DepartmentVO", description = "DepartmentVO对象")
@@ -34,7 +34,8 @@ public class DepartmentVO implements Serializable {
     private String name;
 
     @ApiModelProperty(value = "父级部门ID")
-    private String parentId;
+    @JsonSerialize(using = LongSerializer.class)
+    private Long parentId;
 
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createdAt;

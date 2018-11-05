@@ -1,7 +1,7 @@
 package com.yupaits.auth.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yupaits.auth.entity.Department;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.yupaits.auth.entity.Department;
  * </p>
  *
  * @author yupaits
- * @since 2018-10-30
+ * @since 2018-11-05
  */
 public interface DepartmentMapper extends BaseMapper<Department> {
 

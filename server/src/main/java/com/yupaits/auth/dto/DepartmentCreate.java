@@ -1,5 +1,7 @@
 package com.yupaits.auth.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.yupaits.commons.core.serializer.LongDeserializer;
 import com.yupaits.commons.core.BaseDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,7 +14,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author yupaits
- * @date 2018-10-30
+ * @date 2018-11-05
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -28,7 +30,8 @@ public class DepartmentCreate extends BaseDTO {
     private String name;
 
     @ApiModelProperty(value = "父级部门ID")
-    private String parentId;
+    @JsonDeserialize(using = LongDeserializer.class)
+    private Long parentId;
 
     @Override
     @ApiModelProperty(hidden = true)

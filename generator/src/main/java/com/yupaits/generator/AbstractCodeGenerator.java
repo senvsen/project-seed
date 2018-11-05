@@ -75,7 +75,7 @@ public abstract class AbstractCodeGenerator {
 
     private void codeGenerator(GeneratorConfig generatorConfig, String outputDir) {
         packageConfig.setModuleName(generatorConfig.getModuleName());
-        if (StringUtils.isNotEmpty(outputDir)) {
+        if (StringUtils.isNotBlank(outputDir)) {
             globalConfig.setOutputDir(outputDir);
         } else {
             globalConfig.setOutputDir(generatorConfig.getProjectPath() + "/server" + JAVA_PATH);
