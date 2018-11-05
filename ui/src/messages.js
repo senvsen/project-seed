@@ -34,10 +34,10 @@ export default {
       }
     },
     userMenu: [
-      {label: '个人中心', icon: 'user', isDivided: false, link: '/profile'},
-      {label: '修改密码', icon: 'key', isDivided: false, link: '/modify-password'},
+      {label: '个人中心', icon: 'user', link: '/profile', custom: 'profile'},
+      {label: '个人设置', icon: 'setting', link: '/setting', custom: 'setting'},
+      {label: '报告错误', icon: 'form', isDivided: true, link: '/bug-report', custom: 'bug-report'},
       {label: '退出登录', icon: 'logout', isDivided: true, link: '/logout', isDirect: true},
-      {label: '报告错误', icon: 'form', isDivided: true, link: '/bug-report'},
     ]
   },
   sidebar: [
@@ -71,6 +71,9 @@ export default {
       '/session': ['系统监控', 'Session管理'],
       '/schedule': ['系统监控', '定时任务'],
       '/code-gen': ['开发工具', '代码生成器'],
+      '/profile': ['个人中心'],
+      '/setting': ['个人设置'],
+      '/bug-report': ['报告错误'],
     }
   },
   pager: {

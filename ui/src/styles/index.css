@@ -1,11 +1,26 @@
-html {
-  overflow-y: auto;
-  min-height: 100vh;
-}
-
 .error-page {
   padding-top: 30rem;
   background: no-repeat center 8rem;
+}
+.error-title {
+  color: #000;
+  font-size: 48px;
+}
+.error-subtitle {
+  font-size: 20px;
+}
+.error-back-btn {
+  color: #fff;
+  padding: 4px 8px;
+  border: 1px #1890ff solid;
+  border-radius: 4px;
+  background: #1890ff;
+  text-decoration:none;
+}
+.error-back-btn:hover {
+  color: #fff;
+  border-color: #40a9ff;
+  background: #40a9ff;
 }
 
 .is-pulled-left {
@@ -37,6 +52,9 @@ html {
 
 .has-text-danger {
   color: #ff3860 !important;
+}
+.has-text-mute {
+  color: #777 !important
 }
 
 .mt-1 {

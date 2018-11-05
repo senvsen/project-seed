@@ -14,7 +14,7 @@
         <a-input v-model="user.email" placeholder="请输入Email"></a-input>
       </a-form-item>
       <a-form-item label="性别" :labelCol="$style.modalForm.label" :wrapperCol="$style.modalForm.wrapper">
-        <a-select :value="$messages.enums.gender[user.gender]" @change="handleGenderChange" placeholder="请选择性别">
+        <a-select :value="$messages.enums.gender[user.gender]" @change="handleGenderChange" placeholder="请选择性别" class="gender-select">
           <a-select-option v-for="(label, code) in $messages.enums.gender" :key="code" :value="code">{{label}}</a-select-option>
         </a-select>
       </a-form-item>
@@ -57,5 +57,7 @@
 </script>
 
 <style scoped>
-
+  .gender-select {
+    width: 174px;
+  }
 </style>

@@ -9,13 +9,19 @@ import RBAC from './views/custom/RBAC'
 import FilterChain from './views/custom/FilterChain'
 import Session from './views/custom/Session'
 import CodeGen from './views/custom/CodeGen'
+import Profile from './views/custom/Profile'
+import Setting from './views/custom/Setting'
+import BugReport from './views/custom/BugReport'
 
 const customPage = {
   'dashboard': Dashboard,
   'rbac': RBAC,
   'filter-chain': FilterChain,
   'session': Session,
-  'code-gen': CodeGen
+  'code-gen': CodeGen,
+  'profile': Profile,
+  'setting': Setting,
+  'bug-report': BugReport,
 };
 
 Vue.use(Router);
@@ -26,6 +32,21 @@ const route = {
   redirect: '/dashboard',
   children: []
 };
+
+messages.nav.userMenu.forEach(menu => {
+  if (menu.link && !menu.isDirect) {
+    const page = {
+      path: menu.link,
+      component: Page,
+    };
+    if (menu.pageType) {
+      page.meta.pageType = menu.pageType;
+    } else if (menu.custom) {
+      page.component = customPage[menu.custom];
+    }
+    route.children.push(page);
+  }
+});
 
 messages.sidebar.forEach(menu => {
   if (menu.children) {

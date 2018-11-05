@@ -3,6 +3,12 @@ import request from './request'
 const prefix = '/auth';
 
 export default {
+  modifyPassword(modifyPasswordForm) {
+    return request.put(`${prefix}/user/modify-password`, modifyPasswordForm);
+  },
+  getCurrentUser() {
+    return request.get(`${prefix}/user/current`);
+  },
   addUser(userCreate) {
     return request.post(`${prefix}/user`, userCreate);
   },

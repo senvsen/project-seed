@@ -1,11 +1,9 @@
 <template>
   <div class="error-page error-500">
-    <div class="columns is-centered">
-      <div class="column is-narrow has-text-centered">
-        <div class="title is-size-1">500</div>
-        <p class="subtitle has-text-grey-light is-size-5">{{$messages.errorPage.tip.error500}}</p>
-        <a class="button is-primary" href="/index">{{$messages.errorPage.btnContent}}</a>
-      </div>
+    <div class="has-text-centered">
+      <div class="error-title">500</div>
+      <p class="error-subtitle has-text-mute">{{$messages.errorPage.tip.error500}}</p>
+      <a class="error-back-btn" href="/index">{{$messages.errorPage.btnContent}}</a>
     </div>
   </div>
 </template>

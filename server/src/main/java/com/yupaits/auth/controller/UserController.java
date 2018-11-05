@@ -3,6 +3,7 @@ package com.yupaits.auth.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yupaits.auth.dto.ModifyPasswordForm;
 import com.yupaits.auth.dto.UserCreate;
 import com.yupaits.auth.dto.UserUpdate;
 import com.yupaits.auth.entity.User;
@@ -19,6 +20,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -195,6 +197,47 @@ public class UserController {
             return userVO;
         }).collect(Collectors.toList()));
         return ResultWrapper.success(userVOPage);
+    }
+
+    @ApiOperation("修改登录密码")
+    @PutMapping("/modify-password")
+    public Result modifyPassword(@RequestBody ModifyPasswordForm modifyPasswordForm) {
+        if (!modifyPasswordForm.isValid()) {
+            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
+        }
+        if (!StringUtils.equals(modifyPasswordForm.getNewPassword(), modifyPasswordForm.getConfirmPassword())) {
+            return ResultWrapper.fail("新密码与确认密码不匹配");
+        }
+        UserVO currentUser = (UserVO) SecurityUtils.getSubject().getPrincipal();
+        if (currentUser == null) {
+            return ResultWrapper.fail("请先登录再进行修改密码操作");
+        }
+        User user = userService.getById(currentUser.getId());
+        if (user == null) {
+            return ResultWrapper.fail("当前用户不存在，无法进行修改密码操作");
+        }
+        if (StringUtils.equals(modifyPasswordForm.getOldPassword(), modifyPasswordForm.getNewPassword())) {
+            return ResultWrapper.success();
+        }
+        if (!StringUtils.equals(user.getPassword(), new Sha256Hash(modifyPasswordForm.getOldPassword(),
+                currentUser.getUsername() + SecurityConsts.CREDENTIALS_SALT, SecurityConsts.ITERATIONS).toHex())) {
+            return ResultWrapper.fail("原密码输入有误");
+        }
+        user.setPassword(new Sha256Hash(modifyPasswordForm.getNewPassword(),
+                currentUser.getUsername() + SecurityConsts.CREDENTIALS_SALT, SecurityConsts.ITERATIONS).toHex());
+        return userService.updateById(user) ? ResultWrapper.success() : ResultWrapper.fail("修改密码失败");
+    }
+
+    @ApiOperation("获取当前登录用户信息")
+    @GetMapping("/current")
+    public Result getCurrentUser() {
+        UserVO currentUser = (UserVO) SecurityUtils.getSubject().getPrincipal();
+        if (currentUser != null) {
+            User user = userService.getById(currentUser.getId());
+            BeanUtils.copyProperties(user, currentUser);
+            return ResultWrapper.success(currentUser);
+        }
+        return ResultWrapper.fail("请先登录再进行获取用户信息的操作");
     }
 
 }

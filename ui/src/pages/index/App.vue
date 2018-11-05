@@ -1,12 +1,13 @@
 <template>
   <a-locale-provider :locale="locale">
     <a-layout style="min-height: 100vh">
-      <a-layout-sider collapsible v-model="collapsed">
+      <a-layout-sider collapsible v-model="collapsed" width="256">
         <div class="logo"/>
         <sidebar/>
       </a-layout-sider>
       <a-layout>
         <a-layout-header class="header" style="background: #fff;">
+          <a-icon class="trigger" :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="collapsed = !collapsed"/>
           <div class="is-pulled-right">
             <a-dropdown placement="bottomRight" class="mr-1">
               <a-button :icon="$messages.nav.notify.icon">
@@ -29,10 +30,13 @@
                       <img src="https://avatars3.githubusercontent.com/u/12194490?s=460&v=4" alt="avatar" width="48px">
                     </div>
                   </a-menu-item>
-                  <a-menu-item v-for="option in $messages.nav.userMenu" :key="option.label"
-                               @click.native="handleUserMenuSelect(option)">
-                    <a-icon :type="option.icon"/>{{option.label}}
-                  </a-menu-item>
+                  <template v-for="option in $messages.nav.userMenu">
+                    <a-menu-divider v-if="option.isDivided"/>
+                    <a-menu-item :key="option.label"
+                                 @click.native="handleUserMenuSelect(option)">
+                      <a-icon :type="option.icon"/>{{option.label}}
+                    </a-menu-item>
+                  </template>
                 </a-menu>
             </a-dropdown>
           </div>
@@ -77,6 +81,14 @@
 <style>
   .header {
     padding: 0 16px!important;
+  }
+  .trigger {
+    font-size: 20px;
+    cursor: pointer;
+    transition: color .3s;
+  }
+  .trigger:hover {
+    color: #1890ff;
   }
   .logo {
     height: 32px;

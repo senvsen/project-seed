@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <breadcrumb/>
-    <a-row :gutter="16">
+    <a-row>
       <a-col :span="18" :offset="3">
         <div class="page-content">
           <a-row class="toolbar">
