@@ -13,6 +13,7 @@ Spring Boot种子项目
 - RabbitMQ
 - Swagger
 - log4j2
+- FastDFS
 
 ### 前端
 
@@ -69,5 +70,7 @@ Spring Boot种子项目
 - [x] 内嵌Druid监控
 - [x] 内嵌Swagger接口文档
 - [x] 通用的管理页面vue组件
-- [ ] 消息中心
-- [ ] 基于Redis的接口缓存
+- [x] 基于Redis的接口缓存
+- [x] 基于aop的接口请求日志
+- [ ] 基于mq的消息中心
+- [ ] 分布式文件存储
