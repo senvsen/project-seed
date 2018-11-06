@@ -34,6 +34,19 @@ Spring Boot种子项目
 |server|后台服务，提供业务相关的RESTful接口，拥有完善的应用认证、授权、鉴权功能，还包含定时任务调度、session管理等功能|
 |ui|后台管理页面，基于Vue.js生态和Ant-Design-Vue进行开发|
 
+## 项目截图
+
+![用户管理](./images/user.png)
+![分配角色](./images/assign-role.png)
+![搜索](./images/search.png)
+![RBAC管理](./images/RBAC.png)
+![鉴权过滤](./images/filter-chain.png)
+![druid监控](./images/druid.png)
+![定时任务调度管理](./images/schedule.png)
+![swagger接口文档](./images/swagger-ui.png)
+![代码生成器](./images/code-generator.png)
+![个人设置](./images/setting.png)
+
 ## 运行项目
 
 1. 下载代码
