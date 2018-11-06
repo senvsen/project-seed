@@ -29,7 +29,7 @@ import java.util.Arrays;
 @Component
 public class WebLogAspect {
 
-    private static final String CLASS_METHOD_DELIMITER = "web:request:flag";
+    private static final String CLASS_METHOD_DELIMITER = ".";
     private static final String FLAG_KEY = "web:request:flag";
     private static final String WEB_LOG_POINT_CUT = "execution(public * com.yupaits.*.controller..*.*(..))";
 
