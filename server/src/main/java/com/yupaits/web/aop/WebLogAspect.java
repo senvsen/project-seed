@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
@@ -24,7 +25,7 @@ import java.util.Arrays;
  */
 @Slf4j
 @Aspect
-@Order(1)
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
 @Component
 public class WebLogAspect {
 
@@ -57,7 +58,7 @@ public class WebLogAspect {
                 request.getMethod(),
                 request.getRequestURL().toString(),
                 request.getRemoteAddr(),
-                joinPoint.getSignature().getDeclaringTypeName() + joinPoint.getSignature().getName(),
+                joinPoint.getSignature().getDeclaringTypeName() + CLASS_METHOD_DELIMITER + joinPoint.getSignature().getName(),
                 Arrays.toString(joinPoint.getArgs()));
     }
 

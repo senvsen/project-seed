@@ -6,6 +6,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -18,19 +19,21 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("unchecked")
 @Slf4j
 @Aspect
-@Order(2)
+@Order
 @Component
 public class RedisCacheAspect {
 
     private final RedisTemplate redisTemplate;
     private static final String FETCH_CACHE_ADVICES = "execution(public * com.yupaits.*.controller..*.get*(..)) " +
-            "&& !@annotation(com.yupaits.commons.annotation.NoCache)";
+            "&& !@annotation(com.yupaits.commons.annotation.NoCache) " +
+            "&& !@target(com.yupaits.commons.annotation.NoCache)";
     private static final String EVICT_CACHE_ADVICES = "(" +
             "execution(public * com.yupaits.*.controller..*.add*(..)) " +
             "|| execution(public * com.yupaits.*.controller..*.delete*(..)) " +
             "|| execution(public * com.yupaits.*.controller..*.update*(..)) " +
             "|| execution(public * com.yupaits.*.controller..*.batch*(..))" +
-            ") && !@annotation(com.yupaits.commons.annotation.NoCache)";
+            ") && !@annotation(com.yupaits.commons.annotation.NoCache) " +
+            "&& !@target(com.yupaits.commons.annotation.NoCache)";
 
     @Autowired
     public RedisCacheAspect(RedisTemplate redisTemplate) {
