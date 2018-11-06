@@ -263,6 +263,7 @@
           this.$message.success(this.$messages.successResult.create);
           this.modal.visible = false;
           this.fetchRoles();
+          this.$store.dispatch('setRolesFetched', false);
         })
       },
       handleAddPrivilege() {
@@ -293,6 +294,7 @@
           this.selectedRole = role;
           this.$set(this.roles, this.selectedIndex.role, role);
           this.modal.visible = false;
+          this.$store.dispatch('setRolesFetched', false);
         });
       },
       handleEditPrivilege() {
@@ -373,6 +375,7 @@
           this.selectedRole = {};
           this.checkedPrivilegeIds = [];
           this.fetchRoles();
+          this.$store.dispatch('setRolesFetched', false);
         });
       },
       handleDeletePrivilege() {

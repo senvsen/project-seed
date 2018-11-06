@@ -10,7 +10,9 @@ export default new Vuex.Store({
     key: messages.sidebar[0].link,
     menuKey: '',
     record: {},
-    search: {}
+    search: {},
+    rolesFetched: false,
+    roles: [],
   },
   getters: {
     pageType(state) {
@@ -27,6 +29,12 @@ export default new Vuex.Store({
     },
     search(state) {
       return state.search;
+    },
+    rolesFetched(state) {
+      return state.rolesFetched;
+    },
+    roles(state) {
+      return state.roles;
     }
   },
   mutations: {
@@ -45,6 +53,12 @@ export default new Vuex.Store({
     setSearch(state, search) {
       state.search = search;
     },
+    setRolesFetched(state, fetched) {
+      state.rolesFetched = fetched;
+    },
+    setRoles(state, roles) {
+      state.roles = roles;
+    }
   },
   actions: {
     setPageType({commit}, pageType) {
@@ -62,5 +76,11 @@ export default new Vuex.Store({
     setSearch({commit}, search) {
       commit('setSearch', search);
     },
+    setRolesFetched({commit}, fetched) {
+      commit('setRolesFetched', fetched);
+    },
+    setRoles({commit}, roles) {
+      commit('setRoles', roles);
+    }
   }
 })

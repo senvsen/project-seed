@@ -35,23 +35,22 @@
     computed: {
       user() {
         return this.rowData;
+      },
+      roles() {
+        return this.$store.getters.roles;
       }
     },
     data() {
       return {
         assignVisible: false,
-        roles: [],
         checkedRoleIds: [],
-        keyword: ''
+        keyword: '',
       }
-    },
-    created() {
-      this.fetchRoles();
     },
     methods: {
       fetchRoles() {
         this.$api.auth.getRoleList({keyword: this.keyword}).then(res => {
-          this.roles = res.data;
+          this.$store.dispatch('setRoles', res.data);
         });
       },
       fetchUserRoles() {
@@ -81,6 +80,10 @@
         });
       },
       assignRoles() {
+        if (!this.$store.getters.rolesFetched) {
+          this.fetchRoles();
+          this.$store.dispatch('setRolesFetched', true);
+        }
         this.fetchUserRoles();
         this.assignVisible = true;
       },

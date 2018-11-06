@@ -21,10 +21,10 @@ public class RelatedId<T extends Serializable> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主关联键")
+    @ApiModelProperty(value = "主关联键", required = true)
     private ForeignId<T> firstId;
 
-    @ApiModelProperty(value = "次关联键集合")
+    @ApiModelProperty(value = "次关联键集合", required = true)
     private ForeignIdCollection<T> secondIds;
 
     @ApiModelProperty(hidden = true)

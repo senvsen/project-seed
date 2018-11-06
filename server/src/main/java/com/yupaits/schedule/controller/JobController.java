@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
+import com.yupaits.commons.annotation.NoCache;
 import com.yupaits.commons.result.Result;
 import com.yupaits.commons.result.ResultCode;
 import com.yupaits.commons.result.ResultWrapper;
@@ -37,6 +38,7 @@ import java.util.stream.Collectors;
  * @author yupaits
  * @since 2018-11-03
  */
+@NoCache
 @Slf4j
 @Api(tags = "定时任务接口")
 @RestController

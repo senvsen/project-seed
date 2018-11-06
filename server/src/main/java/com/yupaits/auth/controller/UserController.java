@@ -230,7 +230,7 @@ public class UserController {
 
     @ApiOperation("获取当前登录用户信息")
     @GetMapping("/current")
-    public Result getCurrentUser() {
+    public Result currentUser() {
         UserVO currentUser = (UserVO) SecurityUtils.getSubject().getPrincipal();
         if (currentUser != null) {
             User user = userService.getById(currentUser.getId());

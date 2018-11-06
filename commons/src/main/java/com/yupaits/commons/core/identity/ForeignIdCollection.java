@@ -22,7 +22,7 @@ public class ForeignIdCollection<T extends Serializable> implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "属性名称")
+    @ApiModelProperty(value = "属性名称", required = true)
     private String fieldName;
 
     @ApiModelProperty(value = "属性值")

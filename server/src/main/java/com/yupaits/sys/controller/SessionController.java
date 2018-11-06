@@ -1,6 +1,7 @@
 package com.yupaits.sys.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yupaits.commons.annotation.NoCache;
 import com.yupaits.commons.result.Result;
 import com.yupaits.sys.service.SessionService;
 import io.swagger.annotations.Api;
@@ -17,6 +18,7 @@ import java.io.Serializable;
  * @author yupaits
  * @date 2018/10/17
  */
+@NoCache
 @Api(tags = "会话管理")
 @RestController
 @RequestMapping("/sys/session")
