@@ -85,6 +85,15 @@ spring:
     username: guest
     password: guest
 
+fdfs:
+  so-timeout: 1500
+  connect-timeout: 600
+  tracker-list:
+    - 127.0.0.1:22122
+
+upload:
+  temp-dir: /tmp/upload/
+  watermark: /watermark.jpg
 ---
 spring:
   profiles: prod
@@ -100,4 +109,14 @@ spring:
     host: localhost
     username: guest
     password: guest
+
+fdfs:
+  so-timeout: 1500
+  connect-timeout: 600
+  tracker-list:
+    - 127.0.0.1:22122
+
+upload:
+  temp-dir: /tmp/upload/
+  watermark: /watermark.jpg
 ---

@@ -180,7 +180,7 @@ public abstract class AbstractCodeGenerator {
         focList.add(new FileOutConfig("/templates/mapper.xml.ftl") {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return PROJECT_PATH + "/server" + MAPPER_XML_PATH + packageConfig.getModuleName()
+                return generatorConfig.getProjectPath() + "/server" + MAPPER_XML_PATH + packageConfig.getModuleName()
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
@@ -192,7 +192,7 @@ public abstract class AbstractCodeGenerator {
                     cfg.getMap().put("notRelateTable", true);
                     cfg.getMap().put("fieldPackages", fieldPackages(tableInfo.getImportPackages()));
                     cfg.getMap().put("hasDeserializer", hasDeserializer(tableInfo.getFields()));
-                    return PROJECT_PATH + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
+                    return generatorConfig.getProjectPath() + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
                             + "/dto/" + tableInfo.getEntityName() + "Create" + StringPool.DOT_JAVA;
                 }
             });
@@ -201,7 +201,7 @@ public abstract class AbstractCodeGenerator {
                 @Override
                 public String outputFile(TableInfo tableInfo) {
                     cfg.getMap().put("fieldPackages", fieldPackages(tableInfo.getImportPackages()));
-                    return PROJECT_PATH + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
+                    return generatorConfig.getProjectPath() + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
                             + "/dto/" + tableInfo.getEntityName() + "Update" + StringPool.DOT_JAVA;
                 }
             });
@@ -211,7 +211,7 @@ public abstract class AbstractCodeGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 cfg.getMap().put("fieldPackages", fieldPackages(tableInfo.getImportPackages()));
-                return PROJECT_PATH + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
+                return generatorConfig.getProjectPath() + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
                         + "/vo/" + tableInfo.getEntityName() + "VO" + StringPool.DOT_JAVA;
             }
         });
@@ -223,7 +223,7 @@ public abstract class AbstractCodeGenerator {
                     //noinspection unchecked
                     String fileName = MapUtils.getString((Map<String, String>) MapUtils.getMap(cfg.getMap(),"obj"),
                             "entity") + ".html";
-                    return PROJECT_PATH + "/server" + HTML_TEMPLATES_PATH + packageConfig.getModuleName()
+                    return generatorConfig.getProjectPath() + "/server" + HTML_TEMPLATES_PATH + packageConfig.getModuleName()
                             + "/" + fileName;
                 }
             });

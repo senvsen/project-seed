@@ -21,11 +21,11 @@ public class MetaObjectHandlerImpl implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        metaObject.setValue("createdAt", LocalDateTime.now());
-        metaObject.setValue("createdBy", principalId());
-        metaObject.setValue("updatedAt", LocalDateTime.now());
-        metaObject.setValue("updatedBy", principalId());
-        metaObject.setValue("deleted", false);
+        this.setFieldValByName("createdAt", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("createdBy", principalId(), metaObject);
+        this.setFieldValByName("updatedAt", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("updatedBy", principalId(), metaObject);
+        this.setFieldValByName("deleted", false, metaObject);
     }
 
     @Override

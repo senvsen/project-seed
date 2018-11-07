@@ -13,6 +13,7 @@
 
     <properties>
         <druid-starter.version>1.1.10</druid-starter.version>
+        <fastdfs-client.version>1.26.2</fastdfs-client.version>
         <commons-pool2.version>2.4.3</commons-pool2.version>
         <jackson-yaml.version>2.8.10</jackson-yaml.version>
     </properties>
@@ -63,6 +64,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.tobato</groupId>
+            <artifactId>fastdfs-client</artifactId>
+            <version>${fastdfs-client.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

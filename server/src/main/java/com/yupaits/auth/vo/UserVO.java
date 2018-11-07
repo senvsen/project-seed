@@ -25,7 +25,7 @@ public class UserVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键ID")
+    @ApiModelProperty(value = "用户ID")
     @JsonSerialize(using = LongSerializer.class)
     private Long id;
 

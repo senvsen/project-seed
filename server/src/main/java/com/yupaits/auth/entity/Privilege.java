@@ -27,7 +27,7 @@ public class Privilege extends Model<Privilege> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 主键ID
+     * 权限ID
      */
     @TableId(value = "id", type = IdType.ID_WORKER)
     private Long id;

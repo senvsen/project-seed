@@ -1,4 +1,4 @@
-package com.yupaits.schedule.entity;
+package com.yupaits.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
@@ -15,65 +14,50 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 定时任务
+ * 上传文件
  * </p>
  *
  * @author yupaits
- * @since 2018-11-03
+ * @since 2018-11-07
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("schedule_job")
-public class Job extends Model<Job> {
+@TableName("sys_store_file")
+public class StoreFile extends Model<StoreFile> {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 定时任务ID
+     * 文件ID
      */
     @TableId(value = "id", type = IdType.ID_WORKER)
     private Long id;
 
     /**
-     * 任务执行类路径
+     * 文件名
      */
-    private String className;
+    private String filename;
 
     /**
-     * CRON表达式
+     * 文件存储组
      */
-    private String cronExpression;
+    private String groupName;
 
     /**
-     * 任务名称
+     * 文件路径
      */
-    private String jobName;
+    private String path;
 
     /**
-     * 任务组
+     * 隐私文件标记
      */
-    private String jobGroup;
+    private boolean privacy;
 
     /**
-     * 触发器名称
+     * 加密串
      */
-    private String triggerName;
-
-    /**
-     * 触发器组
-     */
-    private String triggerGroup;
-
-    /**
-     * 已暂停
-     */
-    private boolean paused;
-
-    /**
-     * 定时任务描述
-     */
-    private String description;
+    private String privacyCode;
 
     /**
      * 创建时间
@@ -86,25 +70,6 @@ public class Job extends Model<Job> {
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
-
-    /**
-     * 更新时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updatedAt;
-
-    /**
-     * 更新人ID
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Long updatedBy;
-
-    /**
-     * 删除标记
-     */
-    @TableField(fill = FieldFill.INSERT)
-    @TableLogic
-    private boolean deleted;
 
 
     @Override

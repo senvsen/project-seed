@@ -2,7 +2,7 @@ USE test;
 
 DROP TABLE IF EXISTS schedule_job;
 CREATE TABLE schedule_job (
-  id BIGINT(19) NOT NULL COMMENT '主键ID',
+  id BIGINT(19) NOT NULL COMMENT '定时任务ID',
   class_name VARCHAR(255) DEFAULT NULL COMMENT '任务执行类路径',
   cron_expression VARCHAR(30) DEFAULT NULL COMMENT 'CRON表达式',
   job_name VARCHAR(30) DEFAULT NULL COMMENT '任务名称',

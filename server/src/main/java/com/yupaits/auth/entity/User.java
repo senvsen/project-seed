@@ -28,7 +28,7 @@ public class User extends Model<User> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 主键ID
+     * 用户ID
      */
     @TableId(value = "id", type = IdType.ID_WORKER)
     private Long id;

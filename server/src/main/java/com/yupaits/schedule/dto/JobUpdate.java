@@ -25,7 +25,7 @@ public class JobUpdate extends BaseDTO {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键ID", required = true)
+    @ApiModelProperty(value = "定时任务ID", required = true)
     @JsonDeserialize(using = LongDeserializer.class)
     private Long id;
 

@@ -26,7 +26,7 @@ public class Role extends Model<Role> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 主键ID
+     * 角色ID
      */
     @TableId(value = "id", type = IdType.ID_WORKER)
     private Long id;

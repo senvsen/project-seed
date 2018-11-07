@@ -23,7 +23,7 @@ public class RoleVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键ID")
+    @ApiModelProperty(value = "角色ID")
     @JsonSerialize(using = LongSerializer.class)
     private Long id;
 

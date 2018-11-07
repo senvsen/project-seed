@@ -24,7 +24,7 @@ public class PrivilegeVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键ID")
+    @ApiModelProperty(value = "权限ID")
     @JsonSerialize(using = LongSerializer.class)
     private Long id;
 

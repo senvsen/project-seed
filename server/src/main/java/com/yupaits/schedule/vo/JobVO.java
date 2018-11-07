@@ -23,7 +23,7 @@ public class JobVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键ID")
+    @ApiModelProperty(value = "定时任务ID")
     @JsonSerialize(using = LongSerializer.class)
     private Long id;
 
