@@ -8,6 +8,7 @@ Spring Boot种子项目
 - SpringBoot
 - Mybatis-Plus
 - Shiro
+- Druid
 - Redis
 - Quartz
 - RabbitMQ
