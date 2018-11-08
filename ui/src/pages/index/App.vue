@@ -2,12 +2,17 @@
   <a-locale-provider :locale="locale">
     <a-layout style="min-height: 100vh">
       <a-layout-sider collapsible v-model="collapsed" width="256">
-        <div class="logo"/>
+        <div>
+          <img src="../../assets/logo-lg.png" alt="" v-if="collapsed">
+          <img src="../../assets/logo.png" alt="" v-else>
+        </div>
         <sidebar/>
       </a-layout-sider>
       <a-layout>
         <a-layout-header class="header" style="background: #fff;">
-          <a-icon class="trigger" :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="collapsed = !collapsed"/>
+          <a-button size="small" @click="collapsed = !collapsed">
+            <a-icon :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
+          </a-button>
           <div class="is-pulled-right">
             <a-dropdown placement="bottomRight" class="mr-1">
               <a-button :icon="$messages.nav.notify.icon">
@@ -81,19 +86,6 @@
 <style>
   .header {
     padding: 0 16px!important;
-  }
-  .trigger {
-    font-size: 20px;
-    cursor: pointer;
-    transition: color .3s;
-  }
-  .trigger:hover {
-    color: #1890ff;
-  }
-  .logo {
-    height: 32px;
-    background: rgba(255, 255, 255, .2);
-    margin: 16px;
   }
   .message-dot {
     vertical-align: initial!important;

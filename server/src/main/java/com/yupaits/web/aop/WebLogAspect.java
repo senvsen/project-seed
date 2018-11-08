@@ -1,5 +1,6 @@
 package com.yupaits.web.aop;
 
+import com.yupaits.web.shiro.ShiroHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -53,8 +54,9 @@ public class WebLogAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         //记录请求日志
-        log.info("flag: {}, method: {}, url: {}, ip: {}, class_method: {}, params: {}",
+        log.info("flag: {}, operator: {}, method: {}, url: {}, ip: {}, class_method: {}, params: {}",
                 flag.get(),
+                ShiroHelper.principalId(),
                 request.getMethod(),
                 request.getRequestURL().toString(),
                 request.getRemoteAddr(),

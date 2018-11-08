@@ -3,19 +3,18 @@ package com.yupaits.sys.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
-import com.yupaits.auth.vo.UserVO;
 import com.yupaits.commons.result.ResultCode;
 import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.commons.utils.EncryptUtils;
 import com.yupaits.commons.utils.ValidateUtils;
 import com.yupaits.sys.entity.StoreFile;
 import com.yupaits.sys.service.IStoreFileService;
+import com.yupaits.web.shiro.ShiroHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -63,7 +62,7 @@ public class FileController {
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             objectMapper.writeValue(response.getWriter(), ResultWrapper.fail(ResultCode.DATA_NOT_FOUND));
         } else if (storeFile.isPrivacy() && !StringUtils.equals(storeFile.getPrivacyCode(),
-                EncryptUtils.genPrivacyCode(((UserVO) SecurityUtils.getSubject().getPrincipal()).getUsername()))) {
+                EncryptUtils.genPrivacyCode((ShiroHelper.principal().getUsername())))) {
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
             objectMapper.writeValue(response.getWriter(), ResultWrapper.fail(HttpStatus.FORBIDDEN));
         } else {

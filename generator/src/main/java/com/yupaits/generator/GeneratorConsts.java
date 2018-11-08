@@ -54,4 +54,6 @@ public class GeneratorConsts {
     static final String SERVICE_EXCEPTION_CLASS = "com.yupaits.commons.exceptions.ServiceException;";
 
     static final String MYBATIS_PLUS_PACKAGE_PREFIX = "com.baomidou.mybatisplus";
+
+    static final String FIELD_DATETIME_TYPE = "datetime";
 }

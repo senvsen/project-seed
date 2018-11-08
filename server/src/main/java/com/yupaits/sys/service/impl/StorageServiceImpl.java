@@ -5,7 +5,6 @@ import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.yupaits.auth.vo.UserVO;
 import com.yupaits.commons.consts.AppConsts;
 import com.yupaits.commons.result.Result;
 import com.yupaits.commons.result.ResultCode;
@@ -16,6 +15,7 @@ import com.yupaits.sys.entity.StoreFile;
 import com.yupaits.sys.service.IStoreFileService;
 import com.yupaits.sys.service.StorageService;
 import com.yupaits.web.prop.UploadProps;
+import com.yupaits.web.shiro.ShiroHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.filters.Watermark;
@@ -23,7 +23,6 @@ import net.coobird.thumbnailator.geometry.Positions;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -232,7 +231,7 @@ public class StorageServiceImpl implements StorageService {
                 .setFilename(filename)
                 .setPrivacy(isPrivacy)
                 .setPrivacyCode(isPrivacy ?
-                        EncryptUtils.genPrivacyCode(((UserVO) SecurityUtils.getSubject().getPrincipal()).getUsername())
+                        EncryptUtils.genPrivacyCode(ShiroHelper.principal().getUsername())
                         : null);
     }
 }

@@ -42,7 +42,7 @@ public class UserCreate extends BaseDTO {
     private Gender gender;
 
     @ApiModelProperty(value = "生日")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate birthday;
 
     @ApiModelProperty(value = "头像")

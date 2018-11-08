@@ -65,6 +65,9 @@ api:
   - name: sys
     title: 系统管理接口
     description: 系统管理接口文档
+  - name: message
+    title: 消息中心接口
+    description: 消息中心接口文档
   - name: schedule
     title: 定时任务接口
     description: 定时任务管理接口文档

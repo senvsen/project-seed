@@ -36,8 +36,13 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket sessionApi() {
+    public Docket sysApi() {
         return genDocket("sys");
+    }
+
+    @Bean
+    public Docket msgApi() {
+        return genDocket("msg");
     }
 
     @Bean

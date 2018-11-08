@@ -14,13 +14,13 @@ import com.yupaits.commons.result.Result;
 import com.yupaits.commons.result.ResultCode;
 import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.commons.utils.ValidateUtils;
+import com.yupaits.web.shiro.ShiroHelper;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -208,8 +208,8 @@ public class UserController {
         if (!StringUtils.equals(modifyPasswordForm.getNewPassword(), modifyPasswordForm.getConfirmPassword())) {
             return ResultWrapper.fail("新密码与确认密码不匹配");
         }
-        UserVO currentUser = (UserVO) SecurityUtils.getSubject().getPrincipal();
-        if (currentUser == null) {
+        UserVO currentUser = ShiroHelper.principal();
+        if (!ValidateUtils.idValid(currentUser.getId())) {
             return ResultWrapper.fail("请先登录再进行修改密码操作");
         }
         User user = userService.getById(currentUser.getId());
@@ -231,8 +231,8 @@ public class UserController {
     @ApiOperation("获取当前登录用户信息")
     @GetMapping("/current")
     public Result currentUser() {
-        UserVO currentUser = (UserVO) SecurityUtils.getSubject().getPrincipal();
-        if (currentUser != null) {
+        UserVO currentUser = ShiroHelper.principal();
+        if (ValidateUtils.idValid(currentUser.getId())) {
             User user = userService.getById(currentUser.getId());
             BeanUtils.copyProperties(user, currentUser);
             return ResultWrapper.success(currentUser);

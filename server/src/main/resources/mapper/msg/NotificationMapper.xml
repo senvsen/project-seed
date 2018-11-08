@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yupaits.msg.mapper.NotificationMapper">
+
+    <!-- 开启二级缓存 -->
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yupaits.msg.entity.Notification">
+        <id column="id" property="id" />
+        <result column="operator" property="operator" />
+        <result column="action" property="action" />
+        <result column="target_id" property="targetId" />
+        <result column="target_type" property="targetType" />
+        <result column="target_owner" property="targetOwner" />
+        <result column="send_at" property="sendAt" />
+        <result column="has_read" property="hasRead" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, operator, action, target_id, target_type, target_owner, send_at, has_read
+    </sql>
+
+</mapper>
