@@ -5,36 +5,35 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * 消息类型
  * @author yupaits
- * @date 2018/11/8
+ * @date 2018/11/9
  */
-public enum MsgType {
+public enum MsgLevel {
     /**
-     * 邮件
+     * 通知
      */
-    EMAIL(1),
+    INFO(1),
     /**
-     * 短信
+     * 告警
      */
-    SMS(2),
+    WARNING(2),
     /**
-     * 微信推送消息
+     * 危险
      */
-    WECHAT(3);
+    DANGER(3);
 
     @EnumValue
     private int code;
 
-    MsgType(int code) {
+    MsgLevel(int code) {
         this.code = code;
     }
 
     @JsonCreator
-    public static MsgType fromCode(int code) {
-        for (MsgType msgType : MsgType.values()) {
-            if (msgType.code == code) {
-                return msgType;
+    public static MsgLevel fromCode(int code) {
+        for (MsgLevel level : MsgLevel.values()) {
+            if (level.code == code) {
+                return level;
             }
         }
         return null;

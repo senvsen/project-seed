@@ -37,6 +37,11 @@ spring:
     cache: false
   quartz:
     job-store-type: jdbc
+  mail:
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enabled: true
+      mail.smtp.starttls.requried: true
 
 logging:
   config: classpath:log4j2.yml
@@ -87,6 +92,12 @@ spring:
     host: localhost
     username: guest
     password: guest
+  mail:
+    host: smtp.qq.com
+    port: 25
+    username: xxxxxxxxx@qq.com
+    password: xxxxxxxx
+    test-connection: false
 
 fdfs:
   so-timeout: 1500
@@ -112,6 +123,12 @@ spring:
     host: localhost
     username: guest
     password: guest
+  mail:
+    host: smtp.qq.com
+    port: 25
+    username: xxxxxxxxx@qq.com
+    password: xxxxxxxx
+    test-connection: false
 
 fdfs:
   so-timeout: 1500

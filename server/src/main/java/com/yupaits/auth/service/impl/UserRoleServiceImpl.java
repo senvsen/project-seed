@@ -1,20 +1,23 @@
 package com.yupaits.auth.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import com.yupaits.auth.entity.UserRole;
 import com.yupaits.auth.mapper.UserRoleMapper;
 import com.yupaits.auth.service.IUserRoleService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
-import com.yupaits.commons.exceptions.ServiceException;;
-import com.yupaits.commons.core.identity.RelatedId;;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.google.common.collect.Lists;
-import org.springframework.transaction.annotation.Transactional;
+import com.yupaits.commons.core.identity.RelatedId;
+import com.yupaits.commons.exceptions.ServiceException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.List;
+
+;
+;
 
 /**
  * <p>
@@ -37,7 +40,6 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
         List<UserRole> addUserRoleList = Lists.newArrayList();
         relatedId.getSecondIds().getValues().forEach(secondId -> {
             UserRole userRole = getOne(new QueryWrapper<UserRole>()
-                    .eq("deleted", false)
                     .eq(StringUtils.camelToUnderline(relatedId.getFirstId().getFieldName()), relatedId.getFirstId().getValue())
                     .eq(StringUtils.camelToUnderline(relatedId.getSecondIds().getFieldName()), secondId));
             if (userRole == null) {

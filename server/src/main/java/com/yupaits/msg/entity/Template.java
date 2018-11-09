@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+
+import com.yupaits.commons.consts.enums.MsgType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -43,7 +45,7 @@ public class Template extends Model<Template> {
     /**
      * 消息类型
      */
-    private Integer msgType;
+    private MsgType msgType;
 
     /**
      * 模板格式

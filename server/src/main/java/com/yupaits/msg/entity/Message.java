@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.yupaits.commons.consts.enums.MsgType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -34,7 +36,7 @@ public class Message extends Model<Message> {
     /**
      * 消息类型
      */
-    private Integer msgType;
+    private MsgType msgType;
 
     /**
      * 使用消息模板

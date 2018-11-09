@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+
+import com.yupaits.commons.consts.enums.MsgLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -38,7 +40,7 @@ public class SystemNotice extends Model<SystemNotice> {
     /**
      * 公告等级
      */
-    private Integer msgLevel;
+    private MsgLevel msgLevel;
 
     /**
      * 公告内容

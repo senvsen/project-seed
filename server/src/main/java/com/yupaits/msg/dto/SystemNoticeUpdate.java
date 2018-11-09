@@ -2,6 +2,7 @@ package com.yupaits.msg.dto;
 
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.yupaits.commons.consts.enums.MsgLevel;
 import com.yupaits.commons.core.serializer.LongDeserializer;
 import com.yupaits.commons.core.BaseDTO;
 import io.swagger.annotations.ApiModel;
@@ -30,7 +31,7 @@ public class SystemNoticeUpdate extends BaseDTO {
     private Long id;
 
     @ApiModelProperty(value = "公告等级", required = true)
-    private Integer msgLevel;
+    private MsgLevel msgLevel;
 
     @ApiModelProperty(value = "公告内容", required = true)
     private String msgContent;

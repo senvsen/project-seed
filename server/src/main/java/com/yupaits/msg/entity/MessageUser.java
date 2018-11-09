@@ -46,6 +46,11 @@ public class MessageUser extends Model<MessageUser> {
     private Long userId;
 
     /**
+     * 清除原消息标记
+     */
+    private boolean needRemove;
+
+    /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)

@@ -50,7 +50,6 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         List<${entity}> add${entity}List = Lists.newArrayList();
         relatedId.getSecondIds().getValues().forEach(secondId -> {
             ${entity} ${cfg.obj.entity} = getOne(new QueryWrapper<${entity}>()
-                    .eq("deleted", false)
                     .eq(StringUtils.camelToUnderline(relatedId.getFirstId().getFieldName()), relatedId.getFirstId().getValue())
                     .eq(StringUtils.camelToUnderline(relatedId.getSecondIds().getFieldName()), secondId));
             if (${cfg.obj.entity} == null) {

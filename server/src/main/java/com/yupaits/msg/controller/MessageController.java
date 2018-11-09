@@ -1,9 +1,10 @@
 package com.yupaits.msg.controller;
 
+import com.yupaits.msg.dto.MessagePayload;
 import com.yupaits.msg.entity.Message;
 import com.yupaits.msg.service.IMessageService;
+import com.yupaits.msg.service.IMessageUserService;
 import com.yupaits.msg.vo.MessageVO;
-import com.yupaits.msg.dto.MessageCreate;
 import com.yupaits.commons.utils.ValidateUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
  * </p>
  *
  * @author yupaits
- * @since 2018-11-08
+ * @since 2018-11-09
  */
 @Slf4j
 @Api(tags = "消息接口")
@@ -40,21 +41,43 @@ import java.util.stream.Collectors;
 public class MessageController {
 
     private final IMessageService messageService;
+    private final IMessageUserService messageUserService;
 
     @Autowired
-    public MessageController(IMessageService messageService) {
+    public MessageController(IMessageService messageService, IMessageUserService messageUserService) {
         this.messageService = messageService;
+        this.messageUserService = messageUserService;
     }
 
     @ApiOperation("创建消息")
     @PostMapping("")
-    public Result addMessage(@RequestBody MessageCreate messageCreate) {
-        if (!messageCreate.isValid()) {
+    public Result addMessage(@RequestBody MessagePayload messagePayload) {
+        if (!messagePayload.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
         Message message = new Message();
-        BeanUtils.copyProperties(messageCreate, message);
-        return messageService.save(message) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.CREATE_FAIL);
+        BeanUtils.copyProperties(messagePayload.getMessage(), message);
+        message.setPayload(messagePayload.getMessage().getPayload());
+        return messageService.save(message) && messageUserService.batchSave(messagePayload.getRelatedId())
+                ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.CREATE_FAIL);
+    }
+
+    @ApiOperation("根据ID删除消息")
+    @DeleteMapping("/{id:\\d{19}}")
+    public Result deleteMessage(@PathVariable Long id) {
+        if (!ValidateUtils.idValid(id)) {
+            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
+        }
+        return messageService.removeById(id) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
+    }
+
+    @ApiOperation("批量删除消息")
+    @PutMapping("/batch-delete")
+    public Result batchDeleteMessage(@RequestBody List<Long> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
+        }
+        return messageService.removeByIds(ids) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
     }
 
     @ApiOperation("根据ID获取消息信息")

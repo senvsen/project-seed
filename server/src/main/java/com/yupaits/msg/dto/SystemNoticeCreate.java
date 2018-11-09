@@ -1,12 +1,14 @@
 package com.yupaits.msg.dto;
 
-import java.time.LocalDateTime;
+import com.yupaits.commons.consts.enums.MsgLevel;
 import com.yupaits.commons.core.BaseDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -24,7 +26,7 @@ public class SystemNoticeCreate extends BaseDTO {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "公告等级", required = true)
-    private Integer msgLevel;
+    private MsgLevel msgLevel;
 
     @ApiModelProperty(value = "公告内容", required = true)
     private String msgContent;

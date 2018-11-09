@@ -1,5 +1,7 @@
 package com.yupaits.auth.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,10 +12,16 @@ import com.yupaits.auth.entity.User;
 import com.yupaits.auth.service.IUserService;
 import com.yupaits.auth.vo.UserVO;
 import com.yupaits.commons.consts.SecurityConsts;
+import com.yupaits.commons.consts.enums.MsgType;
 import com.yupaits.commons.result.Result;
 import com.yupaits.commons.result.ResultCode;
 import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.commons.utils.ValidateUtils;
+import com.yupaits.msg.entity.Message;
+import com.yupaits.msg.entity.MessageUser;
+import com.yupaits.msg.service.IMessageService;
+import com.yupaits.msg.service.IMessageUserService;
+import com.yupaits.web.mq.MsgSender;
 import com.yupaits.web.shiro.ShiroHelper;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -46,10 +54,20 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final IUserService userService;
+    private final IMessageService messageService;
+    private final IMessageUserService messageUserService;
+    private final MsgSender msgSender;
+
+    private static final String SEND_PASSWORD_PATTERN = "【Seed】您的初始登录密码为：%s 。您可以在登录之后修改此密码。";
+    private static final String SEND_PASSWORD_EMAIL_SUBJECT = "【Seed】初始登录密码";
 
     @Autowired
-    public UserController(IUserService userService) {
+    public UserController(IUserService userService, IMessageService messageService,
+                          IMessageUserService messageUserService, MsgSender msgSender) {
         this.userService = userService;
+        this.messageService = messageService;
+        this.messageUserService = messageUserService;
+        this.msgSender = msgSender;
     }
 
     @ApiOperation("创建用户")
@@ -62,7 +80,31 @@ public class UserController {
         BeanUtils.copyProperties(userCreate, user);
         String password = initPassword(user);
         if (userService.save(user)) {
-            //TODO 创建用户完成发送初始密码至用户邮箱或手机短信
+            User savedUser = userService.getOne(new QueryWrapper<User>().eq("username", user.getUsername()));
+            Message message = new Message().setUseTemplate(false).setContent(String.format(SEND_PASSWORD_PATTERN, password));
+            if (StringUtils.isNotBlank(user.getPhone())) {
+                message.setMsgType(MsgType.SMS);
+            } else if (StringUtils.isNotBlank(user.getEmail())) {
+                message.setMsgType(MsgType.EMAIL);
+                JSONObject payload = new JSONObject();
+                payload.put("subject", SEND_PASSWORD_EMAIL_SUBJECT);
+                message.setPayload(JSON.toJSONString(payload));
+            } else {
+                userService.removeById(savedUser.getId());
+                return ResultWrapper.fail("未设置该用户的邮箱或手机，无法完成创建");
+            }
+            if (!messageService.save(message)) {
+                userService.removeById(savedUser.getId());
+                return ResultWrapper.fail("保存发送密码消息失败");
+            }
+            Message savedMessage = messageService.getOne(new QueryWrapper<Message>().eq("content", message.getContent()));
+            MessageUser messageUser = new MessageUser().setMessageId(savedMessage.getId()).setUserId(savedUser.getId()).setNeedRemove(true);
+            if (messageUserService.save(messageUser)) {
+                messageService.removeById(savedMessage.getId());
+                userService.removeById(savedUser.getId());
+                return ResultWrapper.fail("保存发送密码消息和用户对应关系失败");
+            }
+            msgSender.send(messageUser);
             return ResultWrapper.success();
         }
         return ResultWrapper.fail(ResultCode.CREATE_FAIL);

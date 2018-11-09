@@ -37,7 +37,6 @@ public class RolePrivilegeServiceImpl extends ServiceImpl<RolePrivilegeMapper, R
         List<RolePrivilege> addRolePrivilegeList = Lists.newArrayList();
         relatedId.getSecondIds().getValues().forEach(secondId -> {
             RolePrivilege rolePrivilege = getOne(new QueryWrapper<RolePrivilege>()
-                    .eq("deleted", false)
                     .eq(StringUtils.camelToUnderline(relatedId.getFirstId().getFieldName()), relatedId.getFirstId().getValue())
                     .eq(StringUtils.camelToUnderline(relatedId.getSecondIds().getFieldName()), secondId));
             if (rolePrivilege == null) {
