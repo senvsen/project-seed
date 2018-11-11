@@ -31,6 +31,6 @@ public class MqTest {
 
     @Test
     public void testSendMessage() {
-        msgSender.send(new MessageUser().setUserId(111L).setSendAt(LocalDateTime.now()));
+        msgSender.send(new MessageUser().setMessageId(112L).setUserId(111L).setSendAt(LocalDateTime.now()));
     }
 }

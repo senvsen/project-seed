@@ -76,6 +76,9 @@ public class UserController {
         if (!userCreate.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
+        if (StringUtils.isAllBlank(userCreate.getEmail(), userCreate.getPhone())) {
+            return ResultWrapper.fail("未设置该用户的邮箱或手机，无法完成创建");
+        }
         User user = new User();
         BeanUtils.copyProperties(userCreate, user);
         String password = initPassword(user);
@@ -89,9 +92,6 @@ public class UserController {
                 JSONObject payload = new JSONObject();
                 payload.put("subject", SEND_PASSWORD_EMAIL_SUBJECT);
                 message.setPayload(JSON.toJSONString(payload));
-            } else {
-                userService.removeById(savedUser.getId());
-                return ResultWrapper.fail("未设置该用户的邮箱或手机，无法完成创建");
             }
             if (!messageService.save(message)) {
                 userService.removeById(savedUser.getId());

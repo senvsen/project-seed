@@ -62,6 +62,10 @@ public class MsgReceiver {
     @RabbitHandler
     public void handleMessage(MessageUser messageUser) {
         Message message = messageService.getById(messageUser.getMessageId());
+        if (message == null) {
+            messageUserService.removeById(messageUser.getId());
+            return;
+        }
         MessageVO messageVO = new MessageVO();
         BeanUtils.copyProperties(message, messageVO);
         messageVO.setPayload(message.getPayload());

@@ -44,7 +44,7 @@ CREATE TABLE msg_message_user (
   id BIGINT(19) NOT NULL COMMENT '主键ID',
   message_id BIGINT(19) NOT NULL COMMENT '消息ID',
   user_id BIGINT(19) NOT NULL COMMENT '目标用户ID',
-  need_clear TINYINT(1) DEFAULT NULL COMMENT '清除原消息标记',
+  need_remove TINYINT(1) DEFAULT NULL COMMENT '清除原消息标记',
   created_at DATETIME DEFAULT NULL COMMENT '创建时间',
   created_by BIGINT(19) DEFAULT NULL COMMENT '创建人ID',
   send_at DATETIME DEFAULT NULL COMMENT '发送时间',
