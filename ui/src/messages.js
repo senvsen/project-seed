@@ -59,6 +59,11 @@ export default {
         {label: '消息推送', icon: 'message', link: '/message', menuKey: 'msg', custom: 'message'}
       ]
     },
+    {
+      label: '应用管理', icon: 'appstore-o', key: 'app', children: [
+        {label: '微信公众号', icon: 'wechat', link: '/mp-account', pageType: 'manage', menuKey: 'app'}
+      ],
+    },
     {label: '开发工具', icon: 'tool', key: 'dev-tool', children: [
         {label: '接口文档', icon: 'api', link: '/swagger-ui.html', pageType: 'iframe', menuKey: 'dev-tool'},
         {label: '代码生成器', icon: 'code-o', link: '/code-gen', menuKey: 'dev-tool', custom: 'code-gen'}
@@ -76,6 +81,7 @@ export default {
       '/schedule': ['系统监控', '定时任务'],
       '/system-notice': ['消息公告', '系统公告'],
       '/message': ['消息公告', '消息推送'],
+      '/mp-account': ['应用管理', '微信公众号'],
       '/code-gen': ['开发工具', '代码生成器'],
       '/profile': ['个人中心'],
       '/setting': ['个人设置'],
@@ -152,6 +158,25 @@ export default {
         {title: '更新时间', dataIndex: 'updatedAt', isDate: true},
         {title: '更新人', dataIndex: 'updatedBy'},
       ]
+    },
+    '/mp-account': {
+      tableColumns: [
+        {title: 'ID', width: '15%', dataIndex: 'id'},
+        {title: '公众号名称', width: '15%', dataIndex: 'appName'},
+        {title: '公众号AppId', width: '20%', dataIndex: 'appId'},
+        {title: '公众号Secret', width: '20%', dataIndex: 'appSecret'},
+        {title: '操作', width: '30%', scopedSlots: {customRender: 'opt'}},
+      ],
+      expandedColumns: [
+        {title: '公众号Token', dataIndex: 'token'},
+        {title: '公众号EncodingAesKey', dataIndex: 'encodingAesKey'},
+        {title: '关联类型', dataIndex: 'relatedType'},
+        {title: '关联ID', dataIndex: 'relatedId'},
+        {title: '创建时间', dataIndex: 'createdAt', isDate: true},
+        {title: '创建人', dataIndex: 'createdBy'},
+        {title: '更新时间', dataIndex: 'updatedAt', isDate: true},
+        {title: '更新人', dataIndex: 'updatedBy'},
+      ]
     }
   },
   operation: {
@@ -164,7 +189,8 @@ export default {
   },
   pageLabel: {
     '/user': '用户',
-    '/schedule': '定时任务'
+    '/schedule': '定时任务',
+    '/mp-account': '公众号账号',
   },
   modal: {
     createTitle: '创建',

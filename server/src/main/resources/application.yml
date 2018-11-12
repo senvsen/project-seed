@@ -31,6 +31,13 @@ spring:
       shutdown-timeout: 100ms
   rabbitmq:
     port: 5672
+    listener:
+      direct:
+        retry:
+          enabled: true
+    template:
+      retry:
+        enabled: true
   messages:
     basename: i18n/messages
   thymeleaf:

@@ -1,28 +1,27 @@
 package com.yupaits.wx.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yupaits.commons.result.Result;
+import com.yupaits.commons.result.ResultCode;
+import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.commons.utils.ValidateUtils;
+import com.yupaits.wx.dto.MpWelcomeMessageCreate;
+import com.yupaits.wx.dto.MpWelcomeMessageUpdate;
 import com.yupaits.wx.entity.MpWelcomeMessage;
 import com.yupaits.wx.service.IMpWelcomeMessageService;
 import com.yupaits.wx.vo.MpWelcomeMessageVO;
-import com.yupaits.wx.dto.MpWelcomeMessageCreate;
-import com.yupaits.wx.dto.MpWelcomeMessageUpdate;
-import com.yupaits.commons.utils.ValidateUtils;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import java.util.Map;
-import org.apache.commons.collections4.MapUtils;
-import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultWrapper;
-import com.yupaits.commons.result.ResultCode;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.swagger.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 

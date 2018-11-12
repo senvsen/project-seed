@@ -1,5 +1,6 @@
 package com.yupaits.web.config;
 
+import com.yupaits.commons.annotation.SwaggerIgnore;
 import com.yupaits.web.prop.ApiProps;
 import com.yupaits.web.prop.model.GroupApiInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -7,12 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import static com.google.common.base.Predicates.not;
+import static com.google.common.base.Predicates.or;
+import static springfox.documentation.builders.PathSelectors.regex;
+import static springfox.documentation.builders.RequestHandlerSelectors.withClassAnnotation;
+import static springfox.documentation.builders.RequestHandlerSelectors.withMethodAnnotation;
 
 /**
  * Swagger接口文档配置
@@ -50,6 +55,11 @@ public class SwaggerConfig {
         return genDocket("schedule");
     }
 
+    @Bean
+    public Docket wxApi() {
+        return genDocket("wx");
+    }
+
     /**
      * 根据分组名称生成Docket
      * @param groupName 分组名
@@ -59,8 +69,9 @@ public class SwaggerConfig {
                 .groupName(groupName)
                 .apiInfo(apiInfo(groupName))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.yupaits." + groupName))
-                .paths(PathSelectors.any())
+                .apis(not(withClassAnnotation(SwaggerIgnore.class)))
+                .apis(not(withMethodAnnotation(SwaggerIgnore.class)))
+                .paths(or(regex("/" + groupName + "/.*")))
                 .build();
     }
 

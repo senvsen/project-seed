@@ -14,5 +14,12 @@ export default {
     handleEdit: api.schedule.updateJob,
     handleDelete: api.schedule.deleteJob,
     handleBatchDelete: api.schedule.batchDeleteJob,
+  },
+  '/mp-account': {
+    fetchData: api.wx.getMpAccountPage,
+    handleAdd: api.wx.addMpAccount,
+    handleEdit: api.wx.updateMpAccount,
+    handleDelete: api.wx.deleteMpAccount,
+    handleBatchDelete: api.wx.batchDeleteMpAccount,
   }
 }

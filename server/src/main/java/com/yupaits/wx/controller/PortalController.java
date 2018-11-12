@@ -1,5 +1,6 @@
 package com.yupaits.wx.controller;
 
+import com.yupaits.commons.annotation.SwaggerIgnore;
 import com.yupaits.wx.helper.WxMpServiceHelper;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2018/11/12
  */
 @Slf4j
+@SwaggerIgnore
 @RestController
 @RequestMapping("/wx/portal/{id}")
 public class PortalController {

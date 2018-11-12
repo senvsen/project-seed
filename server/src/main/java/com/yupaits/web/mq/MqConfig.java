@@ -19,13 +19,11 @@ public class MqConfig {
 
     @Bean
     public Queue notificationQueue() {
-        //TODO 设置队列延迟重试
         return QueueBuilder.durable(NOTIFICATION_QUEUE).build();
     }
 
     @Bean
     public Queue messageQueue() {
-        //TODO 设置队列延迟重试
         return QueueBuilder.durable(MESSAGE_QUEUE).build();
     }
 
