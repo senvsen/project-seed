@@ -27,7 +27,7 @@ export default {
   getMpAccountPage(page, size, query, ascs, descs) {
     const ascsParam = ascs.join('&ascs=');
     const descsParam = descs.join('&descs=');
-    return request.post(`${prefix}/mpAccount/page?page=${page}&size=${size}&descs=${descsParam}&ascs=${ascsParam}`, query);
+    return request.post(`${prefix}/mp-account/page?page=${page}&size=${size}&descs=${descsParam}&ascs=${ascsParam}`, query);
   },
   addMpWelcomeMessage(mpWelcomeMessageCreate) {
     return request.post(`${prefix}/mp-welcome-message`, mpWelcomeMessageCreate);
