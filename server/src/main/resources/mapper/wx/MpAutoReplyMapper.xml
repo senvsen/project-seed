@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yupaits.msg.mapper.MessageUserMapper">
+<mapper namespace="com.yupaits.wx.mapper.MpAutoReplyMapper">
 
     <!-- 开启二级缓存 -->
     <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.yupaits.msg.entity.MessageUser">
+    <resultMap id="BaseResultMap" type="com.yupaits.wx.entity.MpAutoReply">
         <id column="id" property="id" />
-        <result column="message_id" property="messageId" />
-        <result column="user_id" property="userId" />
-        <result column="need_remove" property="needRemove" />
+        <result column="account_id" property="accountId" />
+        <result column="keywords" property="keywords" />
+        <result column="match_rule" property="matchRule" />
+        <result column="reply" property="reply" />
         <result column="created_at" property="createdAt" />
         <result column="created_by" property="createdBy" />
-        <result column="send_at" property="sendAt" />
+        <result column="updated_at" property="updatedAt" />
+        <result column="updated_by" property="updatedBy" />
         <result column="deleted" property="deleted" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, message_id, user_id, need_remove, created_at, created_by, send_at, deleted
+        id, account_id, keywords, match_rule, reply, created_at, created_by, updated_at, updated_by, deleted
     </sql>
 
 </mapper>

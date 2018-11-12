@@ -54,7 +54,11 @@ export default {
         {label: 'Druid监控', icon: 'database',link: '/druid/index.html', pageType: 'iframe', menuKey: 'monitor'}
       ]
     },
-    {label: '消息推送', icon: 'message', key: 'msg', link: '/message'},
+    {label: '消息公告', icon: 'message', key: 'msg', children: [
+        {label: '系统公告', icon: 'notification', link: '/system-notice', menuKey: 'msg', custom: 'system-notice'},
+        {label: '消息推送', icon: 'message', link: '/message', menuKey: 'msg', custom: 'message'}
+      ]
+    },
     {label: '开发工具', icon: 'tool', key: 'dev-tool', children: [
         {label: '接口文档', icon: 'api', link: '/swagger-ui.html', pageType: 'iframe', menuKey: 'dev-tool'},
         {label: '代码生成器', icon: 'code-o', link: '/code-gen', menuKey: 'dev-tool', custom: 'code-gen'}
@@ -70,6 +74,8 @@ export default {
       '/filter-chain': ['系统安全', '鉴权规则'],
       '/session': ['系统监控', 'Session管理'],
       '/schedule': ['系统监控', '定时任务'],
+      '/system-notice': ['消息公告', '系统公告'],
+      '/message': ['消息公告', '消息推送'],
       '/code-gen': ['开发工具', '代码生成器'],
       '/profile': ['个人中心'],
       '/setting': ['个人设置'],

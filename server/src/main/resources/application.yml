@@ -46,6 +46,15 @@ spring:
 logging:
   config: classpath:log4j2.yml
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
 mybatis-plus:
   global-config:
     db-config:

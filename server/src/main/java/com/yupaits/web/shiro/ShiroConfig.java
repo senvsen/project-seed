@@ -6,6 +6,7 @@ import com.yupaits.sys.entity.FilterChain;
 import com.yupaits.sys.service.IFilterChainService;
 import com.yupaits.web.shiro.redis.RedisCacheManager;
 import com.yupaits.web.shiro.redis.RedisSessionDAO;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -87,6 +88,7 @@ public class ShiroConfig {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(redisSessionDAO());
         sessionManager.setSessionValidationSchedulerEnabled(true);
+        sessionManager.setSessionValidationInterval(10 * DateUtils.MILLIS_PER_MINUTE);
         return sessionManager;
     }
 

@@ -8,6 +8,8 @@ import Dashboard from './views/custom/Dashboard'
 import RBAC from './views/custom/RBAC'
 import FilterChain from './views/custom/FilterChain'
 import Session from './views/custom/Session'
+import SystemNotice from './views/custom/SystemNotice'
+import Message from './views/custom/Message'
 import CodeGen from './views/custom/CodeGen'
 import Profile from './views/custom/Profile'
 import Setting from './views/custom/Setting'
@@ -18,6 +20,8 @@ const customPage = {
   'rbac': RBAC,
   'filter-chain': FilterChain,
   'session': Session,
+  'system-notice': SystemNotice,
+  'message': Message,
   'code-gen': CodeGen,
   'profile': Profile,
   'setting': Setting,
