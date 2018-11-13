@@ -1,6 +1,8 @@
 package com.yupaits.msg.dto;
 
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.yupaits.commons.consts.enums.MsgLevel;
 import com.yupaits.commons.core.serializer.LongDeserializer;
@@ -38,10 +40,12 @@ public class SystemNoticeUpdate extends BaseDTO {
 
     @ApiModelProperty(value = "开始时间", required = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
 
     @ApiModelProperty(value = "结束时间", required = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
 
     @Override

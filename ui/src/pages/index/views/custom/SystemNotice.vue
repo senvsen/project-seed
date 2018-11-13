@@ -64,12 +64,13 @@
         </a-form-item>
         <a-form-item label="通知等级">
           <a-radio-group v-model="editNotice.msgLevel">
-            <a-radio-button v-for="(label, code) in $messages.enums.msgLevel" :key="code" :value="code">{{label}}</a-radio-button>
+            <a-radio-button v-for="(label, code) in $messages.enums.msgLevel" :key="code" :value="parseInt(code)">{{label}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item label="公告时间">
           <a-range-picker :value="editNoticeTimes"
-                          showTime format="YYYY-MM-DD HH:mm:ss"
+                          showTime
+                          format="YYYY-MM-DD HH:mm:ss"
                           allowClear
                           @change="handleEditTimeChange"></a-range-picker>
         </a-form-item>
@@ -99,13 +100,15 @@
     },
     methods: {
       fetchNotices() {
-        this.$api.msg.getSystemNoticeList({}).then(res => {
+        this.$api.msg.getSystemNoticeList({type: 'available'}).then(res => {
           this.notices = res.data;
         });
       },
       edit(notice) {
         this.editNotice = JSON.parse(JSON.stringify(notice));
         this.editNoticeTimes = [moment(notice.startTime), moment(notice.endTime)];
+        this.editNotice.startTime = this.$utils.date(notice.startTime).format('YYYY-MM-DD HH:mm:ss');
+        this.editNotice.endTime = this.$utils.date(notice.endTime).format('YYYY-MM-DD HH:mm:ss');
         this.editVisible = true;
       },
       handleTimeChange(dates, dateStrings) {
@@ -113,6 +116,7 @@
         this.systemNotice.endTime = dateStrings[1];
       },
       handleEditTimeChange(dates, dateStrings) {
+        this.editNoticeTimes = dates;
         this.editNotice.startTime = dateStrings[0];
         this.editNotice.endTime = dateStrings[1];
       },
@@ -120,6 +124,7 @@
         this.$api.msg.addSystemNotice(this.systemNotice).then(() => {
           this.$message.success(this.$messages.successResult.create);
           this.systemNotice = {};
+          this.noticeTimes = [];
           this.fetchNotices();
         });
       },
@@ -139,13 +144,13 @@
       noticeColor(msgLevel) {
         let color = '#e8e8e8';
         switch (msgLevel) {
-          case '1':
+          case 1:
             color = '#1890ff';
             break;
-          case '2':
+          case 2:
             color = '#faad14';
             break;
-          case '3':
+          case 3:
             color = '#f5222d';
             break;
         }

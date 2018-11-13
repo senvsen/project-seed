@@ -8,6 +8,8 @@ import com.yupaits.msg.dto.SystemNoticeUpdate;
 import com.yupaits.commons.utils.ValidateUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.time.LocalDateTime;
 import java.util.Map;
 import org.apache.commons.collections4.MapUtils;
 import com.yupaits.commons.result.Result;
@@ -15,6 +17,7 @@ import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.commons.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -122,7 +125,14 @@ public class SystemNoticeController {
         QueryWrapper<SystemNotice> queryWrapper = new QueryWrapper<>();
         if (MapUtils.isNotEmpty(query)) {
             query.forEach((key, value) -> {
-                //TODO 设置查询条件
+                if (StringUtils.equals(key, "type")) {
+                    LocalDateTime now = LocalDateTime.now();
+                    if (StringUtils.equals("active", String.valueOf(value))) {
+                        queryWrapper.gt("end_time", now).lt("start_time", now).orderByAsc("start_time");
+                    } else if (StringUtils.equals("available", String.valueOf(value))) {
+                        queryWrapper.gt("end_time", now).orderByAsc("start_time");
+                    }
+                }
             });
         }
         List<SystemNoticeVO> systemNoticeVOList = systemNoticeService.list(queryWrapper).stream().map(systemNotice -> {

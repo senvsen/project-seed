@@ -82,10 +82,37 @@
     data() {
       return {
         collapsed: false,
-        locale: zhCN
+        locale: zhCN,
       }
     },
+    created() {
+      this.fetchSystemNotices();
+    },
     methods: {
+      fetchSystemNotices() {
+        this.$api.msg.getSystemNoticeList({type: 'active'}).then(res => {
+          const notices = res.data;
+          if (notices.length > 0) {
+            const len = notices.length;
+            let index = 0;
+            const flag = setInterval(() => {
+              if (index > len - 1) {
+                clearInterval(flag);
+              }
+              this.notify(notices[index]);
+              index++;
+            }, 0);
+          }
+        });
+      },
+      notify(notice) {
+        const type = notice.msgLevel === 1 ? 'info' : (notice.msgLevel === 2 ? 'warning' : 'error');
+        this.$notification[type]({
+          key: notice.id,
+          message: this.$messages.enums.msgLevel[notice.msgLevel],
+          description: notice.msgContent
+        });
+      },
       handleSidebarSelect(key) {
         this.$store.dispatch('setSidebarKey', key);
       },

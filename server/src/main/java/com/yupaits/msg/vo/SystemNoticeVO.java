@@ -2,6 +2,7 @@ package com.yupaits.msg.vo;
 
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.yupaits.commons.consts.enums.MsgLevel;
 import com.yupaits.commons.core.serializer.LongSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,7 +30,7 @@ public class SystemNoticeVO implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "公告等级")
-    private Integer msgLevel;
+    private MsgLevel msgLevel;
 
     @ApiModelProperty(value = "公告内容")
     private String msgContent;
