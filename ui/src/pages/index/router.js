@@ -52,42 +52,47 @@ messages.nav.userMenu.forEach(menu => {
   }
 });
 
-messages.sidebar.forEach(menu => {
-  if (menu.children) {
-    menu.children.forEach(item => {
-      if (item.link) {
-        const page = {
-          path: item.link,
-          component: Page,
-          meta: {
-            key: item.link,
-            menuKey: item.menuKey
-          }
-        };
-        if (item.pageType) {
-          page.meta.pageType = item.pageType;
-        } else if (item.custom) {
-          page.component = customPage[item.custom];
-        }
-        route.children.push(page);
-      }
-    });
-  } else if (menu.link) {
-    const page = {
-      path: menu.link,
-      component: Page,
-      meta: {
-        menuKey: menu.key
-      }
-    };
-    if (menu.pageType) {
-      page.meta.pageType = menu.pageType;
-    } else if (menu.custom) {
-      page.component = customPage[menu.custom];
-    }
-    route.children.push(page);
+for (let key in messages.sidebars) {
+  if (!messages.sidebars.hasOwnProperty(key)) {
+    continue;
   }
-});
+  messages.sidebars[key].options.forEach(menu => {
+    if (menu.children) {
+      menu.children.forEach(item => {
+        if (item.link) {
+          const page = {
+            path: item.link,
+            component: Page,
+            meta: {
+              key: item.link,
+              menuKey: item.menuKey
+            }
+          };
+          if (item.pageType) {
+            page.meta.pageType = item.pageType;
+          } else if (item.custom) {
+            page.component = customPage[item.custom];
+          }
+          route.children.push(page);
+        }
+      });
+    } else if (menu.link) {
+      const page = {
+        path: menu.link,
+        component: Page,
+        meta: {
+          menuKey: menu.key
+        }
+      };
+      if (menu.pageType) {
+        page.meta.pageType = menu.pageType;
+      } else if (menu.custom) {
+        page.component = customPage[menu.custom];
+      }
+      route.children.push(page);
+    }
+  });
+}
 
 const router = new Router({
   routes: [route]

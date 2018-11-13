@@ -1,6 +1,5 @@
 <template>
-  <div class="page">
-    <breadcrumb/>
+  <div>
     <div class="page-content">
       <a-row class="table-toolbar">
         <div class="is-pulled-right">

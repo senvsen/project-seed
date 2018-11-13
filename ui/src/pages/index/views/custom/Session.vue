@@ -1,6 +1,5 @@
 <template>
-  <div class="page">
-    <breadcrumb/>
+  <div>
     <div class="page-content">
       <a-table size="small"
                :columns="$messages.columns[pageKey].tableColumns"

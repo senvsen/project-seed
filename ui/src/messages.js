@@ -40,49 +40,63 @@ export default {
       {label: '退出登录', icon: 'logout', isDivided: true, link: '/logout', isDirect: true},
     ]
   },
-  sidebar: [
-    {label: '概览', icon: 'dashboard', link: '/dashboard', custom: 'dashboard'},
-    {label: '系统安全', icon: 'safety', key: 'auth', children: [
-        {label: '用户管理', icon: 'user', link: '/user', pageType: 'manage', menuKey: 'auth'},
-        {label: 'RBAC管理', icon: 'appstore-o', link: '/rbac', menuKey: 'auth', custom: 'rbac'},
-        {label: '鉴权规则', icon: 'filter', link: '/filter-chain', menuKey: 'auth', custom: 'filter-chain'},
+  sidebars: {
+    biz: {
+      label: '业务系统',
+      options: [
+        {label: '应用管理', icon: 'appstore-o', key: 'app', children: [
+            {label: '微信公众号', icon: 'wechat', link: '/mp-account', pageType: 'manage', menuKey: 'app'}
+          ],
+        },
       ]
     },
-    {label: '系统监控', icon: 'line-chart', key: 'monitor', children: [
-        {label: 'Session管理', icon: 'link',link: '/session', menuKey: 'monitor', custom: 'session'},
-        {label: '定时任务', icon: 'schedule',link: '/schedule', pageType: 'manage', menuKey: 'monitor'},
-        {label: 'Druid监控', icon: 'database',link: '/druid/index.html', pageType: 'iframe', menuKey: 'monitor'}
+    system: {
+      label: '系统管理',
+      options: [
+        {label: '概览', icon: 'dashboard', key: 'overview', children: [
+            {label: '控制台', icon: 'dashboard', link: '/dashboard', menuKey: 'overview', custom: 'dashboard'}
+          ]
+        },
+        {label: '系统安全', icon: 'safety', key: 'auth', children: [
+            {label: '用户管理', icon: 'user', link: '/user', pageType: 'manage', menuKey: 'auth'},
+            {label: 'RBAC管理', icon: 'appstore-o', link: '/rbac', menuKey: 'auth', custom: 'rbac'},
+            {label: '鉴权规则', icon: 'filter', link: '/filter-chain', menuKey: 'auth', custom: 'filter-chain'},
+          ]
+        },
+        {label: '系统监控', icon: 'line-chart', key: 'monitor', children: [
+            {label: 'Session管理', icon: 'link',link: '/session', menuKey: 'monitor', custom: 'session'},
+            {label: '定时任务', icon: 'schedule',link: '/schedule', pageType: 'manage', menuKey: 'monitor'},
+            {label: 'Druid监控', icon: 'database',link: '/druid/index.html', pageType: 'iframe', menuKey: 'monitor'}
+          ]
+        },
+        {label: '消息公告', icon: 'message', key: 'msg', children: [
+            {label: '系统公告', icon: 'notification', link: '/system-notice', menuKey: 'msg', custom: 'system-notice'},
+            {label: '消息推送', icon: 'message', link: '/message', menuKey: 'msg', custom: 'message'}
+          ]
+        },
+        {label: '开发工具', icon: 'tool', key: 'dev-tool', children: [
+            {label: '接口文档', icon: 'api', link: '/swagger-ui.html', pageType: 'iframe', menuKey: 'dev-tool'},
+            {label: '代码生成器', icon: 'code-o', link: '/code-gen', menuKey: 'dev-tool', custom: 'code-gen'}
+          ]
+        },
       ]
-    },
-    {label: '消息公告', icon: 'message', key: 'msg', children: [
-        {label: '系统公告', icon: 'notification', link: '/system-notice', menuKey: 'msg', custom: 'system-notice'},
-        {label: '消息推送', icon: 'message', link: '/message', menuKey: 'msg', custom: 'message'}
-      ]
-    },
-    {
-      label: '应用管理', icon: 'appstore-o', key: 'app', children: [
-        {label: '微信公众号', icon: 'wechat', link: '/mp-account', pageType: 'manage', menuKey: 'app'}
-      ],
-    },
-    {label: '开发工具', icon: 'tool', key: 'dev-tool', children: [
-        {label: '接口文档', icon: 'api', link: '/swagger-ui.html', pageType: 'iframe', menuKey: 'dev-tool'},
-        {label: '代码生成器', icon: 'code-o', link: '/code-gen', menuKey: 'dev-tool', custom: 'code-gen'}
-      ]
-    },
-  ],
+    }
+  },
   breadcrumb: {
     label: '主页',
     options: {
-      '/dashboard': ['概览'],
-      '/user': ['系统安全', '用户管理'],
-      '/rbac': ['系统安全', 'RBAC管理'],
-      '/filter-chain': ['系统安全', '鉴权规则'],
-      '/session': ['系统监控', 'Session管理'],
-      '/schedule': ['系统监控', '定时任务'],
-      '/system-notice': ['消息公告', '系统公告'],
-      '/message': ['消息公告', '消息推送'],
-      '/mp-account': ['应用管理', '微信公众号'],
-      '/code-gen': ['开发工具', '代码生成器'],
+      '/mp-account': ['业务系统', '应用管理', '微信公众号'],
+
+      '/dashboard': ['系统管理', '概览', '控制台'],
+      '/user': ['系统管理', '系统安全', '用户管理'],
+      '/rbac': ['系统管理', '系统安全', 'RBAC管理'],
+      '/filter-chain': ['系统管理', '系统安全', '鉴权规则'],
+      '/session': ['系统管理', '系统监控', 'Session管理'],
+      '/schedule': ['系统管理', '系统监控', '定时任务'],
+      '/system-notice': ['系统管理', '消息公告', '系统公告'],
+      '/message': ['系统管理', '消息公告', '消息推送'],
+      '/code-gen': ['系统管理', '开发工具', '代码生成器'],
+
       '/profile': ['个人中心'],
       '/setting': ['个人设置'],
       '/bug-report': ['报告错误'],
@@ -215,6 +229,16 @@ export default {
       1: '菜单',
       2: '按钮',
       3: 'API'
+    },
+    msgLevel: {
+      1: '通知',
+      2: '告警',
+      3: '危险'
+    },
+    msgType: {
+      1: '邮件',
+      2: '短信',
+      3: '微信消息'
     }
   }
 }

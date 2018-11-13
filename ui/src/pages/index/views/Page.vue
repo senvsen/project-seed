@@ -4,7 +4,7 @@
       <i-frame-page :src="$store.getters.key"></i-frame-page>
     </div>
     <div v-else-if="$store.getters.pageType === 'manage'">
-      <manage-page ref="page">
+      <manage-page ref="page" class="page">
         <component slot="toolbar" slot-scope="{selectedKeys}" :keys="selectedKeys" :is="toolbarComponent" @updated="handleUpdated"></component>
         <component slot="form" :is="formComponent"></component>
         <component slot="ext-opt" slot-scope="{record}" :row-data="record" :is="optComponent" @updated="handleUpdated"></component>
@@ -12,7 +12,7 @@
       </manage-page>
     </div>
     <div v-else>
-      <router-view/>
+      <router-view class="page"/>
     </div>
   </div>
 </template>

@@ -6,8 +6,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    sidebarKey: 'system',
     pageType: '',
-    key: messages.sidebar[0].link,
+    key: messages.sidebars.system.options[0].link,
     menuKey: '',
     record: {},
     search: {},
@@ -15,6 +16,9 @@ export default new Vuex.Store({
     roles: [],
   },
   getters: {
+    sidebarKey(state) {
+      return state.sidebarKey;
+    },
     pageType(state) {
       return state.pageType;
     },
@@ -38,6 +42,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    setSidebarKey(state, sidebarKey) {
+      state.sidebarKey = sidebarKey;
+    },
     setPageType(state, pageType) {
       state.pageType = pageType;
     },
@@ -61,6 +68,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    setSidebarKey({commit}, sidebarKey) {
+      commit('setSidebarKey', sidebarKey);
+    },
     setPageType({commit}, pageType) {
       commit('setPageType', pageType);
     },

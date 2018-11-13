@@ -37,16 +37,12 @@ Spring Boot种子项目
 
 ## 项目截图
 
-![用户管理](./images/user.png)
-![分配角色](./images/assign-role.png)
-![搜索](./images/search.png)
 ![RBAC管理](./images/RBAC.png)
 ![鉴权过滤](./images/filter-chain.png)
 ![druid监控](./images/druid.png)
 ![定时任务调度管理](./images/schedule.png)
 ![swagger接口文档](./images/swagger-ui.png)
 ![代码生成器](./images/code-generator.png)
-![个人设置](./images/setting.png)
 
 ## 运行项目
 

@@ -1,6 +1,5 @@
 <template>
-  <div class="page">
-    <breadcrumb/>
+  <div>
     <a-row :gutter="16">
       <a-col :span="4">
         <a-menu theme="light" mode="inline"

@@ -1,6 +1,5 @@
 <template>
-  <div class="page">
-    <breadcrumb/>
+  <div>
     <a-row>
       <a-col :span="18" :offset="3">
         <div class="page-content">

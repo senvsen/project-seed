@@ -1,6 +1,5 @@
 <template>
-  <div class="page">
-    <breadcrumb/>
+  <div>
     <a-row :gutter="16">
       <a-col :span="8">
         <div class="page-content">
@@ -121,10 +120,7 @@
       return {
         departments: [],
         roles: [],
-        privileges: [
-          {"id":"1058276280144551938","privilegeType":2,"privilegeKey":"privilege:add","name":"添加权限","description":"添加权限信息","createdAt":"2018-11-02T16:35:02","createdBy":"1058256010751074305","updatedAt":"2018-11-02T18:05:21","updatedBy":"1058256010751074305"},
-          {"id":"1058300620688949249","privilegeType":1,"privilegeKey":"sidebar:user","name":"用户管理","description":"侧边栏用户管理菜单项","createdAt":"2018-11-02T18:11:45","createdBy":"1058256010751074305","updatedAt":"2018-11-02T18:11:45","updatedBy":"1058256010751074305"}
-        ],
+        privileges: [],
         departmentLoading: false,
         roleLoading: false,
         privilegeLoading: false,

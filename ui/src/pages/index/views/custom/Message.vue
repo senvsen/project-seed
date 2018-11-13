@@ -1,9 +1,12 @@
 <template>
-  <div class="page">
-    <breadcrumb/>
-    <div class="page-content">
+  <div>
+    <a-row>
+      <a-col :span="18" :offset="3">
+        <div class="page-content">
 
-    </div>
+        </div>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
