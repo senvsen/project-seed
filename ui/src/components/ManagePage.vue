@@ -39,12 +39,6 @@
             </a-col>
           </a-row>
         </template>
-        <template slot="createdAt" slot-scope="record">
-          {{$utils.date(record.createdAt).format('YYYY-MM-DD HH:mm:ss')}}
-        </template>
-        <template slot="updatedAt" slot-scope="record">
-          {{$utils.date(record.updatedAt).format('YYYY-MM-DD HH:mm:ss')}}
-        </template>
         <template slot="opt" slot-scope="record">
           <a-button size="small" class="mr-1" @click="editRecord(record)">{{$messages.operation.editBtn}}</a-button>
           <a-popconfirm :title="$messages.operation.deleteTip" trigger="click" placement="top" @confirm="handleDeleteRecord(record)"

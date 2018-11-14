@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-row :gutter="16">
-      <a-col :span="14">
+      <a-col :span="10">
         <div class="page-content">
           <h3>新的消息</h3>
           <a-form>
@@ -48,12 +48,48 @@
           </a-form>
         </div>
       </a-col>
-      <a-col :span="10">
+      <a-col :span="14">
         <div class="page-content">
           <h3>消息模板</h3>
           <a-row class="table-toolbar">
             <a-button icon="plus">创建</a-button>
           </a-row>
+          <a-table size="small"
+                   :columns="$messages.columns['template'].tableColumns"
+                   :dataSource="templates"
+                   :rowKey="record => record.id"
+                   :rowSelection="{selectedRowKeys: selectedKeys, onChange: onSelectChange}"
+                   :pagination="false" :loading="loading" :scroll="{y: 'calc(100vh - 365px)'}">
+            <template slot="expandedRowRender" slot-scope="record">
+              <a-row :gutter="16">
+                <a-col :span="12" v-for="column in $messages.columns['template'].expandedColumns" :key="column.title">
+                  <a-row>
+                    <a-col :span="6" class="has-text-right">
+                      {{column.title}}：
+                    </a-col>
+                    <a-col :span="18">
+                      {{column.isDate ? $utils.date(record[column.dataIndex]).format('YYYY-MM-DD HH:mm:ss') : record[column.dataIndex]}}
+                    </a-col>
+                  </a-row>
+                </a-col>
+              </a-row>
+            </template>
+            <template slot="opt" slot-scope="record">
+              <a-button size="small" class="mr-1" @click="editRecord(record)">{{$messages.operation.editBtn}}</a-button>
+              <a-popconfirm :title="$messages.operation.deleteTip" trigger="click" placement="top" @confirm="handleDeleteRecord(record)"
+                            :okText="$messages.operation.confirmText" :cancelText="$messages.operation.cancelText">
+                <a-button size="small" class="mr-1">{{$messages.operation.deleteBtn}}</a-button>
+              </a-popconfirm>
+            </template>
+          </a-table>
+          <a-pagination size="small" class="mt-2 is-pulled-right"
+                        v-model="pager.current"
+                        :total="pager.total"
+                        :pageSize.sync="pager.pageSize"
+                        :pageSizeOptions="$messages.pager.pageSizeOptions"
+                        :showQuickJumper="$messages.pager.showQuickJumper"
+                        :showSizeChanger="$messages.pager.showSizeChanger"
+                        @change="handlePagerChange"/>
         </div>
       </a-col>
     </a-row>
@@ -68,7 +104,29 @@
     data() {
       return {
         message: {},
-        messagePreview: ''
+        messagePreview: '',
+        templates: [{}],
+        pager: {
+          current: 1,
+          total: 1,
+          pageSize: this.$messages.pager.pageSize
+        },
+        loading: false,
+        selectedKeys: [],
+      }
+    },
+    methods: {
+      fetchTemplates() {
+
+
+      },
+      onSelectChange(keys) {
+        this.selectedKeys = keys;
+      },
+      handlePagerChange(page, pageSize) {
+        this.pager.current = page;
+        this.pager.pageSize = pageSize;
+        this.fetchTemplates();
       }
     }
   }

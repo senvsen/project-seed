@@ -191,6 +191,22 @@ export default {
         {title: '更新时间', dataIndex: 'updatedAt', isDate: true},
         {title: '更新人', dataIndex: 'updatedBy'},
       ]
+    },
+    'template': {
+      tableColumns: [
+        {title: 'ID', width: '20%', dataIndex: 'id'},
+        {title: '模板名称', width: '30%', dataIndex: 'appName'},
+        {title: '消息类型', width: '20%', dataIndex: 'appId'},
+        {title: '操作', width: '30%', scopedSlots: {customRender: 'opt'}},
+      ],
+      expandedColumns: [
+        {title: '模板格式', dataIndex: 'templatePattern'},
+        {title: '填充字段', dataIndex: 'fillFields'},
+        {title: '创建时间', dataIndex: 'createdAt', isDate: true},
+        {title: '创建人', dataIndex: 'createdBy'},
+        {title: '更新时间', dataIndex: 'updatedAt', isDate: true},
+        {title: '更新人', dataIndex: 'updatedBy'},
+      ]
     }
   },
   operation: {
