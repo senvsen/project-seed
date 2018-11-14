@@ -1,6 +1,5 @@
 package com.yupaits.wx.dto;
 
-import java.time.LocalDateTime;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.yupaits.commons.core.serializer.LongDeserializer;
 import com.yupaits.commons.core.BaseDTO;

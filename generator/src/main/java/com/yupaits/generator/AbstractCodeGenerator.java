@@ -258,8 +258,10 @@ public abstract class AbstractCodeGenerator {
     private Set<String> fieldPackages(TableInfo tableInfo) {
         boolean hasDateTimeType = false;
         for (TableField tableField : tableInfo.getFields()) {
-            if (StringUtils.equals(tableField.getType(), FIELD_DATETIME_TYPE)) {
+            if (StringUtils.equals(tableField.getType(), FIELD_DATETIME_TYPE)
+                    && !StringUtils.equalsAny(tableField.getName(), DATETIME_TYPE_IGNORED_FIELDS)) {
                 hasDateTimeType = true;
+                break;
             }
         }
         boolean finalHasDateTimeType = hasDateTimeType;

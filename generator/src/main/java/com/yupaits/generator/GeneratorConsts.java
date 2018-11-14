@@ -56,4 +56,5 @@ public class GeneratorConsts {
     static final String MYBATIS_PLUS_PACKAGE_PREFIX = "com.baomidou.mybatisplus";
 
     static final String FIELD_DATETIME_TYPE = "datetime";
+    static final String[] DATETIME_TYPE_IGNORED_FIELDS = new String[]{"created_at", "updated_at"};
 }

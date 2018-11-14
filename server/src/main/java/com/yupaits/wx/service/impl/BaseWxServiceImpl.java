@@ -22,6 +22,5 @@ public class BaseWxServiceImpl extends WxMpServiceImpl {
         config.setToken(mpAccount.getToken());
         config.setAesKey(mpAccount.getEncodingAesKey());
         super.setWxMpConfigStorage(config);
-
     }
 }

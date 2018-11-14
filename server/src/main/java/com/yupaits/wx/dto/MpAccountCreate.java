@@ -1,6 +1,5 @@
 package com.yupaits.wx.dto;
 
-import java.time.LocalDateTime;
 import com.yupaits.commons.core.BaseDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
