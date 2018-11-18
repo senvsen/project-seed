@@ -71,10 +71,11 @@
 </template>
 
 <script>
-  import Sidebar from "../../components/Sidebar"
-  import ManagePage from "../../components/ManagePage"
-  import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
+  import Sidebar from "../../components/Sidebar";
+  import ManagePage from "../../components/ManagePage";
   import Breadcrumb from "../../components/Breadcrumb";
+  import {Base64} from 'js-base64';
+  import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
 
   export default {
     name: 'App',
@@ -98,9 +99,13 @@
             const flag = setInterval(() => {
               if (index > len - 1) {
                 clearInterval(flag);
+              } else {
+                const notice = notices[index];
+                if (!this.$cookie.get(Base64.encode(notice.id + notice.endTime))) {
+                  this.notify(notice);
+                }
+                index++;
               }
-              this.notify(notices[index]);
-              index++;
             }, 0);
           }
         });
@@ -110,7 +115,21 @@
         this.$notification[type]({
           key: notice.id,
           message: this.$messages.enums.msgLevel[notice.msgLevel],
-          description: notice.msgContent
+          description: notice.msgContent,
+          btn: (h) => {
+            return h('a-button', {
+              props: {
+                type: '',
+                size: 'small'
+              },
+              on: {
+                click: () => {
+                  this.$cookie.set(Base64.encode(notice.id + notice.endTime), true, {expires: notice.endTime});
+                  this.$notification.close(notice.id);
+                }
+              }
+            }, '不再显示');
+          }
         });
       },
       handleSidebarSelect(key) {

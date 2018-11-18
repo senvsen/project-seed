@@ -52,13 +52,11 @@
         <div class="page-content">
           <h3>消息模板</h3>
           <a-row class="table-toolbar">
-            <a-button icon="plus">创建</a-button>
+            <a-button icon="plus" @click="addTemplate">创建</a-button>
           </a-row>
           <a-table size="small"
                    :columns="$messages.columns['template'].tableColumns"
                    :dataSource="templates"
-                   :rowKey="record => record.id"
-                   :rowSelection="{selectedRowKeys: selectedKeys, onChange: onSelectChange}"
                    :pagination="false" :loading="loading" :scroll="{y: 'calc(100vh - 365px)'}">
             <template slot="expandedRowRender" slot-scope="record">
               <a-row :gutter="16">
@@ -75,8 +73,8 @@
               </a-row>
             </template>
             <template slot="opt" slot-scope="record">
-              <a-button size="small" class="mr-1" @click="editRecord(record)">{{$messages.operation.editBtn}}</a-button>
-              <a-popconfirm :title="$messages.operation.deleteTip" trigger="click" placement="top" @confirm="handleDeleteRecord(record)"
+              <a-button size="small" class="mr-1" @click="editTemplate(record)">{{$messages.operation.editBtn}}</a-button>
+              <a-popconfirm :title="$messages.operation.deleteTip" trigger="click" placement="top" @confirm="handleDeleteTemplate(record)"
                             :okText="$messages.operation.confirmText" :cancelText="$messages.operation.cancelText">
                 <a-button size="small" class="mr-1">{{$messages.operation.deleteBtn}}</a-button>
               </a-popconfirm>
@@ -93,19 +91,44 @@
         </div>
       </a-col>
     </a-row>
+
+    <a-modal :title="modal.title"
+             :maskClosable="false"
+             :visible="modal.visible"
+             @ok="modal.ok"
+             @cancel="() => {modal.visible = false}" width="800px">
+      <a-form>
+        <a-form-item label="模板名称">
+          <a-input v-model="template.name" placeholder="请填写模板名称"></a-input>
+        </a-form-item>
+        <a-form-item label="消息类型">
+          <a-radio-group v-model="template.msgType">
+            <a-radio-button v-for="(label, code) in $messages.enums.msgType" :key="code" :value="code">{{label}}</a-radio-button>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item label="模板格式">
+          <a-textarea v-model="template.templatePattern" :autosize="{minRows: 5, maxRows: 10}" placeholder="请填写模板的格式"></a-textarea>
+        </a-form-item>
+        <a-form-item label="填充字段">
+          <tags :options="template.fillFields"></tags>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
 <script>
   import Breadcrumb from "../../../../components/Breadcrumb";
+  import Tags from "../../../../components/Tags";
+
   export default {
     name: "Message",
-    components: {Breadcrumb},
+    components: {Tags, Breadcrumb},
     data() {
       return {
         message: {},
         messagePreview: '',
-        templates: [{}],
+        templates: [],
         pager: {
           current: 1,
           total: 1,
@@ -113,15 +136,72 @@
         },
         loading: false,
         selectedKeys: [],
+        query: {},
+        sortable: {
+          ascs: [],
+          descs: []
+        },
+        modal: {
+          title: '',
+          visible: false,
+          ok: () => {}
+        },
+        template: {
+          fillFields: []
+        }
       }
+    },
+    created() {
+      this.fetchTemplates();
     },
     methods: {
       fetchTemplates() {
-
-
+        this.loading = true;
+        this.$api.msg.getTemplatePage(this.pager.current, this.pager.pageSize, this.query,
+          this.sortable.ascs, this.sortable.descs).then(res => {
+          this.templates = res.data.records;
+          this.pager.current = res.data.current;
+          this.pager.total = res.data.total;
+          this.loading = false;
+        }).catch(() => {
+          this.loading = false;
+        });
       },
-      onSelectChange(keys) {
-        this.selectedKeys = keys;
+      addTemplate() {
+        this.template = {};
+        this.modal = {
+          title: '创建模板',
+          visible: true,
+          ok: this.handleAddTemplate
+        };
+      },
+      editTemplate(template) {
+        this.template = JSON.parse(JSON.stringify(template));
+        this.modal = {
+          title: '编辑模板',
+          visible: true,
+          ok: this.handleEditTemplate
+        };
+      },
+      handleAddTemplate() {
+        this.$api.msg.addTemplate(this.template).then(() => {
+          this.$message.success(this.$messages.successResult.create);
+          this.modal.visible = false;
+          this.fetchTemplates();
+        });
+      },
+      handleEditTemplate() {
+        this.$api.msg.updateTemplate(this.template.id, this.template).then(() => {
+          this.$message.success(this.$messages.successResult.update);
+          this.modal.visible = false;
+          this.fetchTemplates();
+        });
+      },
+      handleDeleteTemplate(template) {
+        this.$api.msg.deleteTemplate(template.id).then(() => {
+          this.$message.success(this.$messages.successResult.delete);
+          this.fetchTemplates();
+        });
       },
       handlePagerChange(page, pageSize) {
         this.pager.current = page;
@@ -129,7 +209,7 @@
         this.fetchTemplates();
       }
     }
-  }
+  };
 </script>
 
 <style scoped>

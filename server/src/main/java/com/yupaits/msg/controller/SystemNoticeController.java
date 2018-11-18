@@ -1,5 +1,6 @@
 package com.yupaits.msg.controller;
 
+import com.yupaits.commons.annotation.NoCache;
 import com.yupaits.msg.entity.SystemNotice;
 import com.yupaits.msg.service.ISystemNoticeService;
 import com.yupaits.msg.vo.SystemNoticeVO;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
  * @since 2018-11-08
  */
 @Slf4j
+@NoCache
 @Api(tags = "系统公告接口")
 @RestController
 @RequestMapping("/msg/system-notice")

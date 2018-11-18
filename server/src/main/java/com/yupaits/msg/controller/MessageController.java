@@ -1,5 +1,6 @@
 package com.yupaits.msg.controller;
 
+import com.yupaits.commons.annotation.NoCache;
 import com.yupaits.msg.dto.MessagePayload;
 import com.yupaits.msg.entity.Message;
 import com.yupaits.msg.service.IMessageService;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
  * @since 2018-11-09
  */
 @Slf4j
+@NoCache
 @Api(tags = "消息接口")
 @RestController
 @RequestMapping("/msg/message")

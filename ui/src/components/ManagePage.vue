@@ -108,7 +108,6 @@
         },
         loading: false,
         searchVisible: false,
-        query: {},
         sortable: {
           ascs: [],
           descs: []

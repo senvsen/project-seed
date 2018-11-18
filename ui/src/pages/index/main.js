@@ -9,6 +9,7 @@ import handler from '../../handler'
 import page from '../../page'
 import style from '../../styles/style.config'
 import Antd from 'ant-design-vue'
+import VueCookie from 'vue-cookie'
 
 import 'ant-design-vue/dist/antd.min.css'
 import '../../styles/index.css'
@@ -16,6 +17,7 @@ import '../../styles/index.css'
 Vue.config.productionTip = false;
 
 Vue.use(Antd);
+Vue.use(VueCookie);
 
 Vue.prototype.$api = api;
 Vue.prototype.$messages = messages;
