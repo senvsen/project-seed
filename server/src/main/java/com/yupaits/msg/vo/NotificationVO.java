@@ -1,6 +1,5 @@
 package com.yupaits.msg.vo;
 
-import java.time.LocalDateTime;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.yupaits.commons.core.serializer.LongSerializer;
 import io.swagger.annotations.ApiModel;

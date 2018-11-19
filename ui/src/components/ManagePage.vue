@@ -33,7 +33,7 @@
                   {{column.title}}：
                 </a-col>
                 <a-col :span="18">
-                  {{column.isDate ? $utils.date(record[column.dataIndex]).format('YYYY-MM-DD HH:mm:ss') : record[column.dataIndex]}}
+                  {{$utils.text.expandColumnFormat(record, column)}}
                 </a-col>
               </a-row>
             </a-col>

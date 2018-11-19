@@ -2,13 +2,13 @@
   <div>
     <template v-for="tag in tags">
       <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
-        <a-tag :color="color" :key="tag" closable :after-close="() => handleClose(tag)">
+        <a-tag :color="color" closable :after-close="() => handleClose(tag)">
           {{`${tag.slice(0, 20)}...`}}
         </a-tag>
       </a-tooltip>
       <a-tag :color="color" v-else :key="tag" closable :after-close="() => handleClose(tag)">{{tag}}</a-tag>
     </template>
-    <a-input v-if="inputVisible" ref="input" type="text" class="tags-input" :value="inputValue"
+    <a-input v-if="inputVisible" ref="input" type="text" class="tags-input" size="small" :value="inputValue"
              @change="handleInputChange" @blur="handleInputConfirm" @keyup.enter="handleInputConfirm"/>
     <a-tag v-else @click="showInput" class="add-btn">
       <a-icon type="plus"/> 新增
@@ -32,16 +32,25 @@
         required: false
       }
     },
+    computed: {
+      tags: {
+        get() {
+          return this.options;
+        },
+        set() {}
+      }
+    },
     data() {
       return {
-        tags: this.options,
         inputValue: '',
         inputVisible: false,
       }
     },
     methods: {
       handleClose(removedTag) {
-        this.tags = this.tags.filter(tag => tag !== removedTag);
+        const tags = this.tags.filter(tag => tag !== removedTag);
+        this.tags = tags;
+        this.$emit('change', tags);
       },
       handleInputChange(e) {
         this.inputValue = e.target.value;
@@ -55,7 +64,7 @@
         this.inputVisible = false;
         this.inputValue = '';
         this.tags = tags;
-        this.$emit('confirm', tags);
+        this.$emit('change', tags);
       },
       showInput() {
         this.inputVisible = true;
@@ -69,7 +78,7 @@
 
 <style scoped>
   .tags-input {
-    width: 120px;
+    width: 96px;
   }
   .add-btn {
     background: #fff;

@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class TemplateCreate extends BaseDTO {
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        return !StringUtils.isAnyBlank(name, templatePattern) && CollectionUtils.isNotEmpty(fillFields);
     }
 
     public String getFillFields() {

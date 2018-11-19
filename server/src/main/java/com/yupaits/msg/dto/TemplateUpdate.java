@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.yupaits.commons.consts.enums.MsgType;
 import com.yupaits.commons.core.BaseDTO;
 import com.yupaits.commons.core.serializer.LongDeserializer;
+import com.yupaits.commons.utils.ValidateUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -46,7 +49,8 @@ public class TemplateUpdate extends BaseDTO {
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        return ValidateUtils.idValid(id) && !StringUtils.isAnyBlank(name, templatePattern)
+                && CollectionUtils.isNotEmpty(fillFields);
     }
 
     public String getFillFields() {

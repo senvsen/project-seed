@@ -1,9 +1,8 @@
 package com.yupaits.msg.vo;
 
-import java.time.LocalDateTime;
-
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.yupaits.commons.consts.enums.MsgType;
 import com.yupaits.commons.core.serializer.LongSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -35,7 +34,7 @@ public class TemplateVO implements Serializable {
     private String name;
 
     @ApiModelProperty(value = "消息类型")
-    private Integer msgType;
+    private MsgType msgType;
 
     @ApiModelProperty(value = "模板格式")
     private String templatePattern;

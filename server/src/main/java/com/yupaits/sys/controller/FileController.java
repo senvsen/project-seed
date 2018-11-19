@@ -6,6 +6,7 @@ import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.yupaits.commons.result.ResultCode;
 import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.commons.utils.EncryptUtils;
+import com.yupaits.commons.utils.HttpUtils;
 import com.yupaits.commons.utils.ValidateUtils;
 import com.yupaits.sys.entity.StoreFile;
 import com.yupaits.sys.service.IStoreFileService;
@@ -16,11 +17,9 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,21 +66,8 @@ public class FileController {
             objectMapper.writeValue(response.getWriter(), ResultWrapper.fail(HttpStatus.FORBIDDEN));
         } else {
             byte[] fileBytes = storageClient.downloadFile(storeFile.getGroupName(), storeFile.getPath(), new DownloadByteArray());
-            sendFile(response, fileBytes, FilenameUtils.getName(storeFile.getPath()));
+            HttpUtils.sendFile(response, fileBytes, FilenameUtils.getName(storeFile.getPath()));
         }
     }
 
-    /**
-     * 返回文件
-     * @param response 响应
-     * @param fileBytes 文件字节数组
-     * @param filename 文件名
-     * @throws IOException IO异常
-     */
-    private void sendFile(HttpServletResponse response, byte[] fileBytes, String filename) throws IOException {
-        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        response.setContentLengthLong(fileBytes.length);
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
-        FileCopyUtils.copy(fileBytes, response.getOutputStream());
-    }
 }

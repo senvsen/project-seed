@@ -15,6 +15,7 @@ import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.commons.result.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -152,7 +153,12 @@ public class TemplateController {
         QueryWrapper<Template> queryWrapper = new QueryWrapper<>();
         if (MapUtils.isNotEmpty(query)) {
             query.forEach((key, value) -> {
-                //TODO 设置查询条件
+                if (StringUtils.equals(key, "keyword")) {
+                    queryWrapper.and(i -> i.like("name", value).or().like("template_pattern", value));
+                }
+                if (StringUtils.equals(key, "msgType") && value != null) {
+                    queryWrapper.eq("msg_type", value);
+                }
             });
         }
         IPage<TemplateVO> templateVOPage = new Page<>();

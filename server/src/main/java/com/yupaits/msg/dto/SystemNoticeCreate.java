@@ -3,10 +3,12 @@ package com.yupaits.msg.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yupaits.commons.consts.enums.MsgLevel;
 import com.yupaits.commons.core.BaseDTO;
+import com.yupaits.commons.utils.ValidateUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -45,7 +47,8 @@ public class SystemNoticeCreate extends BaseDTO {
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        return msgLevel != null && StringUtils.isNotBlank(msgContent) && startTime != null
+                && endTime != null && startTime.isBefore(endTime);
     }
 
 }

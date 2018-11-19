@@ -9,34 +9,34 @@
               <a-select></a-select>
             </a-form-item>
             <a-row>
-              <a-col :span="10">
+              <a-col :span="12">
                 <a-form-item label="消息类型">
-                  <a-radio-group v-model="message.msgType">
-                    <a-radio-button v-for="(label, code) in $messages.enums.msgType" :key="code" :value="code">{{label}}</a-radio-button>
+                  <a-radio-group v-model="message.msgType" @change="handleMsgTypeChange">
+                    <a-radio-button v-for="(label, code) in $messages.enums.msgType" :key="code" :value="parseInt(code)">{{label}}</a-radio-button>
                   </a-radio-group>
                 </a-form-item>
               </a-col>
-              <a-col :span="6">
+              <a-col :span="12">
                 <a-form-item label="使用模板">
-                  <a-switch v-model="message.useTemplate"></a-switch>
-                </a-form-item>
-              </a-col>
-              <a-col :span="8">
-                <a-form-item label="选择模板" v-if="message.useTemplate">
-                  <a-select v-model="message.templateId" allowClear>
-
-                  </a-select>
+                  <a-switch v-model="message.useTemplate" @change="handleUseTemplateChange"></a-switch>
                 </a-form-item>
               </a-col>
             </a-row>
             <div v-if="message.useTemplate">
               <a-form-item label="消息预览">
-                <div class="preview-box">{{messagePreview}}</div>
+                <div class="preview-box">{{previewMessage}}</div>
               </a-form-item>
-              <a-form-item label="填充字段">
+              <a-form-item label="填充字段" v-if="selectedTemplate.fillFields && selectedTemplate.fillFields.length > 0">
                 <a-row :gutter="16">
-                  <a-col v-for="i in 8" :span="6">
-                    <a-input addonBefore="用户名"></a-input>
+                  <a-col :span="12" v-for="field in selectedTemplate.fillFields" :key="field">
+                    <a-row>
+                      <a-col :span="6" class="has-text-right">
+                        {{field}}：
+                      </a-col>
+                      <a-col :span="18">
+                        <a-input v-model="message.payload[field]" @input="messagePreview"></a-input>
+                      </a-col>
+                    </a-row>
                   </a-col>
                 </a-row>
               </a-form-item>
@@ -52,6 +52,17 @@
         <div class="page-content">
           <h3>消息模板</h3>
           <a-row class="table-toolbar">
+            <div class="is-pulled-right">
+              <span>消息类型：
+                <a-select v-model="query.msgType" allowClear placeholder="选择类型" class="search-select mr-2">
+                  <a-select-option v-for="(label, code) in $messages.enums.msgType" :key="code" :value="code">{{label}}</a-select-option>
+                </a-select>
+              </span>
+              <span>关键字：
+                <a-input v-model="query.keyword" placeholder="请填写搜索关键字" class="search-input mr-2"></a-input>
+              </span>
+              <a-button icon="search" @click="handleSearch">搜索</a-button>
+            </div>
             <a-button icon="plus" @click="addTemplate">创建</a-button>
           </a-row>
           <a-table size="small"
@@ -66,11 +77,14 @@
                       {{column.title}}：
                     </a-col>
                     <a-col :span="18">
-                      {{column.isDate ? $utils.date(record[column.dataIndex]).format('YYYY-MM-DD HH:mm:ss') : record[column.dataIndex]}}
+                      {{$utils.text.expandColumnFormat(record, column)}}
                     </a-col>
                   </a-row>
                 </a-col>
               </a-row>
+            </template>
+            <template slot="msgType" slot-scope="record">
+              {{$messages.enums.msgType[record.msgType]}}
             </template>
             <template slot="opt" slot-scope="record">
               <a-button size="small" class="mr-1" @click="editTemplate(record)">{{$messages.operation.editBtn}}</a-button>
@@ -78,6 +92,8 @@
                             :okText="$messages.operation.confirmText" :cancelText="$messages.operation.cancelText">
                 <a-button size="small" class="mr-1">{{$messages.operation.deleteBtn}}</a-button>
               </a-popconfirm>
+              <a-button size="small" class="mr-1" @click="selectTemplate(record)"
+                        v-if="message.useTemplate && message.msgType === record.msgType">选择</a-button>
             </template>
           </a-table>
           <a-pagination size="small" class="mt-2 is-pulled-right"
@@ -103,14 +119,21 @@
         </a-form-item>
         <a-form-item label="消息类型">
           <a-radio-group v-model="template.msgType">
-            <a-radio-button v-for="(label, code) in $messages.enums.msgType" :key="code" :value="code">{{label}}</a-radio-button>
+            <a-radio-button v-for="(label, code) in $messages.enums.msgType" :key="code" :value="parseInt(code)">{{label}}</a-radio-button>
           </a-radio-group>
         </a-form-item>
         <a-form-item label="模板格式">
           <a-textarea v-model="template.templatePattern" :autosize="{minRows: 5, maxRows: 10}" placeholder="请填写模板的格式"></a-textarea>
         </a-form-item>
         <a-form-item label="填充字段">
-          <tags :options="template.fillFields"></tags>
+          <a-alert type="info" showIcon class="mb-1">
+            <div slot="message">
+              填充字段名称使用<code>{{</code>和<code>}}</code>进行包裹，如：<code>{{</code>name<code>}}</code>即表示名为 name 的填充字段。
+              <br>
+              你可以使用 <a-button size="small" icon="bulb" :loading="identifyLoading" @click="autoIdentify">自动识别</a-button> 一键生成填充字段信息!
+            </div>
+          </a-alert>
+          <tags color="blue" :options="$store.getters.fillFields" @change="handleFieldsChange"></tags>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -126,8 +149,10 @@
     components: {Tags, Breadcrumb},
     data() {
       return {
-        message: {},
-        messagePreview: '',
+        message: {
+          payload: {},
+          content: ''
+        },
         templates: [],
         pager: {
           current: 1,
@@ -135,8 +160,11 @@
           pageSize: this.$messages.pager.pageSize
         },
         loading: false,
-        selectedKeys: [],
-        query: {},
+        selectedTemplate: {},
+        previewMessage: '',
+        query: {
+          keyword: '',
+        },
         sortable: {
           ascs: [],
           descs: []
@@ -146,9 +174,8 @@
           visible: false,
           ok: () => {}
         },
-        template: {
-          fillFields: []
-        }
+        template: {},
+        identifyLoading: false,
       }
     },
     created() {
@@ -167,8 +194,34 @@
           this.loading = false;
         });
       },
+      handleMsgTypeChange() {
+        if (this.message.useTemplate) {
+          this.selectedTemplate = {};
+          this.message.payload = {};
+          this.previewMessage = '';
+        }
+      },
+      handleUseTemplateChange(value) {
+        if (value) {
+          this.message.content = '';
+        } else {
+          this.selectedTemplate = {};
+          this.message.payload = {};
+          this.previewMessage = '';
+        }
+      },
+      messagePreview() {
+        this.previewMessage = this.$utils.text.formatTemplatePreview(this.selectedTemplate.templatePattern,
+          this.selectedTemplate.fillFields, this.message.payload);
+      },
+      handleSearch() {
+        this.fetchTemplates();
+      },
       addTemplate() {
-        this.template = {};
+        this.template = {
+          templatePattern: ''
+        };
+        this.$store.dispatch('setFillFields', []);
         this.modal = {
           title: '创建模板',
           visible: true,
@@ -177,11 +230,16 @@
       },
       editTemplate(template) {
         this.template = JSON.parse(JSON.stringify(template));
+        this.$store.dispatch('setFillFields', template.fillFields);
         this.modal = {
           title: '编辑模板',
           visible: true,
           ok: this.handleEditTemplate
         };
+      },
+      selectTemplate(template) {
+        this.selectedTemplate = JSON.parse(JSON.stringify(template));
+        this.messagePreview();
       },
       handleAddTemplate() {
         this.$api.msg.addTemplate(this.template).then(() => {
@@ -207,7 +265,17 @@
         this.pager.current = page;
         this.pager.pageSize = pageSize;
         this.fetchTemplates();
-      }
+      },
+      autoIdentify() {
+        this.identifyLoading = true;
+        const fields = this.$utils.text.parseFields(this.template.templatePattern);
+        this.handleFieldsChange(fields);
+        this.identifyLoading = false;
+      },
+      handleFieldsChange(fields) {
+        this.template.fillFields = fields;
+        this.$store.dispatch('setFillFields', fields);
+      },
     }
   };
 </script>
@@ -218,8 +286,15 @@
     border-radius: 4px;
     padding: 8px;
     min-height: 136px;
+    line-height: 24px;
   }
   .table-toolbar {
     line-height: 3rem;
+  }
+  .search-select {
+    width: 100px;
+  }
+  .search-input {
+    width: 160px;
   }
 </style>
