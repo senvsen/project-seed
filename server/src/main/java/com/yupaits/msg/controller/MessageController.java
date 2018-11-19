@@ -60,8 +60,12 @@ public class MessageController {
         Message message = new Message();
         BeanUtils.copyProperties(messagePayload.getMessage(), message);
         message.setPayload(messagePayload.getMessage().getPayload());
-        return messageService.save(message) && messageUserService.batchSave(messagePayload.getRelatedId())
-                ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.CREATE_FAIL);
+        if (messageService.save(message)) {
+            messagePayload.getRelatedId().getFirstId().setValue(message.getId());
+            return messageUserService.batchSave(messagePayload.getRelatedId()) ?
+                    ResultWrapper.success() : ResultWrapper.fail(ResultCode.SAVE_FAIL);
+        }
+        return ResultWrapper.fail(ResultCode.CREATE_FAIL);
     }
 
     @ApiOperation("根据ID删除消息")

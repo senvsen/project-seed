@@ -3,8 +3,8 @@ import request from './request'
 const prefix = '/msg';
 
 export default {
-  addMessage(messageCreate) {
-    return request.post(`${prefix}/message`, messageCreate);
+  addMessage(messagePayload) {
+    return request.post(`${prefix}/message`, messagePayload);
   },
   deleteMessage(id) {
     return request.delete(`${prefix}/message/${id}`);

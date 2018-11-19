@@ -50,7 +50,6 @@ public class RolePrivilegeController {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
         List<RolePrivilegeVO> rolePrivilegeVOList = rolePrivilegeService.list(new QueryWrapper<RolePrivilege>()
-                .eq("deleted", false)
                 .eq(StringUtils.camelToUnderline(foreignId.getFieldName()), foreignId.getValue()))
                 .stream().map(rolePrivilege -> {
                     RolePrivilegeVO rolePrivilegeVO = new RolePrivilegeVO();

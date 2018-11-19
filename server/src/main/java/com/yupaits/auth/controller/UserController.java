@@ -83,7 +83,6 @@ public class UserController {
         BeanUtils.copyProperties(userCreate, user);
         String password = initPassword(user);
         if (userService.save(user)) {
-            User savedUser = userService.getOne(new QueryWrapper<User>().eq("username", user.getUsername()));
             Message message = new Message().setUseTemplate(false).setContent(String.format(SEND_PASSWORD_PATTERN, password));
             if (StringUtils.isNotBlank(user.getPhone())) {
                 message.setMsgType(MsgType.SMS);
@@ -94,14 +93,13 @@ public class UserController {
                 message.setPayload(JSON.toJSONString(payload));
             }
             if (!messageService.save(message)) {
-                userService.removeById(savedUser.getId());
+                userService.removeById(user.getId());
                 return ResultWrapper.fail("保存发送密码消息失败");
             }
-            Message savedMessage = messageService.getOne(new QueryWrapper<Message>().eq("content", message.getContent()));
-            MessageUser messageUser = new MessageUser().setMessageId(savedMessage.getId()).setUserId(savedUser.getId()).setNeedRemove(true);
+            MessageUser messageUser = new MessageUser().setMessageId(message.getId()).setUserId(user.getId()).setNeedRemove(true);
             if (messageUserService.save(messageUser)) {
-                messageService.removeById(savedMessage.getId());
-                userService.removeById(savedUser.getId());
+                messageService.removeById(message.getId());
+                userService.removeById(user.getId());
                 return ResultWrapper.fail("保存发送密码消息和用户对应关系失败");
             }
             msgSender.send(messageUser);

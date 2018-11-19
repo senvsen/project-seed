@@ -190,7 +190,7 @@ public abstract class AbstractCodeGenerator {
                 @Override
                 public String outputFile(TableInfo tableInfo) {
                     cfg.getMap().put("notRelateTable", true);
-                    cfg.getMap().put("fieldPackages", fieldPackages(tableInfo));
+                    cfg.getMap().put("fieldPackages", dtoFieldPackages(tableInfo));
                     cfg.getMap().put("hasDeserializer", hasDeserializer(tableInfo.getFields()));
                     return generatorConfig.getProjectPath() + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
                             + "/dto/" + tableInfo.getEntityName() + "Create" + StringPool.DOT_JAVA;
@@ -200,7 +200,7 @@ public abstract class AbstractCodeGenerator {
             focList.add(new FileOutConfig("/templates/dto.update.java.ftl") {
                 @Override
                 public String outputFile(TableInfo tableInfo) {
-                    cfg.getMap().put("fieldPackages", fieldPackages(tableInfo));
+                    cfg.getMap().put("fieldPackages", dtoFieldPackages(tableInfo));
                     return generatorConfig.getProjectPath() + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
                             + "/dto/" + tableInfo.getEntityName() + "Update" + StringPool.DOT_JAVA;
                 }
@@ -210,7 +210,7 @@ public abstract class AbstractCodeGenerator {
         focList.add(new FileOutConfig("/templates/vo.java.ftl") {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                cfg.getMap().put("fieldPackages", fieldPackages(tableInfo));
+                cfg.getMap().put("fieldPackages", voFieldPackages(tableInfo));
                 return generatorConfig.getProjectPath() + "/server" + JAVA_PATH + BASE_PACKAGE_PATH + packageConfig.getModuleName()
                         + "/vo/" + tableInfo.getEntityName() + "VO" + StringPool.DOT_JAVA;
             }
@@ -253,9 +253,9 @@ public abstract class AbstractCodeGenerator {
     }
 
     /**
-     * 获取需要导入的Field类型Package路径
+     * 获取DTO类需要导入的Field类型Package路径
      */
-    private Set<String> fieldPackages(TableInfo tableInfo) {
+    private Set<String> dtoFieldPackages(TableInfo tableInfo) {
         boolean hasDateTimeType = false;
         for (TableField tableField : tableInfo.getFields()) {
             if (StringUtils.equals(tableField.getType(), FIELD_DATETIME_TYPE)
@@ -269,6 +269,16 @@ public abstract class AbstractCodeGenerator {
                 !StringUtils.startsWith(pkg, MYBATIS_PLUS_PACKAGE_PREFIX)
                 && !StringUtils.equals(pkg, Serializable.class.getCanonicalName())
                 && (finalHasDateTimeType || !StringUtils.equals(pkg, LocalDateTime.class.getCanonicalName()))
+        ).collect(Collectors.toSet());
+    }
+
+    /**
+     * 获取VO类需要导入的Field类型Package路径
+     */
+    private Set<String> voFieldPackages(TableInfo tableInfo) {
+        return tableInfo.getImportPackages().stream().filter(pkg ->
+                !StringUtils.startsWith(pkg, MYBATIS_PLUS_PACKAGE_PREFIX)
+                && !StringUtils.equals(pkg, Serializable.class.getCanonicalName())
         ).collect(Collectors.toSet());
     }
 

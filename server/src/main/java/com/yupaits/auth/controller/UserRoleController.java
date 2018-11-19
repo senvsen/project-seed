@@ -50,7 +50,6 @@ public class UserRoleController {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
         List<UserRoleVO> userRoleVOList = userRoleService.list(new QueryWrapper<UserRole>()
-                .eq("deleted", false)
                 .eq(StringUtils.camelToUnderline(foreignId.getFieldName()), foreignId.getValue()))
                 .stream().map(userRole -> {
                     UserRoleVO userRoleVO = new UserRoleVO();

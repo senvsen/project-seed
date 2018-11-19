@@ -44,7 +44,7 @@
             <a-form-item label="消息内容" v-else>
               <a-textarea v-model="message.content" :autosize="{minRows: 6, maxRows: 12}"></a-textarea>
             </a-form-item>
-            <a-button type="primary" icon="message">推送消息</a-button>
+            <a-button type="primary" icon="message" @click="pushMessage">推送消息</a-button>
           </a-form>
         </div>
       </a-col>
@@ -213,6 +213,23 @@
       messagePreview() {
         this.previewMessage = this.$utils.text.formatTemplatePreview(this.selectedTemplate.templatePattern,
           this.selectedTemplate.fillFields, this.message.payload);
+      },
+      pushMessage() {
+        this.$api.msg.addMessage({
+          message: this.message,
+          relatedId: {
+            firstId: {fieldName: 'messageId', value: undefined},
+            secondIds: {fieldName: 'userId', values: []}
+          }
+        }).then(() => {
+          this.$message.success(this.$messages.successResult.operation);
+          this.message = {
+            payload: {},
+            content: ''
+          };
+          this.selectedTemplate = {};
+          this.previewMessage = '';
+        });
       },
       handleSearch() {
         this.fetchTemplates();
