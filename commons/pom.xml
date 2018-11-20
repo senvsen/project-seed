@@ -16,6 +16,8 @@
         <commons-collections4.version>4.1</commons-collections4.version>
         <jpinyin.version>1.1.8</jpinyin.version>
         <poi.version>3.17</poi.version>
+        <aliyun-java-sdk-core.version>4.0.6</aliyun-java-sdk-core.version>
+        <aliyun-java-sdk-sysmsapi.version>1.1.0</aliyun-java-sdk-sysmsapi.version>
     </properties>
 
     <dependencies>
@@ -46,6 +48,17 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>${poi.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>${aliyun-java-sdk-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>${aliyun-java-sdk-sysmsapi.version}</version>
         </dependency>
     </dependencies>
 

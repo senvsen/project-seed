@@ -8,12 +8,6 @@ package com.yupaits.commons.utils.msg;
 public interface MsgModel<T> {
 
     /**
-     * 消息发送者
-     * @return 发送者
-     */
-    String getSender();
-
-    /**
      * 消息接收者
      * @return 接收者
      */

@@ -16,8 +16,6 @@ public class SmsMsg implements MsgModel<String>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String sender;
-
     private String receiver;
 
     private String content;

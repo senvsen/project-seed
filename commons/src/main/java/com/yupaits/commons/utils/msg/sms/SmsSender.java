@@ -8,8 +8,14 @@ import com.yupaits.commons.utils.msg.BaseSender;
  */
 public class SmsSender extends BaseSender<SmsMsg> {
 
+    private final BaseSmsProvider smsProvider;
+
+    public SmsSender(BaseSmsProvider smsProvider) {
+        this.smsProvider = smsProvider;
+    }
+
     @Override
     public boolean send(SmsMsg msg) {
-        return false;
+        return smsProvider.sendSms(msg.getReceiver(), msg.getContent());
     }
 }

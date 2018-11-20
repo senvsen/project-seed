@@ -4,6 +4,7 @@ import com.yupaits.auth.entity.User;
 import com.yupaits.auth.service.IUserService;
 import com.yupaits.commons.utils.msg.email.EmailMsg;
 import com.yupaits.commons.utils.msg.email.EmailSender;
+import com.yupaits.commons.utils.msg.sms.BaseSmsProvider;
 import com.yupaits.commons.utils.msg.sms.SmsMsg;
 import com.yupaits.commons.utils.msg.sms.SmsSender;
 import com.yupaits.msg.entity.Message;
@@ -41,17 +42,19 @@ public class MsgReceiver {
     private final IUserService userService;
     private final MessageHelper messageHelper;
     private final JavaMailSenderImpl javaMailSender;
+    private final BaseSmsProvider smsProvider;
 
     @Autowired
     public MsgReceiver(INotificationService notificationService, IMessageUserService messageUserService,
                        IMessageService messageService, IUserService userService, MessageHelper messageHelper,
-                       JavaMailSenderImpl javaMailSender) {
+                       JavaMailSenderImpl javaMailSender, BaseSmsProvider smsProvider) {
         this.notificationService = notificationService;
         this.messageUserService = messageUserService;
         this.messageService = messageService;
         this.userService = userService;
         this.messageHelper = messageHelper;
         this.javaMailSender = javaMailSender;
+        this.smsProvider = smsProvider;
     }
 
     @RabbitHandler
@@ -75,10 +78,8 @@ public class MsgReceiver {
         try {
             switch (message.getMsgType()) {
                 case SMS:
-                    SmsSender smsSender = new SmsSender();
-                    SmsMsg smsMsg = new SmsMsg().setSender("")
-                            .setReceiver(user.getPhone())
-                            .setContent(msgContent);
+                    SmsSender smsSender = new SmsSender(smsProvider);
+                    SmsMsg smsMsg = new SmsMsg().setReceiver(user.getPhone()).setContent(msgContent);
                     smsSender.send(smsMsg);
                     break;
                 case EMAIL:
@@ -90,7 +91,7 @@ public class MsgReceiver {
                     emailSender.send(emailMsg);
                     break;
                 case WECHAT:
-
+                    //TODO 待增加微信账号绑定功能和完善微信公众号管理功能之后可实现推送微信消息
                     break;
                 default:
                     result = false;
@@ -106,8 +107,6 @@ public class MsgReceiver {
             if (messageUser.isNeedRemove()) {
                 messageService.removeById(messageUser.getMessageId());
             }
-        } else {
-            //TODO 消息消费失败处理
         }
     }
 }

@@ -7,10 +7,6 @@ import com.yupaits.commons.utils.msg.MsgModel;
  * @date 2018/11/9
  */
 public class WechatMsg implements MsgModel<String> {
-    @Override
-    public String getSender() {
-        return null;
-    }
 
     @Override
     public String getReceiver() {
