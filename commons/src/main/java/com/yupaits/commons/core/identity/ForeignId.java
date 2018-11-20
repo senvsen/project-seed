@@ -30,7 +30,7 @@ public class ForeignId<T extends Serializable> implements Serializable {
 
     @ApiModelProperty(hidden = true)
     public boolean isValid(Class clazz) {
-        if (StringUtils.isBlank(fieldName) || value == null) {
+        if (StringUtils.isBlank(fieldName)) {
             return false;
         }
         try {

@@ -213,7 +213,6 @@ public class UserController {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         if (MapUtils.isNotEmpty(query)) {
             query.forEach((key, value) -> {
-                //TODO 设置查询条件
                 if (StringUtils.equals(key, "id") && StringUtils.isNotBlank(String.valueOf(value))) {
                     queryWrapper.eq("id", value);
                 }

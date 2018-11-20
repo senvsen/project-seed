@@ -6,7 +6,18 @@
           <h3>新的消息</h3>
           <a-form>
             <a-form-item label="目标用户">
-              <a-select></a-select>
+              <a-select mode="multiple"
+                        labelInValue
+                        :value="selectedUsers"
+                        placeholder="请输入关键字查找并选择目标用户"
+                        class="users-select"
+                        :filterOption="false"
+                        @search="fetchUser"
+                        @change="handleUserKeywordChange"
+                        :notFoundContent="fetching ? undefined : null">
+                <a-spin slot="notFoundContent" size="small" v-if="fetching"/>
+                <a-select-option v-for="user in users" :key="user.id">{{user.username}} {{user.name}}</a-select-option>
+              </a-select>
             </a-form-item>
             <a-row>
               <a-col :span="12">
@@ -143,6 +154,7 @@
 <script>
   import Breadcrumb from "../../../../components/Breadcrumb";
   import Tags from "../../../../components/Tags";
+  import debounce from 'lodash/debounce';
 
   export default {
     name: "Message",
@@ -160,6 +172,9 @@
           pageSize: this.$messages.pager.pageSize
         },
         loading: false,
+        users: [],
+        fetching: false,
+        selectedUsers: [],
         selectedTemplate: {},
         previewMessage: '',
         query: {
@@ -179,9 +194,24 @@
       }
     },
     created() {
+      this.fetchUser = debounce(this.fetchUser, 500);
       this.fetchTemplates();
     },
     methods: {
+      fetchUser(keyword) {
+        this.fetching = true;
+        this.$api.auth.getUserPage(1, 10, {keyword: keyword}, [], []).then(res => {
+          this.users = res.data.records;
+          this.fetching = false;
+        }).catch(() => {
+          this.fetching = false;
+        });
+      },
+      handleUserKeywordChange(selectedUsers) {
+        this.selectedUsers = selectedUsers;
+        this.users = [];
+        this.fetching = false;
+      },
       fetchTemplates() {
         this.loading = true;
         this.$api.msg.getTemplatePage(this.pager.current, this.pager.pageSize, this.query,
@@ -215,14 +245,19 @@
           this.selectedTemplate.fillFields, this.message.payload);
       },
       pushMessage() {
+        if (this.message.useTemplate) {
+          this.message.msgTemplateId = this.selectedTemplate.id;
+        }
+        const userIds = this.selectedUsers.map(user => {return user.key});
         this.$api.msg.addMessage({
           message: this.message,
           relatedId: {
-            firstId: {fieldName: 'messageId', value: undefined},
-            secondIds: {fieldName: 'userId', values: []}
+            firstId: {fieldName: 'messageId'},
+            secondIds: {fieldName: 'userId', values: userIds}
           }
         }).then(() => {
           this.$message.success(this.$messages.successResult.operation);
+          this.selectedUsers = [];
           this.message = {
             payload: {},
             content: ''
@@ -298,6 +333,9 @@
 </script>
 
 <style scoped>
+  .users-select {
+    width: 100%;
+  }
   .preview-box {
     border: 1px solid #e8e8e8;
     border-radius: 4px;

@@ -100,8 +100,9 @@ public class MsgReceiver {
             result = false;
         }
         if (result) {
-            messageUser.setSendAt(LocalDateTime.now()).setDeleted(true);
+            messageUser.setSendAt(LocalDateTime.now());
             messageUserService.saveOrUpdate(messageUser);
+            messageUserService.removeById(messageUser.getId());
             if (messageUser.isNeedRemove()) {
                 messageService.removeById(messageUser.getMessageId());
             }
