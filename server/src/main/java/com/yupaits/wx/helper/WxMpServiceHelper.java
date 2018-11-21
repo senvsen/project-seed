@@ -8,6 +8,7 @@ import com.yupaits.wx.service.impl.BaseWxServiceImpl;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpMessageHandler;
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
+import me.chanjar.weixin.mp.api.impl.WxMpMenuServiceImpl;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,6 +39,10 @@ public class WxMpServiceHelper {
 
     public BaseWxServiceImpl wxMpService(Long id) {
         return new BaseWxServiceImpl(id, mpAccountMapper);
+    }
+
+    public WxMpMenuServiceImpl wxMpMenuService(Long id) {
+        return new WxMpMenuServiceImpl(wxMpService(id));
     }
 
     public WxMpMessageRouter wxMpMessageRouter(Long id) {

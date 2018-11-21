@@ -1,8 +1,9 @@
 package com.yupaits.wx.vo;
 
-import java.time.LocalDateTime;
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.yupaits.commons.core.serializer.LongSerializer;
+import com.yupaits.wx.dto.WxMpReplyMessage;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -51,4 +52,8 @@ public class MpWelcomeMessageVO implements Serializable {
     @ApiModelProperty(value = "更新人ID")
     @JsonSerialize(using = LongSerializer.class)
     private Long updatedBy;
+
+    public WxMpReplyMessage getMessage() {
+        return JSON.parseObject(message, WxMpReplyMessage.class);
+    }
 }

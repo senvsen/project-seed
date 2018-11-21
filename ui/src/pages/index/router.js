@@ -65,7 +65,8 @@ for (let key in messages.sidebars) {
             component: Page,
             meta: {
               key: item.link,
-              menuKey: item.menuKey
+              menuKey: item.menuKey,
+              sidebarKey: item.sidebarKey
             }
           };
           if (item.pageType) {
@@ -81,7 +82,8 @@ for (let key in messages.sidebars) {
         path: menu.link,
         component: Page,
         meta: {
-          menuKey: menu.key
+          menuKey: menu.key,
+          sidebarKey: menu.sidebarKey
         }
       };
       if (menu.pageType) {
@@ -102,6 +104,7 @@ router.beforeEach((to, from, next) => {
   store.dispatch('setPageType', to.meta.pageType || '');
   store.dispatch('setKey', to.meta.key || to.path);
   store.dispatch('setMenuKey', to.meta.menuKey || '');
+  store.dispatch('setSidebarKey', to.meta.sidebarKey || '');
   next();
 });
 

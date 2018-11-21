@@ -110,3 +110,8 @@
   font-size: 18px;
   font-weight: bold;
 }
+
+.title-highlight-border {
+  border-left: 4px solid orangered;
+  padding-left: 6px;
+}

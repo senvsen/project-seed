@@ -29,31 +29,20 @@ export default {
     const descsParam = descs.join('&descs=');
     return request.post(`${prefix}/mp-account/page?page=${page}&size=${size}&descs=${descsParam}&ascs=${ascsParam}`, query);
   },
+  getMpMenu(id) {
+    return request.get(`${prefix}/mp-menu/${id}`);
+  },
+  saveMpMenu(id, mpMenu) {
+    return request.post(`${prefix}/mp-menu/${id}`, mpMenu);
+  },
   addMpWelcomeMessage(mpWelcomeMessageCreate) {
     return request.post(`${prefix}/mp-welcome-message`, mpWelcomeMessageCreate);
   },
   updateMpWelcomeMessage(id, mpWelcomeMessageUpdate) {
     return request.put(`${prefix}/mp-welcome-message/${id}`, mpWelcomeMessageUpdate);
   },
-  batchSaveMpWelcomeMessage(mpWelcomeMessageUpdateList) {
-    return request.put(`${prefix}/mp-welcome-message/batch-save`, mpWelcomeMessageUpdateList);
-  },
-  deleteMpWelcomeMessage(id) {
-    return request.delete(`${prefix}/mp-welcome-message/${id}`);
-  },
-  batchDeleteMpWelcomeMessage(ids) {
-    return request.put(`${prefix}/mp-welcome-message/batch-delete`, ids);
-  },
-  getMpWelcomeMessage(id) {
-    return request.get(`${prefix}/mp-welcome-message/${id}`);
-  },
   getMpWelcomeMessageList(query) {
     return request.post(`${prefix}/mp-welcome-message/list`, query);
-  },
-  getMpWelcomeMessagePage(page, size, query, ascs, descs) {
-    const ascsParam = ascs.join('&ascs=');
-    const descsParam = descs.join('&descs=');
-    return request.post(`${prefix}/mp-welcome-message/page?page=${page}&size=${size}&descs=${descsParam}&ascs=${ascsParam}`, query);
   },
   addMpAutoReply(mpAutoReplyCreate) {
     return request.post(`${prefix}/mp-auto-reply`, mpAutoReplyCreate);

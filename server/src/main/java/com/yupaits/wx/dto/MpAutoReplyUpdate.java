@@ -36,13 +36,13 @@ public class MpAutoReplyUpdate extends BaseDTO {
     private Long accountId;
 
     @ApiModelProperty(value = "关键词")
-    private String keywords;
+    private List<String> keywords;
 
     @ApiModelProperty(value = "匹配规则")
     private MpAutoReply.MatchRule matchRule;
 
     @ApiModelProperty(value = "回复内容")
-    private String reply;
+    private WxMpReplyMessage reply;
 
     @Override
     @ApiModelProperty(hidden = true)
@@ -50,11 +50,11 @@ public class MpAutoReplyUpdate extends BaseDTO {
         return true;
     }
 
-    public void setKeywords(List<String> keywords) {
-        this.keywords = JSON.toJSONString(keywords);
+    public String getKeywords() {
+        return JSON.toJSONString(keywords);
     }
 
-    public void setReply(WxMpReplyMessage reply) {
-        this.reply = JSON.toJSONString(reply);
+    public String getReply() {
+        return JSON.toJSONString(reply);
     }
 }

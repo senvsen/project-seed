@@ -109,10 +109,10 @@ spring:
     username: guest
     password: guest
   mail:
-    host: smtp.qq.com
+    host: smtp.163.com
     port: 25
-    username: xxxxxxxxx@qq.com
-    password: xxxxxxxx
+    username: yupaits@163.com
+    password: email123
     test-connection: false
 
 fdfs:

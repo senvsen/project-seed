@@ -86,10 +86,10 @@
              @ok="handleAddFilterChain"
              @cancel="addVisible = false">
       <a-form>
-        <a-form-item label="目标URL" :labelCol="$style.modalForm.label" :wrapperCol="$style.modalForm.wrapper" required>
+        <a-form-item label="目标URL" :labelCol="$style.form.label" :wrapperCol="$style.form.wrapper" required>
           <a-input v-model="filterChain.url" placeholder="请填写目标URL"></a-input>
         </a-form-item>
-        <a-form-item label="过滤器" :labelCol="$style.modalForm.label" :wrapperCol="$style.modalForm.wrapper" required>
+        <a-form-item label="过滤器" :labelCol="$style.form.label" :wrapperCol="$style.form.wrapper" required>
           <a-input v-model="filterChain.filter" placeholder="请填写过滤器规则"></a-input>
         </a-form-item>
       </a-form>

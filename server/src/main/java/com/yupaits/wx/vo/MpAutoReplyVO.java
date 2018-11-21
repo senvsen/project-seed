@@ -1,14 +1,17 @@
 package com.yupaits.wx.vo;
 
-import java.time.LocalDateTime;
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.yupaits.commons.core.serializer.LongSerializer;
+import com.yupaits.wx.dto.WxMpReplyMessage;
+import com.yupaits.wx.entity.MpAutoReply;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -36,7 +39,7 @@ public class MpAutoReplyVO implements Serializable {
     private String keywords;
 
     @ApiModelProperty(value = "匹配规则")
-    private Integer matchRule;
+    private MpAutoReply.MatchRule matchRule;
 
     @ApiModelProperty(value = "回复内容")
     private String reply;
@@ -54,4 +57,12 @@ public class MpAutoReplyVO implements Serializable {
     @ApiModelProperty(value = "更新人ID")
     @JsonSerialize(using = LongSerializer.class)
     private Long updatedBy;
+
+    public List<String> getKeywords() {
+        return JSON.parseArray(keywords, String.class);
+    }
+
+    public WxMpReplyMessage getReply() {
+        return JSON.parseObject(reply, WxMpReplyMessage.class);
+    }
 }

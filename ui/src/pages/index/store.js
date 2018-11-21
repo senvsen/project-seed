@@ -14,7 +14,8 @@ export default new Vuex.Store({
     search: {},
     rolesFetched: false,
     roles: [],
-    fillFields: []
+    fillFields: [],
+    wxMessage: {},
   },
   getters: {
     sidebarKey(state) {
@@ -43,6 +44,9 @@ export default new Vuex.Store({
     },
     fillFields(state) {
       return state.fillFields;
+    },
+    wxMessage(state) {
+      return state.wxMessage;
     }
   },
   mutations: {
@@ -72,6 +76,9 @@ export default new Vuex.Store({
     },
     setFillFields(state, fillFields) {
       state.fillFields = fillFields;
+    },
+    setWxMessage(state, wxMessage) {
+      state.wxMessage = wxMessage;
     }
   },
   actions: {
@@ -101,6 +108,9 @@ export default new Vuex.Store({
     },
     setFillFields({commit}, fillFields) {
       commit('setFillFields', fillFields);
+    },
+    setWxMessage({commit}, wxMessage) {
+      commit('setWxMessage', wxMessage);
     }
   }
 })

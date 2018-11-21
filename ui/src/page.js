@@ -6,7 +6,6 @@ import UserToolbar from './components/toolbar/UserToolbar'
 import UserForm from './components/form/UserForm'
 import UserOpt from './components/opt/UserOpt'
 import UserSearch from './components/search/UserSearch'
-import MpAccountToolbar from './components/toolbar/MpAccountToolbar'
 import MpAccountForm from './components/form/MpAccountForm'
 import MpAccountOpt from './components/opt/MpAccountOpt'
 import MpAccountSearch from './components/search/MpAccountSearch'
@@ -25,7 +24,6 @@ export default {
     searchComponent: ScheduleSearch
   },
   '/mp-account': {
-    toolbarComponent: MpAccountToolbar,
     formComponent: MpAccountForm,
     optComponent: MpAccountOpt,
     searchComponent: MpAccountSearch

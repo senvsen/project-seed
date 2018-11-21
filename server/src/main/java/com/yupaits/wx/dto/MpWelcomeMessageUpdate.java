@@ -1,5 +1,6 @@
 package com.yupaits.wx.dto;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.yupaits.commons.core.serializer.LongDeserializer;
 import com.yupaits.commons.core.BaseDTO;
@@ -35,7 +36,7 @@ public class MpWelcomeMessageUpdate extends BaseDTO {
     private Boolean active;
 
     @ApiModelProperty(value = "欢迎语内容")
-    private String message;
+    private WxMpReplyMessage message;
 
     @Override
     @ApiModelProperty(hidden = true)
@@ -43,4 +44,7 @@ public class MpWelcomeMessageUpdate extends BaseDTO {
         return true;
     }
 
+    public String getMessage() {
+        return JSON.toJSONString(message);
+    }
 }
