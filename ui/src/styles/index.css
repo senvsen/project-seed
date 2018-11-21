@@ -105,3 +105,8 @@
   background: #fff;
   min-height: calc(100vh - 204px);
 }
+
+.header-title {
+  font-size: 18px;
+  font-weight: bold;
+}

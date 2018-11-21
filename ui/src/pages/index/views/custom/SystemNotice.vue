@@ -1,9 +1,9 @@
 <template>
   <div>
     <a-row :gutter="16">
-      <a-col :span="16">
+      <a-col :span="10">
         <div class="page-content">
-          <h3>新的公告</h3>
+          <h3 class="header-title">新的公告</h3>
           <a-form>
             <a-form-item label="通知内容">
               <a-textarea v-model="systemNotice.msgContent" :autosize="{minRows: 5, maxRows: 10}"></a-textarea>
@@ -25,9 +25,9 @@
           </a-form>
         </div>
       </a-col>
-      <a-col :span="8">
+      <a-col :span="14">
         <div class="page-content">
-          <h3>当前公告
+          <h3 class="header-title">当前公告
             <!--<a-button size="small" icon="clock-circle-o" class="is-pulled-right">历史公告</a-button>-->
           </h3>
           <div class="notice-container">

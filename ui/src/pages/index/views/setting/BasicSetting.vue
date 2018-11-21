@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>基本设置</h2>
+    <h3 class="header-title">基本设置</h3>
     <a-row>
       <a-col :span="12">
         <a-form>

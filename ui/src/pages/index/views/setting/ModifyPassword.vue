@@ -1,6 +1,6 @@
 <template>
   <div class="modify-password-container">
-    <h2>修改密码</h2>
+    <h3 class="header-title">修改密码</h3>
     <a-form>
       <a-form-item label="原密码" required>
         <a-input type="password" v-model="modifyPasswordForm.oldPassword" placeholder="请填写原来的密码"></a-input>

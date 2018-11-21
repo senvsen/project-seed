@@ -401,10 +401,6 @@
   .page-header {
     line-height: 2rem;
   }
-  .header-title {
-    font-size: 18px;
-    font-weight: bold;
-  }
   .container {
     height: calc(100vh - 292px);
     width: 100%;

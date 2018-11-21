@@ -51,6 +51,6 @@
 <style scoped>
   .setting-content {
     background: #fff;
-    min-height: calc(100vh - 260px);
+    min-height: calc(100vh - 278px);
   }
 </style>

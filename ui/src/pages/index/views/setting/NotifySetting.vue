@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>新消息通知</h2>
+    <h3 class="header-title">新消息通知</h3>
   </div>
 </template>
 

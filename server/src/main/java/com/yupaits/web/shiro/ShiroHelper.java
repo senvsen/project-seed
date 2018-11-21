@@ -21,7 +21,7 @@ public class ShiroHelper {
             UserVO currentUser = (UserVO) subject.getPrincipal();
             return currentUser.getId();
         } catch (Exception e) {
-            log.error("获取当前操作人用户ID失败");
+            log.debug("获取当前操作人用户ID失败");
             return null;
         }
     }
@@ -34,7 +34,7 @@ public class ShiroHelper {
             Subject subject = SecurityUtils.getSubject();
             return (UserVO) subject.getPrincipal();
         } catch (Exception e) {
-            log.error("获取当前操作人用户信息失败");
+            log.debug("获取当前操作人用户信息失败");
             return new UserVO();
         }
     }

@@ -3,7 +3,7 @@
     <a-row :gutter="16">
       <a-col :span="10">
         <div class="page-content">
-          <h3>新的消息</h3>
+          <h3 class="header-title">新的消息</h3>
           <a-form>
             <a-form-item label="目标用户">
               <a-select mode="multiple"
@@ -61,7 +61,7 @@
       </a-col>
       <a-col :span="14">
         <div class="page-content">
-          <h3>消息模板</h3>
+          <h3 class="header-title">消息模板</h3>
           <a-row class="table-toolbar">
             <div class="is-pulled-right">
               <span>消息类型：
@@ -123,7 +123,7 @@
              :maskClosable="false"
              :visible="modal.visible"
              @ok="modal.ok"
-             @cancel="() => {modal.visible = false}" width="800px">
+             @cancel="() => {modal.visible = false}">
       <a-form>
         <a-form-item label="模板名称">
           <a-input v-model="template.name" placeholder="请填写模板名称"></a-input>
@@ -305,6 +305,19 @@
           this.$message.success(this.$messages.successResult.update);
           this.modal.visible = false;
           this.fetchTemplates();
+          if (this.selectedTemplate && this.selectedTemplate.id === this.template.id) {
+            this.selectedTemplate = JSON.parse(JSON.stringify(this.template));
+            this.selectedTemplate.fillFields = [];
+            this.template.fillFields.forEach(field => {
+              this.selectedTemplate.fillFields.push(field);
+            });
+            for (let key in this.message.payload) {
+              if (this.message.payload.hasOwnProperty(key) && this.template.fillFields.indexOf(key) === -1) {
+                delete this.message.payload[key];
+              }
+            }
+            this.messagePreview();
+          }
         });
       },
       handleDeleteTemplate(template) {

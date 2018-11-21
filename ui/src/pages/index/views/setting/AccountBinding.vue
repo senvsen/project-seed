@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>账号绑定</h2>
+    <h3 class="header-title">账号绑定</h3>
     <a-list itemLayout="horizontal">
       <a-list-item slot="renderItem" slot-scope="item, index"></a-list-item>
     </a-list>
