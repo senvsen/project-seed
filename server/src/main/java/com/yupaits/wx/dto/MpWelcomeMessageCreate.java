@@ -2,13 +2,12 @@ package com.yupaits.wx.dto;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.yupaits.commons.core.serializer.LongDeserializer;
 import com.yupaits.commons.core.BaseDTO;
+import com.yupaits.commons.core.serializer.LongDeserializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import me.chanjar.weixin.mp.bean.WxMpMassPreviewMessage;
 
 /**
  * <p>
@@ -33,14 +32,13 @@ public class MpWelcomeMessageCreate extends BaseDTO {
     private Boolean active;
 
     @ApiModelProperty(value = "欢迎语内容")
-    private WxMpMassPreviewMessage message;
+    private WxMpReplyMessage message;
 
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
         return true;
     }
-
 
     public String getMessage() {
         return JSON.toJSONString(message);

@@ -51,7 +51,6 @@ public class MpWelcomeMessageController {
         }
         MpWelcomeMessage mpWelcomeMessage = new MpWelcomeMessage();
         BeanUtils.copyProperties(mpWelcomeMessageCreate, mpWelcomeMessage);
-        mpWelcomeMessage.setMessage(mpWelcomeMessageCreate.getMessage());
         return mpWelcomeMessageService.save(mpWelcomeMessage) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.CREATE_FAIL);
     }
 
@@ -63,7 +62,6 @@ public class MpWelcomeMessageController {
         }
         MpWelcomeMessage mpWelcomeMessage = new MpWelcomeMessage();
         BeanUtils.copyProperties(mpWelcomeMessageUpdate, mpWelcomeMessage);
-        mpWelcomeMessage.setMessage(mpWelcomeMessageUpdate.getMessage());
         return mpWelcomeMessageService.updateById(mpWelcomeMessage) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.UPDATE_FAIL);
     }
 

@@ -209,6 +209,34 @@ export default {
         {title: '更新时间', dataIndex: 'updatedAt', isDate: true},
         {title: '更新人', dataIndex: 'updatedBy'},
       ]
+    },
+    'auto-reply': {
+      tableColumns: [
+        {title: 'ID', width: '25%', dataIndex: 'id'},
+        {title: '关键词', width: '30%', dataIndex: 'keywords'},
+        {title: '匹配规则', width: '20%', dataIndex: 'matchRule'},
+        {title: '操作', width: '25%', scopedSlots: {customRender: 'opt'}},
+      ],
+      expandedColumns: [
+        {title: '创建时间', dataIndex: 'createdAt', isDate: true},
+        {title: '创建人', dataIndex: 'createdBy'},
+        {title: '更新时间', dataIndex: 'updatedAt', isDate: true},
+        {title: '更新人', dataIndex: 'updatedBy'},
+      ]
+    },
+    'event-handler': {
+      tableColumns: [
+        {title: 'ID', width: '25%', dataIndex: 'id'},
+        {title: '事件类型', width: '20%', scopedSlots: {customRender: 'event-type'}},
+        {title: '处理类路径', width: '35%', dataIndex: 'handlerClass'},
+        {title: '操作', width: '20%', scopedSlots: {customRender: 'opt'}},
+      ],
+      expandedColumns: [
+        {title: '创建时间', dataIndex: 'createdAt', isDate: true},
+        {title: '创建人', dataIndex: 'createdBy'},
+        {title: '更新时间', dataIndex: 'updatedAt', isDate: true},
+        {title: '更新人', dataIndex: 'updatedBy'},
+      ]
     }
   },
   operation: {

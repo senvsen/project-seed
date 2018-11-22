@@ -24,7 +24,7 @@
       <a-form-item label="Token" :labelCol="$style.form.label" :wrapperCol="$style.form.wrapper" required>
         <a-input v-model="account.token" placeholder="请填写公众号Token"></a-input>
       </a-form-item>
-      <a-form-item label="AesKey" :labelCol="$style.form.label" :wrapperCol="$style.form.wrapper" required>
+      <a-form-item label="AesKey" :labelCol="$style.form.label" :wrapperCol="$style.form.wrapper">
         <a-input v-model="account.encodingAesKey" placeholder="请填写公众号EncodingAesKey"></a-input>
       </a-form-item>
     </a-form>

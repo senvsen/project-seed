@@ -74,6 +74,11 @@
         this.$store.dispatch('setWxMessage', val);
       }
     },
+    created() {
+      if (!this.message.articles) {
+        this.message.articles = [];
+      }
+    },
     methods: {
       addArticle() {
         this.message.articles.push({});

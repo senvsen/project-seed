@@ -98,7 +98,7 @@
         </div>
         <a-form-item>
           <a-button type="primary" class="mr-1" @click="confirmButton">提交</a-button>
-          <a-button @click="editing = false">取消</a-button>
+          <a-button @click="cancelEdit">取消</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -188,6 +188,10 @@
         } else {
           console.error('不支持的操作类型');
         }
+      },
+      cancelEdit() {
+        this.editingButton = '';
+        this.editing = false;
       },
       removeMenuButton(list, index) {
         list.splice(index, 1);

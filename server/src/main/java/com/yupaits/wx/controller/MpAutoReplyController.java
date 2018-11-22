@@ -55,8 +55,6 @@ public class MpAutoReplyController {
         }
         MpAutoReply mpAutoReply = new MpAutoReply();
         BeanUtils.copyProperties(mpAutoReplyCreate, mpAutoReply);
-        mpAutoReply.setKeywords(mpAutoReplyCreate.getKeywords());
-        mpAutoReply.setReply(mpAutoReplyCreate.getReply());
         return mpAutoReplyService.save(mpAutoReply) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.CREATE_FAIL);
     }
 
@@ -68,8 +66,6 @@ public class MpAutoReplyController {
         }
         MpAutoReply mpAutoReply = new MpAutoReply();
         BeanUtils.copyProperties(mpAutoReplyUpdate, mpAutoReply);
-        mpAutoReply.setKeywords(mpAutoReplyUpdate.getKeywords());
-        mpAutoReply.setReply(mpAutoReplyUpdate.getReply());
         return mpAutoReplyService.updateById(mpAutoReply) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.UPDATE_FAIL);
     }
 
@@ -82,8 +78,6 @@ public class MpAutoReplyController {
         List<MpAutoReply> mpAutoReplyList = mpAutoReplyUpdateList.stream().map(mpAutoReplyUpdate -> {
             MpAutoReply mpAutoReply = new MpAutoReply();
             BeanUtils.copyProperties(mpAutoReplyUpdate, mpAutoReply);
-            mpAutoReply.setKeywords(mpAutoReplyUpdate.getKeywords());
-            mpAutoReply.setReply(mpAutoReplyUpdate.getReply());
             return mpAutoReply;
         }).collect(Collectors.toList());
         return mpAutoReplyService.saveOrUpdateBatch(mpAutoReplyList) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.SAVE_FAIL);

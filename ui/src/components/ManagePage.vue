@@ -100,7 +100,7 @@
     components: {Breadcrumb},
     data() {
       return {
-        data: [{}],
+        data: [],
         pager: {
           current: 1,
           total: 1,

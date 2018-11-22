@@ -41,8 +41,67 @@
              :visible="autoReplyVisible"
              :footer="null"
              @cancel="autoReplyVisible = false"
-             width="680px">
+             width="900px">
+      <a-row class="table-toolbar">
+        <div class="is-pulled-right">
+          <a-button icon="reload" @click="fetchAutoReplies">刷新</a-button>
+        </div>
+        <a-button icon="plus" class="mr-1" @click="addAutoReply">{{$messages.toolbar.createBtn}}</a-button>
+      </a-row>
+      <a-table size="small"
+               :columns="$messages.columns['auto-reply'].tableColumns"
+               :dataSource="autoReplies"
+               :pagination="false" :loading="autoReplyLoading" :scroll="{y: 408}">
+        <template slot="expandedRowRender" slot-scope="record">
+          <a-row :gutter="16">
+            <a-col :span="12" v-for="column in $messages.columns['auto-reply'].expandedColumns" :key="column.title">
+              <a-row>
+                <a-col :span="6" class="has-text-right">
+                  {{column.title}}：
+                </a-col>
+                <a-col :span="18">
+                  {{$utils.text.expandColumnFormat(record, column)}}
+                </a-col>
+              </a-row>
+            </a-col>
+          </a-row>
+        </template>
+        <template slot="opt" slot-scope="record">
+          <a-button size="small" class="mr-1" @click="editAutoReply(record)">编辑</a-button>
+          <a-popconfirm title="确定要删除该自动回复吗？" trigger="click" placement="topRight" @confirm="handleDeleteAutoReply(record.id)"
+                        :okText="$messages.operation.confirmText" :cancelText="$messages.operation.cancelText">
+            <a-button size="small" class="mr-1">删除</a-button>
+          </a-popconfirm>
+        </template>
+      </a-table>
+      <a-pagination size="small" class="mt-2"
+                    v-model="autoReplyPager.current"
+                    :total="autoReplyPager.total"
+                    :pageSize.sync="autoReplyPager.pageSize"
+                    :pageSizeOptions="$messages.pager.pageSizeOptions"
+                    :showQuickJumper="$messages.pager.showQuickJumper"
+                    :showSizeChanger="$messages.pager.showSizeChanger"
+                    @change="handleAutoReplyPagerChange"/>
 
+      <div v-if="editAutoReplyVisible">
+        <a-divider>编辑自动回复 {{autoReply.id}}</a-divider>
+        <a-form>
+          <a-form-item label="关键字" required>
+            <tags :options="autoReply.keywords" @change="handleKeywordsChange"/>
+          </a-form-item>
+          <a-form-item label="匹配规则" required>
+            <a-radio-group v-model="autoReply.matchRule">
+              <a-radio-button value="AND">AND</a-radio-button>
+              <a-radio-button value="OR">OR</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+          <wx-message-form/>
+          <a-form-item>
+            <a-button type="primary" class="mr-1" @click="handleAutoReplySave">提交</a-button>
+            <a-button @click="editAutoReplyVisible = false">取消</a-button>
+          </a-form-item>
+        </a-form>
+      </div>
     </a-modal>
 
     <a-modal title="事件处理管理"
@@ -50,11 +109,73 @@
              :visible="eventHandlerVisible"
              :footer="null"
              @cancel="eventHandlerVisible = false"
-             width="680px">
+             width="900px">
       <a-row class="table-toolbar">
-
+        <div class="is-pulled-right">
+          <a-button icon="reload" @click="fetchEventHandlers">刷新</a-button>
+        </div>
+        <a-button icon="plus" class="mr-1" @click="addEventHandler">{{$messages.toolbar.createBtn}}</a-button>
       </a-row>
-      <a-table></a-table>
+      <a-table size="small"
+               :columns="$messages.columns['event-handler'].tableColumns"
+               :dataSource="eventHandlers"
+               :pagination="false" :loading="eventHandlerLoading" :scroll="{y: 408}">
+        <template slot="expandedRowRender" slot-scope="record">
+          <a-row :gutter="16">
+            <a-col :span="12" v-for="column in $messages.columns['event-handler'].expandedColumns" :key="column.title">
+              <a-row>
+                <a-col :span="6" class="has-text-right">
+                  {{column.title}}：
+                </a-col>
+                <a-col :span="18">
+                  {{$utils.text.expandColumnFormat(record, column)}}
+                </a-col>
+              </a-row>
+            </a-col>
+          </a-row>
+        </template>
+        <template slot="event-type" slot-scope="record">
+          {{$messages.enums.wxEventTypes[record.eventType]}}
+        </template>
+        <template slot="opt" slot-scope="record">
+          <a-button size="small" class="mr-1" @click="editEventHandler(record)">编辑</a-button>
+          <a-popconfirm title="确定要删除该公众号事件处理吗？" trigger="click" placement="topRight" @confirm="handleDeleteEventHandler(record.id)"
+                        :okText="$messages.operation.confirmText" :cancelText="$messages.operation.cancelText">
+            <a-button size="small" class="mr-1">删除</a-button>
+          </a-popconfirm>
+        </template>
+      </a-table>
+      <a-pagination size="small" class="mt-2"
+                    v-model="eventHandlerPager.current"
+                    :total="eventHandlerPager.total"
+                    :pageSize.sync="eventHandlerPager.pageSize"
+                    :pageSizeOptions="$messages.pager.pageSizeOptions"
+                    :showQuickJumper="$messages.pager.showQuickJumper"
+                    :showSizeChanger="$messages.pager.showSizeChanger"
+                    @change="handleEventHandlerPagerChange"/>
+      <div v-if="editEventHandlerVisible">
+        <a-divider>编辑公众号事件处理 {{eventHandler.id}}</a-divider>
+        <a-form>
+          <a-row :gutter="16">
+            <a-col :span="12">
+              <a-form-item label="事件类型" required>
+                <a-select v-model="eventHandler.eventType" placeholder="请选择事件类型">
+                  <a-select-option v-for="(label, type) in $messages.enums.wxEventTypes" :key="type" :value="type" :disabled="type === 'enter_agent'">{{label}}</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :span="12">
+              <a-form-item label="处理类路径" required>
+                <a-input v-model="eventHandler.handlerClass" placeholder="请填写处理类路径"></a-input>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-form-item>
+            <a-button type="primary" class="mr-1" @click="handleEventHandlerSave">提交</a-button>
+            <a-button @click="editEventHandlerVisible = false">取消</a-button>
+          </a-form-item>
+        </a-form>
+      </div>
     </a-modal>
   </span>
 </template>
@@ -62,9 +183,10 @@
 <script>
   import WxMessageForm from "../wx/WxMessageForm";
   import WxMenuEditor from "../wx/WxMenuEditor";
+  import Tags from "../Tags";
   export default {
     name: "MpAccountOpt",
-    components: {WxMenuEditor, WxMessageForm},
+    components: {Tags, WxMenuEditor, WxMessageForm},
     props: {
       rowData: {
         type: Object,
@@ -83,9 +205,9 @@
         autoReplyVisible: false,
         eventHandlerVisible: false,
         welcomeMessage: {
+          active: false,
           message: {
-            msgType: '',
-            articles: []
+            msgType: ''
           }
         },
         autoReplies: [],
@@ -112,6 +234,10 @@
           ascs: [],
           descs: []
         },
+        autoReply: {},
+        eventHandler: {},
+        editAutoReplyVisible: false,
+        editEventHandlerVisible: false,
       }
     },
     methods: {
@@ -179,6 +305,7 @@
         }
       },
       editMenu() {
+        this.$store.dispatch('setWxMenu', {button: []});
         this.fetchMenu();
         this.menuVisible = true;
       },
@@ -195,6 +322,25 @@
         this.fetchEventHandlers();
         this.eventHandlerVisible = true;
       },
+      addAutoReply() {
+        const reply = {articles: []};
+        this.$store.dispatch('setWxMessage', reply);
+        this.autoReply = {keywords: [], reply: reply};
+        this.editAutoReplyVisible = true;
+      },
+      editAutoReply(autoReply) {
+        this.autoReply = JSON.parse(JSON.stringify(autoReply));
+        this.$store.dispatch('setWxMessage', autoReply.reply);
+        this.editAutoReplyVisible = true;
+      },
+      addEventHandler() {
+        this.eventHandler = {accountId: this.account.id};
+        this.editEventHandlerVisible = true;
+      },
+      editEventHandler(eventHandler) {
+        this.eventHandler = JSON.parse(JSON.stringify(eventHandler));
+        this.editEventHandlerVisible = true;
+      },
       handleWelcomeMessageSave() {
         this.welcomeMessage.message = this.$store.getters.wxMessage;
         this.welcomeMessage.accountId = this.account.id;
@@ -209,11 +355,72 @@
             this.welcomeMessageVisible = false;
           });
         }
+      },
+      handleAutoReplySave() {
+        this.autoReply.reply = this.$store.getters.wxMessage;
+        if (this.autoReply.id) {
+          this.$api.wx.updateMpAutoReply(this.autoReply.id, this.autoReply).then(() => {
+            this.$message.success(this.$messages.successResult.update);
+            this.editAutoReplyVisible = false;
+            this.fetchAutoReplies();
+          });
+        } else {
+          this.$api.wx.addMpAutoReply(this.autoReply).then(() => {
+            this.$message.success(this.$messages.successResult.create);
+            this.editAutoReplyVisible = false;
+            this.fetchAutoReplies();
+          });
+        }
+      },
+      handleEventHandlerSave() {
+        if (this.eventHandler.id) {
+          this.$api.wx.updateMpEventHandler(this.eventHandler.id, this.eventHandler).then(() => {
+            this.$message.success(this.$messages.successResult.update);
+            this.editEventHandlerVisible = false;
+            this.fetchEventHandlers();
+          });
+        } else {
+          this.$api.wx.addMpEventHandler(this.eventHandler).then(() => {
+            this.$message.success(this.$messages.successResult.create);
+            this.editEventHandlerVisible = false;
+            this.fetchEventHandlers();
+          });
+        }
+      },
+      handleDeleteAutoReply(id) {
+        this.$api.wx.deleteMpAutoReply(id).then(() => {
+          this.$message.success(this.$messages.successResult.delete);
+          this.fetchAutoReplies();
+        });
+      },
+      handleDeleteEventHandler(id) {
+        this.$api.wx.deleteMpEventHandler(id).then(() => {
+          this.$message.success(this.$messages.successResult.delete);
+          this.fetchEventHandlers();
+        });
+      },
+      handleKeywordsChange(keywords) {
+        this.autoReply.keywords = [];
+        keywords.forEach(keyword => {
+          this.autoReply.keywords.push(keyword);
+        });
+      },
+      handleAutoReplyPagerChange(page, pageSize) {
+        this.autoReplyPager.current = page;
+        this.autoReplyPager.pageSize = pageSize;
+        this.fetchAutoReplies();
+      },
+      handleEventHandlerPagerChange(page, pageSize) {
+        this.eventHandlerPager.current = page;
+        this.eventHandlerPager.pageSize = pageSize;
+        this.fetchEventHandlers();
       }
     }
   }
 </script>
 
 <style scoped>
-
+  .table-toolbar {
+    line-height: 3rem;
+  }
 </style>
