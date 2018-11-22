@@ -15,10 +15,10 @@
     <a-modal title="编辑公众号菜单"
              :maskClosable="false"
              :visible="menuVisible"
-             @ok="handleMenuSave"
+             :footer="null"
              @cancel="menuVisible = false"
-             width="810px">
-
+             width="900px">
+      <wx-menu-editor :accountId="account.id" @synced="menuVisible = false"/>
     </a-modal>
 
     <a-modal title="编辑欢迎语"
@@ -26,8 +26,14 @@
              :visible="welcomeMessageVisible"
              @ok="handleWelcomeMessageSave"
              @cancel="welcomeMessageVisible = false"
-             width="960px">
-      <wx-message-form/>
+             width="680px">
+      <div>启用欢迎语：
+        <a-switch v-model="welcomeMessage.active">
+          <a-icon type="check" slot="checkedChildren"/>
+          <a-icon type="cross" slot="unCheckedChildren"/>
+        </a-switch>
+      </div>
+      <wx-message-form v-if="welcomeMessage.active"/>
     </a-modal>
 
     <a-modal title="自动回复管理"
@@ -45,16 +51,20 @@
              :footer="null"
              @cancel="eventHandlerVisible = false"
              width="680px">
+      <a-row class="table-toolbar">
 
+      </a-row>
+      <a-table></a-table>
     </a-modal>
   </span>
 </template>
 
 <script>
   import WxMessageForm from "../wx/WxMessageForm";
+  import WxMenuEditor from "../wx/WxMenuEditor";
   export default {
     name: "MpAccountOpt",
-    components: {WxMessageForm},
+    components: {WxMenuEditor, WxMessageForm},
     props: {
       rowData: {
         type: Object,
@@ -72,8 +82,12 @@
         welcomeMessageVisible: false,
         autoReplyVisible: false,
         eventHandlerVisible: false,
-        menu: {},
-        welcomeMessage: {},
+        welcomeMessage: {
+          message: {
+            msgType: '',
+            articles: []
+          }
+        },
         autoReplies: [],
         eventHandlers: [],
         autoReplyPager: {
@@ -103,7 +117,17 @@
     methods: {
       fetchMenu() {
         this.$api.wx.getMpMenu(this.account.id).then(res => {
-          this.menu = res.data;
+          let buttons = res.data.menu.buttons;
+          if (buttons) {
+            buttons.forEach(button => {
+              if (button.subButtons && button.subButtons.length > 0) {
+                button.sub_button = button.subButtons;
+                button.type = '';
+              }
+              delete button.subButtons;
+            });
+            this.$store.dispatch('setWxMenu', {button: buttons});
+          }
         });
       },
       fetchWelcomeMessage() {
@@ -171,17 +195,20 @@
         this.fetchEventHandlers();
         this.eventHandlerVisible = true;
       },
-      handleMenuSave() {
-        this.$api.wx.saveMpMenu(this.account.id, this.menu).then(() => {
-          this.$message.success(this.$messages.successResult.save);
-          this.menuVisible = false;
-        });
-      },
       handleWelcomeMessageSave() {
-        this.$api.wx.updateMpWelcomeMessage(this.welcomeMessage.id, this.welcomeMessage).then(() => {
-          this.$message.success(this.$messages.successResult.update);
-          this.welcomeMessageVisible = false;
-        });
+        this.welcomeMessage.message = this.$store.getters.wxMessage;
+        this.welcomeMessage.accountId = this.account.id;
+        if (this.welcomeMessage.id) {
+          this.$api.wx.updateMpWelcomeMessage(this.welcomeMessage.id, this.welcomeMessage).then(() => {
+            this.$message.success(this.$messages.successResult.update);
+            this.welcomeMessageVisible = false;
+          });
+        } else {
+          this.$api.wx.addMpWelcomeMessage(this.welcomeMessage).then(() => {
+            this.$message.success(this.$messages.successResult.create);
+            this.welcomeMessageVisible = false;
+          });
+        }
       }
     }
   }

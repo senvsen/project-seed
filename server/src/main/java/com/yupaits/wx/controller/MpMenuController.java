@@ -1,6 +1,7 @@
 package com.yupaits.wx.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.yupaits.commons.annotation.NoCache;
 import com.yupaits.commons.result.Result;
 import com.yupaits.commons.result.ResultWrapper;
 import com.yupaits.wx.helper.WxMpServiceHelper;
@@ -20,6 +21,7 @@ import java.util.Map;
  * @author yupaits
  * @date 2018/11/21
  */
+@NoCache
 @Api(tags = "微信公众号菜单接口")
 @RestController
 @RequestMapping("/wx/mp-menu")

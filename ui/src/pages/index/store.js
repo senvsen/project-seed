@@ -15,6 +15,7 @@ export default new Vuex.Store({
     rolesFetched: false,
     roles: [],
     fillFields: [],
+    wxMenu: {button: []},
     wxMessage: {},
   },
   getters: {
@@ -44,6 +45,9 @@ export default new Vuex.Store({
     },
     fillFields(state) {
       return state.fillFields;
+    },
+    wxMenu(state) {
+      return state.wxMenu;
     },
     wxMessage(state) {
       return state.wxMessage;
@@ -77,6 +81,9 @@ export default new Vuex.Store({
     setFillFields(state, fillFields) {
       state.fillFields = fillFields;
     },
+    setWxMenu(state, wxMenu) {
+      state.wxMenu = wxMenu;
+    },
     setWxMessage(state, wxMessage) {
       state.wxMessage = wxMessage;
     }
@@ -108,6 +115,9 @@ export default new Vuex.Store({
     },
     setFillFields({commit}, fillFields) {
       commit('setFillFields', fillFields);
+    },
+    setWxMenu({commit}, wxMenu) {
+      commit('setWxMenu', wxMenu);
     },
     setWxMessage({commit}, wxMessage) {
       commit('setWxMessage', wxMessage);

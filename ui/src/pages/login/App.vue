@@ -1,10 +1,11 @@
 <template>
   <div class="login-page">
     <a-row type="flex" justify="center">
-      <a-col :lg="5" :md="9" :sm="15" :xs="18">
+      <a-col>
         <a-card class="login-card">
           <div slot="title">
-            <img src="/favicon.ico" alt="logo" height="32" width="32"> {{$messages.loginPage.title}}
+            <img src="/favicon.ico" alt="logo" height="32" width="32">
+            <span class="ml-1">{{$messages.loginPage.title}}</span>
           </div>
           <a-form ref="loginForm">
             <a-form-item hasFeedback :validateStatus="validate.username.status" :help="validate.username.help">
@@ -26,6 +27,7 @@
               <a class="login-forget" href="">{{$messages.loginPage.forget}}</a>
               <a-button type="primary" block @click="login">{{$messages.loginPage.login}}</a-button>
               <a href="">{{$messages.loginPage.register}}</a>
+              <a-divider><span class="other-tip has-text-mute">{{$messages.loginPage.otherTip}}</span></a-divider>
             </a-form-item>
           </a-form>
         </a-card>
@@ -95,8 +97,12 @@
   .login-card {
     background: rgba(255, 255, 255, .90);
     margin-top: 5rem;
+    width: 25rem;
   }
   .login-forget {
     float: right;
+  }
+  .other-tip {
+    font-size: 14px;
   }
 </style>

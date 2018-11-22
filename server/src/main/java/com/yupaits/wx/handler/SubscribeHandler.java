@@ -1,5 +1,6 @@
 package com.yupaits.wx.handler;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yupaits.wx.entity.MpWelcomeMessage;
 import com.yupaits.wx.mapper.MpWelcomeMessageMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class SubscribeHandler implements WxMpMessageHandler {
 
     public WxMpMessageHandler getHandler(Long id) {
         this.id = id;
-        this.welcomeMessage = welcomeMessageMapper.selectById(id);
+        this.welcomeMessage = welcomeMessageMapper.selectOne(new QueryWrapper<MpWelcomeMessage>().eq("account_id", id));
         return this;
     }
 

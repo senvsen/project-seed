@@ -101,8 +101,7 @@ public class WxMpReplyMessage implements Serializable {
     }
 
     private boolean articleValid(WxMpXmlOutNewsMessage.Item article) {
-        return StringUtils.isNotBlank(article.getTitle()) && StringUtils.isNotBlank(article.getDescription())
-                && StringUtils.isNotBlank(article.getUrl()) && StringUtils.isNotBlank(article.getPicUrl());
+        return !StringUtils.isAnyBlank(article.getTitle(), article.getDescription(), article.getUrl(), article.getPicUrl());
     }
 
     private boolean articlesValid(Iterable<WxMpXmlOutNewsMessage.Item> articles) {

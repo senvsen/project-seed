@@ -23,6 +23,7 @@ export default {
     forget: '忘记密码',
     login: '登录',
     register: '现在注册！',
+    otherTip: '其他方式登录',
   },
   nav: {
     notify: {
@@ -176,15 +177,15 @@ export default {
     '/mp-account': {
       tableColumns: [
         {title: 'ID', width: '15%', dataIndex: 'id'},
-        {title: '账户名称', width: '20%', dataIndex: 'accountName'},
+        {title: '账户名称', width: '15%', dataIndex: 'accountName'},
         {title: '公众号名称', width: '15%', dataIndex: 'appName'},
         {title: '公众号AppId', width: '15%', dataIndex: 'appId'},
-        {title: '公众号Secret', width: '15%', dataIndex: 'appSecret'},
+        {title: '公众号Secret', width: '20%', dataIndex: 'appSecret'},
         {title: '操作', width: '20%', scopedSlots: {customRender: 'opt'}},
       ],
       expandedColumns: [
         {title: '公众号Token', dataIndex: 'token'},
-        {title: '公众号EncodingAesKey', dataIndex: 'encodingAesKey'},
+        {title: 'EncodingAesKey', dataIndex: 'encodingAesKey'},
         {title: '关联类型', dataIndex: 'relatedType'},
         {title: '关联ID', dataIndex: 'relatedId'},
         {title: '创建时间', dataIndex: 'createdAt', isDate: true},
