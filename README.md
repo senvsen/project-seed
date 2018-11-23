@@ -84,6 +84,5 @@ Spring Boot种子项目
 - [x] 基于aop的接口请求日志
 - [x] 基于mq的消息中心
 - [x] 分布式文件存储
-- [ ] 基于Spring Batch执行历史数据转移
-- [ ] 整合GitHub登录
+- [x] 基于Spring Batch执行历史数据转移
 - [x] 微信公众号管理

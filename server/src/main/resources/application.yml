@@ -49,6 +49,10 @@ spring:
       mail.smtp.auth: true
       mail.smtp.starttls.enabled: true
       mail.smtp.starttls.requried: true
+  batch:
+    initialize-schema: always
+    job:
+      enabled: false
 
 logging:
   config: classpath:log4j2.yml
