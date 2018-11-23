@@ -1,6 +1,5 @@
 package com.yupaits.wx.entity;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
@@ -10,14 +9,11 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
-import java.util.List;
 
-import com.yupaits.wx.dto.WxMpReplyMessage;
+import com.yupaits.commons.consts.enums.MatchRule;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.IterableUtils;
 
 /**
  * <p>
@@ -92,56 +88,9 @@ public class MpAutoReply extends Model<MpAutoReply> {
     @TableLogic
     private Boolean deleted;
 
-
     @Override
     protected Serializable pkVal() {
         return this.id;
     }
 
-    public List<String> getKeywords() {
-        return JSON.parseArray(this.keywords, String.class);
-    }
-
-    public WxMpReplyMessage getReply() {
-        return JSON.parseObject(this.reply, WxMpReplyMessage.class);
-    }
-
-    public enum MatchRule {
-        /**
-         * 包含所有
-         */
-        AND,
-        /**
-         * 包含任一个
-         */
-        OR
-    }
-
-    /**
-     * 验证AutoReply是否有效
-     * @param withPk 是否验证主键
-     * @return 验证结果
-     */
-    public boolean isValid(boolean withPk) {
-        boolean isValid = accountId != null && accountId.compareTo(0L) > 0 && !CollectionUtils.isEmpty(getKeywords()) && matchRule != null && getReply().isValid();
-        return withPk ? id != null && id.compareTo(0L) > 0 && isValid : isValid;
-    }
-
-    /**
-     * 验证AutoReply集合是否有效
-     * @param autoReplyIterable AutoReply集合
-     * @param withPk 是否验证主键
-     * @return 验证结果
-     */
-    public static boolean isValid(Iterable<MpAutoReply> autoReplyIterable, boolean withPk) {
-        if (IterableUtils.isEmpty(autoReplyIterable)) {
-            return false;
-        }
-        for (MpAutoReply reply : autoReplyIterable) {
-            if (!reply.isValid(withPk)) {
-                return false;
-            }
-        }
-        return true;
-    }
 }

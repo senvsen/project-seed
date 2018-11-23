@@ -1,6 +1,8 @@
 package com.yupaits.wx.handler;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yupaits.wx.dto.WxMpReplyMessage;
 import com.yupaits.wx.entity.MpWelcomeMessage;
 import com.yupaits.wx.mapper.MpWelcomeMessageMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -41,11 +43,11 @@ public class SubscribeHandler implements WxMpMessageHandler {
     }
 
     @Override
-    public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
+    public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) {
         log.info("{}关注了公众号{}", wxMpXmlMessage.getFromUser(), id);
         if (welcomeMessage == null || !welcomeMessage.isActive()) {
             return null;
         }
-        return welcomeMessage.getMessage().replyToOutMessage(wxMpXmlMessage);
+        return JSON.parseObject(welcomeMessage.getMessage(), WxMpReplyMessage.class).replyToOutMessage(wxMpXmlMessage);
     }
 }

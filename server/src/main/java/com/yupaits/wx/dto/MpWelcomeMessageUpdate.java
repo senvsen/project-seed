@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.yupaits.commons.core.serializer.LongDeserializer;
 import com.yupaits.commons.core.BaseDTO;
+import com.yupaits.commons.utils.ValidateUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,12 +29,8 @@ public class MpWelcomeMessageUpdate extends BaseDTO {
     @JsonDeserialize(using = LongDeserializer.class)
     private Long id;
 
-    @ApiModelProperty(value = "公众号账户ID")
-    @JsonDeserialize(using = LongDeserializer.class)
-    private Long accountId;
-
     @ApiModelProperty(value = "启用标记")
-    private Boolean active;
+    private boolean active;
 
     @ApiModelProperty(value = "欢迎语内容")
     private WxMpReplyMessage message;
@@ -41,7 +38,7 @@ public class MpWelcomeMessageUpdate extends BaseDTO {
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        return ValidateUtils.idValid(id) && (!active || (message != null && message.isValid()));
     }
 
     public String getMessage() {

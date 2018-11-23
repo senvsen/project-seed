@@ -6,34 +6,30 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * @author yupaits
- * @date 2018/11/9
+ * @date 2018/11/23
  */
-public enum MsgLevel {
+public enum MatchRule {
     /**
-     * 通知
+     * 包含所有
      */
-    INFO(1),
+    AND(1),
     /**
-     * 告警
+     * 包含任一个
      */
-    WARNING(2),
-    /**
-     * 高危
-     */
-    DANGER(3);
+    OR(2);
 
     @EnumValue
     private int code;
 
-    MsgLevel(int code) {
+    MatchRule(int code) {
         this.code = code;
     }
 
     @JsonCreator
-    public static MsgLevel fromCode(int code) {
-        for (MsgLevel level : MsgLevel.values()) {
-            if (level.code == code) {
-                return level;
+    public static MatchRule fromCode(int code) {
+        for (MatchRule matchRule : MatchRule.values()) {
+            if (matchRule.code == code) {
+                return matchRule;
             }
         }
         return null;

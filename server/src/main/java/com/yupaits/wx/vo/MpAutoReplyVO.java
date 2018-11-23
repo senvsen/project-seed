@@ -2,9 +2,9 @@ package com.yupaits.wx.vo;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.yupaits.commons.consts.enums.MatchRule;
 import com.yupaits.commons.core.serializer.LongSerializer;
 import com.yupaits.wx.dto.WxMpReplyMessage;
-import com.yupaits.wx.entity.MpAutoReply;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -39,7 +39,7 @@ public class MpAutoReplyVO implements Serializable {
     private String keywords;
 
     @ApiModelProperty(value = "匹配规则")
-    private MpAutoReply.MatchRule matchRule;
+    private MatchRule matchRule;
 
     @ApiModelProperty(value = "回复内容")
     private String reply;

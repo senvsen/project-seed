@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -48,7 +49,7 @@ public class MpAccountCreate extends BaseDTO {
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        return !StringUtils.isAnyBlank(accountName, appName, appId, appSecret, token);
     }
 
 }

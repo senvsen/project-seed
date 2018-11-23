@@ -1,6 +1,9 @@
 package com.yupaits.wx.handler;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yupaits.commons.consts.enums.MatchRule;
+import com.yupaits.wx.dto.WxMpReplyMessage;
 import com.yupaits.wx.entity.MpAutoReply;
 import com.yupaits.wx.service.IMpAutoReplyService;
 import lombok.extern.slf4j.Slf4j;
@@ -45,15 +48,15 @@ public class MsgHandler implements WxMpMessageHandler {
             String message = wxMpXmlMessage.getContent();
             if (CollectionUtils.isNotEmpty(autoReplyList)) {
                 for (MpAutoReply autoReply : autoReplyList) {
-                    List<String> keywords = autoReply.getKeywords();
-                    if (autoReply.getMatchRule().equals(MpAutoReply.MatchRule.OR)
+                    List<String> keywords = JSON.parseArray(autoReply.getKeywords(), String.class);
+                    if (autoReply.getMatchRule().equals(MatchRule.OR)
                             && CollectionUtils.isNotEmpty(keywords)
                             && keywords.parallelStream().anyMatch(keyword -> StringUtils.contains(message, keyword))) {
-                        return autoReply.getReply().replyToOutMessage(wxMpXmlMessage);
-                    } else if (autoReply.getMatchRule().equals(MpAutoReply.MatchRule.AND)
+                        return JSON.parseObject(autoReply.getReply(), WxMpReplyMessage.class).replyToOutMessage(wxMpXmlMessage);
+                    } else if (autoReply.getMatchRule().equals(MatchRule.AND)
                             && CollectionUtils.isNotEmpty(keywords)
                             && keywords.parallelStream().allMatch(keyword -> StringUtils.contains(message, keyword))) {
-                        return autoReply.getReply().replyToOutMessage(wxMpXmlMessage);
+                        return JSON.parseObject(autoReply.getReply(), WxMpReplyMessage.class).replyToOutMessage(wxMpXmlMessage);
                     }
                 }
             }

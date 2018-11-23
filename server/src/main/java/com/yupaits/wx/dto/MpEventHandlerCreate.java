@@ -3,10 +3,17 @@ package com.yupaits.wx.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.yupaits.commons.core.serializer.LongDeserializer;
 import com.yupaits.commons.core.BaseDTO;
+import com.yupaits.commons.utils.ValidateUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.chanjar.weixin.common.api.WxConsts;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.Field;
+import java.util.Arrays;
 
 /**
  * <p>
@@ -33,10 +40,39 @@ public class MpEventHandlerCreate extends BaseDTO {
     @ApiModelProperty(value = "处理类路径")
     private String handlerClass;
 
+    @SuppressWarnings("unchecked")
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        if (!ValidateUtils.idValid(this.accountId) || StringUtils.isAnyBlank(eventType, handlerClass)) {
+            return false;
+        }
+        //检查事件类型
+        Field[] fields = WxConsts.EventType.class.getFields();
+        Object[] fieldNames = Arrays.stream(fields).map(Field::getName).toArray();
+        if (!eventTypeIsValid(fieldNames, eventType)) {
+            return false;
+        }
+        //检查处理类路径
+        try {
+
+            Class.forName(handlerClass);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
+    private boolean eventTypeIsValid(Object[] fieldNames, String eventType) {
+        if (ArrayUtils.isEmpty(fieldNames)) {
+            return false;
+        }
+        for (Object name : fieldNames) {
+            if (eventType.toUpperCase().equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

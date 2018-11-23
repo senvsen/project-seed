@@ -95,8 +95,10 @@ public class MpEventHandler extends Model<MpEventHandler> {
         return this.id;
     }
 
+    @SuppressWarnings("unchecked")
     public boolean isValid() {
-        if (StringUtils.isBlank(eventType) || StringUtils.isBlank(handlerClass)) {
+        if (!ValidateUtils.idValid(this.id) || !ValidateUtils.idValid(this.accountId)
+                || StringUtils.isAnyBlank(eventType, handlerClass)) {
             return false;
         }
         //检查事件类型
@@ -107,6 +109,7 @@ public class MpEventHandler extends Model<MpEventHandler> {
         }
         //检查处理类路径
         try {
+
             Class.forName(handlerClass);
             return true;
         } catch (ClassNotFoundException e) {

@@ -213,7 +213,7 @@ export default {
     'auto-reply': {
       tableColumns: [
         {title: 'ID', width: '25%', dataIndex: 'id'},
-        {title: '关键词', width: '30%', dataIndex: 'keywords'},
+        {title: '关键词', width: '30%', scopedSlots: {customRender: 'keywords'}},
         {title: '匹配规则', width: '20%', dataIndex: 'matchRule'},
         {title: '操作', width: '25%', scopedSlots: {customRender: 'opt'}},
       ],
@@ -279,7 +279,7 @@ export default {
     msgLevel: {
       1: '通知',
       2: '告警',
-      3: '危险'
+      3: '高危'
     },
     msgType: {
       1: '邮件',
@@ -326,6 +326,10 @@ export default {
       location_select: '弹出地理位置选择器',
       TEMPLATESENDJOBFINISH: '模板消息发送任务完成',
       enter_agent: '成员进入企业微信应用'
+    },
+    matchRule: {
+      1: 'AND',
+      2: 'OR'
     }
   }
 }

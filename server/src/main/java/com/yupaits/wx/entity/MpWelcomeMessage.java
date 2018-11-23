@@ -81,8 +81,4 @@ public class MpWelcomeMessage extends Model<MpWelcomeMessage> {
     protected Serializable pkVal() {
         return this.id;
     }
-
-    public WxMpReplyMessage getMessage() {
-        return JSON.parseObject(this.message, WxMpReplyMessage.class);
-    }
 }

@@ -3,10 +3,12 @@ package com.yupaits.wx.dto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.yupaits.commons.core.serializer.LongDeserializer;
 import com.yupaits.commons.core.BaseDTO;
+import com.yupaits.commons.utils.ValidateUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -54,7 +56,7 @@ public class MpAccountUpdate extends BaseDTO {
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {
-        return true;
+        return ValidateUtils.idValid(id) && !StringUtils.isAnyBlank(accountName, appName, appId, appSecret, token);
     }
 
 }

@@ -18,7 +18,9 @@
              :footer="null"
              @cancel="menuVisible = false"
              width="900px">
-      <wx-menu-editor :accountId="account.id" @synced="menuVisible = false"/>
+      <a-spin :spinning="menuLoading">
+        <wx-menu-editor :accountId="account.id" @synced="menuVisible = false"/>
+      </a-spin>
     </a-modal>
 
     <a-modal title="编辑欢迎语"
@@ -27,13 +29,15 @@
              @ok="handleWelcomeMessageSave"
              @cancel="welcomeMessageVisible = false"
              width="680px">
-      <div>启用欢迎语：
-        <a-switch v-model="welcomeMessage.active">
-          <a-icon type="check" slot="checkedChildren"/>
-          <a-icon type="cross" slot="unCheckedChildren"/>
-        </a-switch>
-      </div>
-      <wx-message-form v-if="welcomeMessage.active"/>
+      <a-spin :spinning="welcomeMessageLoading">
+        <div>启用欢迎语：
+          <a-switch v-model="welcomeMessage.active">
+            <a-icon type="check" slot="checkedChildren"/>
+            <a-icon type="cross" slot="unCheckedChildren"/>
+          </a-switch>
+        </div>
+        <wx-message-form v-if="welcomeMessage.active"/>
+      </a-spin>
     </a-modal>
 
     <a-modal title="自动回复管理"
@@ -66,6 +70,9 @@
             </a-col>
           </a-row>
         </template>
+        <template slot="keywords" slot-scope="record">
+          <a-tag v-for="(keyword, index) in record.keywords" :key="index">{{keyword}}</a-tag>
+        </template>
         <template slot="opt" slot-scope="record">
           <a-button size="small" class="mr-1" @click="editAutoReply(record)">编辑</a-button>
           <a-popconfirm title="确定要删除该自动回复吗？" trigger="click" placement="topRight" @confirm="handleDeleteAutoReply(record.id)"
@@ -91,8 +98,7 @@
           </a-form-item>
           <a-form-item label="匹配规则" required>
             <a-radio-group v-model="autoReply.matchRule">
-              <a-radio-button value="AND">AND</a-radio-button>
-              <a-radio-button value="OR">OR</a-radio-button>
+              <a-radio-button v-for="(label, code) in $messages.enums.matchRule" :key="code" :value="parseInt(code)">{{label}}</a-radio-button>
             </a-radio-group>
           </a-form-item>
           <wx-message-form/>
@@ -222,6 +228,8 @@
           total: 1,
           pageSize: this.$messages.pager.pageSize
         },
+        menuLoading: false,
+        welcomeMessageLoading: false,
         autoReplyLoading: false,
         eventHandlerLoading: false,
         autoReplyQuery: {},
@@ -242,6 +250,7 @@
     },
     methods: {
       fetchMenu() {
+        this.menuLoading = true;
         this.$api.wx.getMpMenu(this.account.id).then(res => {
           let buttons = res.data.menu.buttons;
           if (buttons) {
@@ -254,13 +263,20 @@
             });
             this.$store.dispatch('setWxMenu', {button: buttons});
           }
+          this.menuLoading = false;
+        }).catch(() => {
+          this.menuLoading = false;
         });
       },
       fetchWelcomeMessage() {
+        this.welcomeMessageLoading = true;
         this.$api.wx.getMpWelcomeMessageList({accountId: this.account.id}).then(res => {
           if (res.data.length > 0) {
             this.welcomeMessage = res.data[0];
           }
+          this.welcomeMessageLoading = false;
+        }).catch(() => {
+          this.welcomeMessageLoading = false;
         });
       },
       fetchAutoReplies() {
@@ -276,6 +292,7 @@
         });
       },
       fetchEventHandlers() {
+        this.eventHandlerLoading = true;
         this.$api.wx.getMpEventHandlerPage(this.eventHandlerPager.current, this.eventHandlerPager.pageSize,
           this.eventHandlerQuery, this.eventHandlerSortable.ascs, this.eventHandlerSortable.descs).then(res => {
           this.eventHandlers = res.data.records;
@@ -343,13 +360,13 @@
       },
       handleWelcomeMessageSave() {
         this.welcomeMessage.message = this.$store.getters.wxMessage;
-        this.welcomeMessage.accountId = this.account.id;
         if (this.welcomeMessage.id) {
           this.$api.wx.updateMpWelcomeMessage(this.welcomeMessage.id, this.welcomeMessage).then(() => {
             this.$message.success(this.$messages.successResult.update);
             this.welcomeMessageVisible = false;
           });
         } else {
+          this.welcomeMessage.accountId = this.account.id;
           this.$api.wx.addMpWelcomeMessage(this.welcomeMessage).then(() => {
             this.$message.success(this.$messages.successResult.create);
             this.welcomeMessageVisible = false;
@@ -365,6 +382,7 @@
             this.fetchAutoReplies();
           });
         } else {
+          this.autoReply.accountId = this.account.id;
           this.$api.wx.addMpAutoReply(this.autoReply).then(() => {
             this.$message.success(this.$messages.successResult.create);
             this.editAutoReplyVisible = false;
