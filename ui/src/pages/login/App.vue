@@ -27,7 +27,6 @@
               <a class="login-forget" href="">{{$messages.loginPage.forget}}</a>
               <a-button type="primary" block @click="login">{{$messages.loginPage.login}}</a-button>
               <a href="">{{$messages.loginPage.register}}</a>
-              <a-divider><span class="other-tip has-text-mute">{{$messages.loginPage.otherTip}}</span></a-divider>
             </a-form-item>
           </a-form>
         </a-card>
