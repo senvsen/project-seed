@@ -44,7 +44,7 @@
              :maskClosable="false"
              :visible="autoReplyVisible"
              :footer="null"
-             @cancel="autoReplyVisible = false"
+             @cancel="handleAutoReplyClose"
              width="900px">
       <a-row class="table-toolbar">
         <div class="is-pulled-right">
@@ -114,7 +114,7 @@
              :maskClosable="false"
              :visible="eventHandlerVisible"
              :footer="null"
-             @cancel="eventHandlerVisible = false"
+             @cancel="handleEventHandlerClose"
              width="900px">
       <a-row class="table-toolbar">
         <div class="is-pulled-right">
@@ -432,6 +432,14 @@
         this.eventHandlerPager.current = page;
         this.eventHandlerPager.pageSize = pageSize;
         this.fetchEventHandlers();
+      },
+      handleAutoReplyClose() {
+        this.autoReplyVisible = false;
+        this.editAutoReplyVisible = false;
+      },
+      handleEventHandlerClose() {
+        this.eventHandlerVisible = false;
+        this.editEventHandlerVisible = false;
       }
     }
   }
