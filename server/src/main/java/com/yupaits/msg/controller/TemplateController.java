@@ -1,8 +1,10 @@
 package com.yupaits.msg.controller;
 
 import com.yupaits.msg.entity.Message;
+import com.yupaits.msg.entity.MessageUser;
 import com.yupaits.msg.entity.Template;
 import com.yupaits.msg.service.IMessageService;
+import com.yupaits.msg.service.IMessageUserService;
 import com.yupaits.msg.service.ITemplateService;
 import com.yupaits.msg.vo.TemplateVO;
 import com.yupaits.msg.dto.TemplateCreate;
@@ -44,11 +46,14 @@ import java.util.stream.Collectors;
 public class TemplateController {
 
     private final ITemplateService templateService;
+    private final IMessageUserService messageUserService;
     private final IMessageService messageService;
 
     @Autowired
-    public TemplateController(ITemplateService templateService, IMessageService messageService) {
+    public TemplateController(ITemplateService templateService, IMessageUserService messageUserService,
+                              IMessageService messageService) {
         this.templateService = templateService;
+        this.messageUserService = messageUserService;
         this.messageService = messageService;
     }
 
@@ -94,7 +99,9 @@ public class TemplateController {
         if (!ValidateUtils.idValid(id)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        if (messageService.count(new QueryWrapper<Message>().eq("use_template", true).eq("msg_template_id", id)) > 0) {
+        List<Object> messageIds = messageUserService.listObjs(new QueryWrapper<MessageUser>().select("message_id").groupBy("message_id"));
+        if (CollectionUtils.isNotEmpty(messageIds) && messageService.count(new QueryWrapper<Message>()
+                .in("id", messageIds).eq("use_template", true).eq("msg_template_id", id)) > 0) {
             return ResultWrapper.fail(ResultCode.DATA_CANNOT_DELETE);
         }
         return templateService.removeById(id) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
