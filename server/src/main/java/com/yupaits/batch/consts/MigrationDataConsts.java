@@ -1,12 +1,20 @@
-package com.yupaits.batch;
+package com.yupaits.batch.consts;
 
 import com.google.common.collect.Maps;
+import com.yupaits.auth.controller.*;
 import com.yupaits.auth.entity.*;
+import com.yupaits.msg.controller.SystemNoticeController;
+import com.yupaits.msg.controller.TemplateController;
 import com.yupaits.msg.entity.MessageUser;
 import com.yupaits.msg.entity.SystemNotice;
 import com.yupaits.msg.entity.Template;
+import com.yupaits.schedule.controller.JobController;
 import com.yupaits.schedule.entity.Job;
+import com.yupaits.sys.controller.FilterChainController;
 import com.yupaits.sys.entity.FilterChain;
+import com.yupaits.wx.controller.MpAccountController;
+import com.yupaits.wx.controller.MpAutoReplyController;
+import com.yupaits.wx.controller.MpEventHandlerController;
 import com.yupaits.wx.entity.MpAccount;
 import com.yupaits.wx.entity.MpAutoReply;
 import com.yupaits.wx.entity.MpEventHandler;
@@ -17,7 +25,7 @@ import java.util.Map;
  * @author yupaits
  * @date 2018/11/26
  */
-public class BatchConsts {
+public class MigrationDataConsts {
 
     public static final String[] ENTITIES = new String[]{"user", "user_role", "role", "role_privilege", "privilege",
             "department", "system_notice", "message_user", "template", "job", "filter_chain", "mp_account",
@@ -26,7 +34,8 @@ public class BatchConsts {
     public static final Map<String, String> READER_SQL_MAP = Maps.newHashMap();
     public static final Map<String, Class> READER_ROW_BEAN_MAP = Maps.newHashMap();
     public static final Map<String, String[]> WRITER_FIELD_NAMES_MAP = Maps.newHashMap();
-    public static final Map<String, String> PROCESSOR_TABLE_MAP = Maps.newHashMap();
+    public static final Map<String, String> ENTITY_TABLE_MAP = Maps.newHashMap();
+    public static final Map<String, Class> ENTITY_CONTROLLER_MAP = Maps.newHashMap();
 
     static {
         READER_SQL_MAP.put("user", "select id, username, password, name, phone, email, gender, birthday, avatar, created_at, created_by, updated_at, updated_by, enabled, deleted from auth_user where deleted = 1");
@@ -74,19 +83,33 @@ public class BatchConsts {
         WRITER_FIELD_NAMES_MAP.put("mp_auto_reply", new String[]{"id", "accountId", "keywords", "matchRule", "reply", "createdAt", "createdBy", "updatedAt", "updatedBy", "deleted"});
         WRITER_FIELD_NAMES_MAP.put("mp_event_handler", new String[]{"id", "accountId", "eventType", "handlerClass", "createdAt", "createdBy", "updatedAt", "updatedBy", "deleted"});
 
-        PROCESSOR_TABLE_MAP.put("user", "auth_user");
-        PROCESSOR_TABLE_MAP.put("user_role", "auth_user_role");
-        PROCESSOR_TABLE_MAP.put("role", "auth_role");
-        PROCESSOR_TABLE_MAP.put("role_privilege", "auth_role_privilege");
-        PROCESSOR_TABLE_MAP.put("privilege", "auth_privilege");
-        PROCESSOR_TABLE_MAP.put("department", "auth_department");
-        PROCESSOR_TABLE_MAP.put("system_notice", "msg_system_notice");
-        PROCESSOR_TABLE_MAP.put("message_user", "msg_message_user");
-        PROCESSOR_TABLE_MAP.put("template", "msg_template");
-        PROCESSOR_TABLE_MAP.put("job", "schedule_job");
-        PROCESSOR_TABLE_MAP.put("filter_chain", "sys_filter_chain");
-        PROCESSOR_TABLE_MAP.put("mp_account", "wx_mp_account");
-        PROCESSOR_TABLE_MAP.put("mp_auto_reply", "wx_mp_auto_reply");
-        PROCESSOR_TABLE_MAP.put("mp_event_handler", "wx_mp_event_handler");
+        ENTITY_TABLE_MAP.put("user", "auth_user");
+        ENTITY_TABLE_MAP.put("user_role", "auth_user_role");
+        ENTITY_TABLE_MAP.put("role", "auth_role");
+        ENTITY_TABLE_MAP.put("role_privilege", "auth_role_privilege");
+        ENTITY_TABLE_MAP.put("privilege", "auth_privilege");
+        ENTITY_TABLE_MAP.put("department", "auth_department");
+        ENTITY_TABLE_MAP.put("system_notice", "msg_system_notice");
+        ENTITY_TABLE_MAP.put("message_user", "msg_message_user");
+        ENTITY_TABLE_MAP.put("template", "msg_template");
+        ENTITY_TABLE_MAP.put("job", "schedule_job");
+        ENTITY_TABLE_MAP.put("filter_chain", "sys_filter_chain");
+        ENTITY_TABLE_MAP.put("mp_account", "wx_mp_account");
+        ENTITY_TABLE_MAP.put("mp_auto_reply", "wx_mp_auto_reply");
+        ENTITY_TABLE_MAP.put("mp_event_handler", "wx_mp_event_handler");
+
+        ENTITY_CONTROLLER_MAP.put("user", UserController.class);
+        ENTITY_CONTROLLER_MAP.put("user_role", UserRoleController.class);
+        ENTITY_CONTROLLER_MAP.put("role", RoleController.class);
+        ENTITY_CONTROLLER_MAP.put("role_privilege", RolePrivilegeController.class);
+        ENTITY_CONTROLLER_MAP.put("privilege", PrivilegeController.class);
+        ENTITY_CONTROLLER_MAP.put("department", DepartmentController.class);
+        ENTITY_CONTROLLER_MAP.put("system_notice", SystemNoticeController.class);
+        ENTITY_CONTROLLER_MAP.put("template", TemplateController.class);
+        ENTITY_CONTROLLER_MAP.put("job", JobController.class);
+        ENTITY_CONTROLLER_MAP.put("filter_chain", FilterChainController.class);
+        ENTITY_CONTROLLER_MAP.put("mp_account", MpAccountController.class);
+        ENTITY_CONTROLLER_MAP.put("mp_auto_reply", MpAutoReplyController.class);
+        ENTITY_CONTROLLER_MAP.put("mp_event_handler", MpEventHandlerController.class );
     }
 }
