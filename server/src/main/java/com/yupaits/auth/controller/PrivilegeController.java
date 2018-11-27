@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yupaits.auth.dto.PrivilegeCreate;
 import com.yupaits.auth.dto.PrivilegeUpdate;
 import com.yupaits.auth.entity.Privilege;
+import com.yupaits.auth.entity.RolePrivilege;
 import com.yupaits.auth.service.IPrivilegeService;
+import com.yupaits.auth.service.IRolePrivilegeService;
 import com.yupaits.auth.vo.PrivilegeVO;
 import com.yupaits.commons.result.Result;
 import com.yupaits.commons.result.ResultCode;
@@ -40,10 +42,12 @@ import java.util.stream.Collectors;
 public class PrivilegeController {
 
     private final IPrivilegeService privilegeService;
+    private final IRolePrivilegeService rolePrivilegeService;
 
     @Autowired
-    public PrivilegeController(IPrivilegeService privilegeService) {
+    public PrivilegeController(IPrivilegeService privilegeService, IRolePrivilegeService rolePrivilegeService) {
         this.privilegeService = privilegeService;
+        this.rolePrivilegeService = rolePrivilegeService;
     }
 
     @ApiOperation("创建权限")
@@ -88,7 +92,11 @@ public class PrivilegeController {
         if (!ValidateUtils.idValid(id)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        return privilegeService.removeById(id) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
+        if (privilegeService.removeById(id)) {
+            rolePrivilegeService.remove(new QueryWrapper<RolePrivilege>().eq("privilege_id", id));
+            ResultWrapper.success();
+        }
+        return ResultWrapper.fail(ResultCode.DELETE_FAIL);
     }
 
     @ApiOperation("批量删除权限")
@@ -97,7 +105,11 @@ public class PrivilegeController {
         if (CollectionUtils.isEmpty(ids)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        return privilegeService.removeByIds(ids) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
+        if (privilegeService.removeByIds(ids)) {
+            rolePrivilegeService.remove(new QueryWrapper<RolePrivilege>().in("privilege_id", ids));
+            ResultWrapper.success();
+        }
+        return ResultWrapper.fail(ResultCode.DELETE_FAIL);
     }
 
     @ApiOperation("根据ID获取权限信息")

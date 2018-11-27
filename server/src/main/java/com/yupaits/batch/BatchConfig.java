@@ -26,6 +26,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -72,8 +73,8 @@ public class BatchConfig {
         this.batchJobId = new RedisAtomicLong(BATCH_JOB_ID_KEY, redisConnectionFactory);
     }
 
-    @Scheduled(cron = "0 0/5 * * * ?")
-    public void runHistoryDataMigration() throws JobExecutionException {
+    @Scheduled(cron = "0 30 * * * ?")
+    public void runHistoryDataMigration() {
         log.info("开始清理历史数据");
         if (batchJobThreadPool == null || batchJobThreadPool.isShutdown()) {
             ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
@@ -83,17 +84,15 @@ public class BatchConfig {
                     new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
         }
         long jobId = this.batchJobId.incrementAndGet();
-//        for (String entity : ENTITIES) {
+        for (String entity : BatchConsts.ENTITIES) {
             batchJobThreadPool.execute(()-> {
                 try {
-//                    this.buildAndRunJob(entity, jobId);
-                    this.buildAndRunJob("user", jobId);
-                } catch (Exception e) {
-//                    log.error("执行历史数据清理任务[{}]出错", entity + JOB_SUFFIX + jobId, e);
-                    log.error("执行历史数据清理任务[{}]出错", "user" + JOB_SUFFIX + jobId, e);
+                    this.buildAndRunJob(entity, jobId);
+                } catch (JobExecutionException e) {
+                    log.error("执行历史数据清理任务[{}]出错", entity + JOB_SUFFIX + jobId, e);
                 }
             });
-//        }
+        }
         batchJobThreadPool.shutdown();
     }
 
@@ -175,10 +174,12 @@ public class BatchConfig {
      * @return ItemProcessor
      */
     private ItemProcessor<? super Object, ?> buildItemProcessor(String entity) {
-        String preparedStatement = "delete from ? where id = ?";
+        String preparedStatement = "delete from " + BatchConsts.PROCESSOR_TABLE_MAP.get(entity) + " where id = ?";
         return (ItemProcessor<Object, Object>) item -> {
-            Long id = (Long) BatchConsts.READER_ROW_BEAN_MAP.get(entity).getDeclaredField("id").get(item);
-            int count = jdbcTemplate.update(preparedStatement, BatchConsts.PROCESSOR_TABLE_MAP.get(entity), id);
+            Field idField = BatchConsts.READER_ROW_BEAN_MAP.get(entity).getDeclaredField("id");
+            idField.setAccessible(true);
+            Long id = (Long) idField.get(item);
+            int count = jdbcTemplate.update(preparedStatement, id);
             if (count > 0) {
                 return item;
             } else {

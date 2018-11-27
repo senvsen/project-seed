@@ -1,7 +1,11 @@
 package com.yupaits.auth.controller;
 
 import com.yupaits.auth.entity.Role;
+import com.yupaits.auth.entity.RolePrivilege;
+import com.yupaits.auth.entity.UserRole;
+import com.yupaits.auth.service.IRolePrivilegeService;
 import com.yupaits.auth.service.IRoleService;
+import com.yupaits.auth.service.IUserRoleService;
 import com.yupaits.auth.vo.RoleVO;
 import com.yupaits.auth.dto.RoleCreate;
 import com.yupaits.auth.dto.RoleUpdate;
@@ -42,10 +46,14 @@ import java.util.stream.Collectors;
 public class RoleController {
 
     private final IRoleService roleService;
+    private final IUserRoleService userRoleService;
+    private final IRolePrivilegeService rolePrivilegeService;
 
     @Autowired
-    public RoleController(IRoleService roleService) {
+    public RoleController(IRoleService roleService, IUserRoleService userRoleService, IRolePrivilegeService rolePrivilegeService) {
         this.roleService = roleService;
+        this.userRoleService = userRoleService;
+        this.rolePrivilegeService = rolePrivilegeService;
     }
 
     @ApiOperation("创建角色")
@@ -90,7 +98,12 @@ public class RoleController {
         if (!ValidateUtils.idValid(id)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        return roleService.removeById(id) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
+        if (roleService.removeById(id)) {
+            userRoleService.remove(new QueryWrapper<UserRole>().eq("role_id", id));
+            rolePrivilegeService.remove(new QueryWrapper<RolePrivilege>().eq("role_id", id));
+            ResultWrapper.success();
+        }
+        return ResultWrapper.fail(ResultCode.DELETE_FAIL);
     }
 
     @ApiOperation("批量删除角色")
@@ -99,7 +112,12 @@ public class RoleController {
         if (CollectionUtils.isEmpty(ids)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        return roleService.removeByIds(ids) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
+        if (roleService.removeByIds(ids)) {
+            userRoleService.remove(new QueryWrapper<UserRole>().in("role_id", ids));
+            rolePrivilegeService.remove(new QueryWrapper<RolePrivilege>().in("role_id", ids));
+            ResultWrapper.success();
+        }
+        return ResultWrapper.fail(ResultCode.DELETE_FAIL);
     }
 
     @ApiOperation("根据ID获取角色信息")

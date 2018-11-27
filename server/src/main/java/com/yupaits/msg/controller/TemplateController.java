@@ -1,6 +1,8 @@
 package com.yupaits.msg.controller;
 
+import com.yupaits.msg.entity.Message;
 import com.yupaits.msg.entity.Template;
+import com.yupaits.msg.service.IMessageService;
 import com.yupaits.msg.service.ITemplateService;
 import com.yupaits.msg.vo.TemplateVO;
 import com.yupaits.msg.dto.TemplateCreate;
@@ -42,10 +44,12 @@ import java.util.stream.Collectors;
 public class TemplateController {
 
     private final ITemplateService templateService;
+    private final IMessageService messageService;
 
     @Autowired
-    public TemplateController(ITemplateService templateService) {
+    public TemplateController(ITemplateService templateService, IMessageService messageService) {
         this.templateService = templateService;
+        this.messageService = messageService;
     }
 
     @ApiOperation("创建消息模板")
@@ -90,16 +94,10 @@ public class TemplateController {
         if (!ValidateUtils.idValid(id)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        return templateService.removeById(id) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
-    }
-
-    @ApiOperation("批量删除消息模板")
-    @PutMapping("/batch-delete")
-    public Result batchDeleteTemplate(@RequestBody List<Long> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
+        if (messageService.count(new QueryWrapper<Message>().eq("use_template", true).eq("msg_template_id", id)) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CANNOT_DELETE);
         }
-        return templateService.removeByIds(ids) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
+        return templateService.removeById(id) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
     }
 
     @ApiOperation("根据ID获取消息模板信息")

@@ -68,24 +68,6 @@ public class MessageController {
         return ResultWrapper.fail(ResultCode.CREATE_FAIL);
     }
 
-    @ApiOperation("根据ID删除消息")
-    @DeleteMapping("/{id:\\d{19}}")
-    public Result deleteMessage(@PathVariable Long id) {
-        if (!ValidateUtils.idValid(id)) {
-            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
-        }
-        return messageService.removeById(id) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
-    }
-
-    @ApiOperation("批量删除消息")
-    @PutMapping("/batch-delete")
-    public Result batchDeleteMessage(@RequestBody List<Long> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
-        }
-        return messageService.removeByIds(ids) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
-    }
-
     @ApiOperation("根据ID获取消息信息")
     @GetMapping("/{id:\\d{19}}")
     public Result getMessage(@PathVariable Long id) {

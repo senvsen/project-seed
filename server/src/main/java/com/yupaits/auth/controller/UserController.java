@@ -9,6 +9,8 @@ import com.yupaits.auth.dto.ModifyPasswordForm;
 import com.yupaits.auth.dto.UserCreate;
 import com.yupaits.auth.dto.UserUpdate;
 import com.yupaits.auth.entity.User;
+import com.yupaits.auth.entity.UserRole;
+import com.yupaits.auth.service.IUserRoleService;
 import com.yupaits.auth.service.IUserService;
 import com.yupaits.auth.vo.UserVO;
 import com.yupaits.commons.consts.SecurityConsts;
@@ -54,6 +56,7 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final IUserService userService;
+    private final IUserRoleService userRoleService;
     private final IMessageService messageService;
     private final IMessageUserService messageUserService;
     private final MsgSender msgSender;
@@ -62,9 +65,10 @@ public class UserController {
     private static final String SEND_PASSWORD_EMAIL_SUBJECT = "【Seed】初始登录密码";
 
     @Autowired
-    public UserController(IUserService userService, IMessageService messageService,
+    public UserController(IUserService userService, IUserRoleService userRoleService, IMessageService messageService,
                           IMessageUserService messageUserService, MsgSender msgSender) {
         this.userService = userService;
+        this.userRoleService = userRoleService;
         this.messageService = messageService;
         this.messageUserService = messageUserService;
         this.msgSender = msgSender;
@@ -150,7 +154,11 @@ public class UserController {
         if (!ValidateUtils.idValid(id)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        return userService.removeById(id) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
+        if (userService.removeById(id)) {
+            userRoleService.remove(new QueryWrapper<UserRole>().eq("user_id", id));
+            return ResultWrapper.success();
+        }
+        return ResultWrapper.fail(ResultCode.DELETE_FAIL);
     }
 
     @ApiOperation("批量删除用户")
@@ -159,7 +167,11 @@ public class UserController {
         if (CollectionUtils.isEmpty(ids)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        return userService.removeByIds(ids) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
+        if (userService.removeByIds(ids)) {
+            userRoleService.remove(new QueryWrapper<UserRole>().in("user_id", ids));
+            return ResultWrapper.success();
+        }
+        return ResultWrapper.fail(ResultCode.DELETE_FAIL);
     }
 
     @ApiOperation("根据ID获取用户信息")

@@ -1,7 +1,9 @@
 package com.yupaits.auth.controller;
 
 import com.yupaits.auth.entity.Department;
+import com.yupaits.auth.entity.Role;
 import com.yupaits.auth.service.IDepartmentService;
+import com.yupaits.auth.service.IRoleService;
 import com.yupaits.auth.vo.DepartmentVO;
 import com.yupaits.auth.dto.DepartmentCreate;
 import com.yupaits.auth.dto.DepartmentUpdate;
@@ -42,10 +44,12 @@ import java.util.stream.Collectors;
 public class DepartmentController {
 
     private final IDepartmentService departmentService;
+    private final IRoleService roleService;
 
     @Autowired
-    public DepartmentController(IDepartmentService departmentService) {
+    public DepartmentController(IDepartmentService departmentService, IRoleService roleService) {
         this.departmentService = departmentService;
+        this.roleService = roleService;
     }
 
     @ApiOperation("创建部门")
@@ -90,16 +94,12 @@ public class DepartmentController {
         if (!ValidateUtils.idValid(id)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        return departmentService.removeById(id) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
-    }
-
-    @ApiOperation("批量删除部门")
-    @PutMapping("/batch-delete")
-    public Result batchDeleteDepartment(@RequestBody List<Long> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
+        int roleCount = roleService.count(new QueryWrapper<Role>().eq("department_id", id));
+        int subDepartmentCount = departmentService.count(new QueryWrapper<Department>().eq("parent_id", id));
+        if ((roleCount + subDepartmentCount) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CANNOT_DELETE);
         }
-        return departmentService.removeByIds(ids) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
+        return departmentService.removeById(id) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.DELETE_FAIL);
     }
 
     @ApiOperation("根据ID获取部门信息")
@@ -123,7 +123,6 @@ public class DepartmentController {
         QueryWrapper<Department> queryWrapper = new QueryWrapper<>();
         if (MapUtils.isNotEmpty(query)) {
             query.forEach((key, value) -> {
-                //TODO 设置查询条件
                 if (StringUtils.equals(key, "parentId")) {
                     queryWrapper.eq("parent_id", value);
                 }
