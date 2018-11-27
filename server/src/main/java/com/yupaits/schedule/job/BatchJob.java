@@ -14,12 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class BatchJob implements Job {
 
-    private final BatchConfig batchConfig;
-
     @Autowired
-    public BatchJob(BatchConfig batchConfig) {
-        this.batchConfig = batchConfig;
-    }
+    private BatchConfig batchConfig;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {

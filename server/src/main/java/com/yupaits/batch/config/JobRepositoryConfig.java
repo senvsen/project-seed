@@ -15,14 +15,14 @@ import javax.sql.DataSource;
  */
 @Configuration
 public class JobRepositoryConfig {
-    private static final String ISOLATION_READ_COMMITTED = "ISOLATION_READ_COMMITTED";
+    private static final String ISOLATION_REPEATABLE_READ = "ISOLATION_REPEATABLE_READ";
 
     @Bean
     public JobRepositoryFactoryBean jobRepositoryFactoryBean(DataSource dataSource, PlatformTransactionManager transactionManager) throws Exception {
         JobRepositoryFactoryBean jobRepositoryFactoryBean = new JobRepositoryFactoryBean();
         jobRepositoryFactoryBean.setTransactionManager(transactionManager);
         jobRepositoryFactoryBean.setDataSource(dataSource);
-        jobRepositoryFactoryBean.setIsolationLevelForCreate(ISOLATION_READ_COMMITTED);
+        jobRepositoryFactoryBean.setIsolationLevelForCreate(ISOLATION_REPEATABLE_READ);
         jobRepositoryFactoryBean.afterPropertiesSet();
         return jobRepositoryFactoryBean;
     }

@@ -50,8 +50,14 @@
   text-align: right !important;
 }
 
+.has-text-success {
+  color: #52c41a !important;
+}
 .has-text-danger {
-  color: #ff3860 !important;
+  color: #f5222d !important;
+}
+.has-text-important {
+  color: #262626;
 }
 .has-text-mute {
   color: #777 !important
