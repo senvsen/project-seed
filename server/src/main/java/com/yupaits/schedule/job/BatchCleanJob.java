@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @date 2018/11/27
  */
 @Component
-public class BatchJob implements Job {
+public class BatchCleanJob implements Job {
 
     @Autowired
     private BatchConfig batchConfig;
