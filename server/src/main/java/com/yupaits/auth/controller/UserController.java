@@ -83,6 +83,9 @@ public class UserController {
         if (StringUtils.isAllBlank(userCreate.getEmail(), userCreate.getPhone())) {
             return ResultWrapper.fail("未设置该用户的邮箱或手机，无法完成创建");
         }
+        if (userService.count(new QueryWrapper<User>().eq("username", userCreate.getUsername())) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CONFLICT);
+        }
         User user = new User();
         BeanUtils.copyProperties(userCreate, user);
         String password = initPassword(user);
@@ -128,6 +131,9 @@ public class UserController {
     public Result updateUser(@RequestBody UserUpdate userUpdate) {
         if (!userUpdate.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
+        }
+        if (userService.count(new QueryWrapper<User>().eq("username", userUpdate.getUsername())) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CONFLICT);
         }
         User user = new User();
         BeanUtils.copyProperties(userUpdate, user);

@@ -3,7 +3,7 @@ USE test;
 DROP TABLE IF EXISTS wx_mp_account;
 CREATE TABLE wx_mp_account (
     id BIGINT(19) NOT NULL COMMENT '公众号账户ID',
-    account_name VARCHAR(50) DEFAULT NULL UNIQUE COMMENT '账户名称',
+    account_name VARCHAR(50) DEFAULT NULL COMMENT '账户名称',
     related_type TINYINT(4) DEFAULT NULL COMMENT '关联类型',
     related_id VARCHAR(36) DEFAULT NULL COMMENT '关联ID',
     app_name VARCHAR(30) DEFAULT NULL COMMENT '公众号名称',
@@ -22,7 +22,7 @@ CREATE TABLE wx_mp_account (
 DROP TABLE IF EXISTS wx_mp_welcome_message;
 CREATE TABLE wx_mp_welcome_message (
     id BIGINT(19) NOT NULL COMMENT '欢迎语ID',
-    account_id BIGINT(19) NOT NULL UNIQUE COMMENT '公众号账户ID',
+    account_id BIGINT(19) NOT NULL COMMENT '公众号账户ID',
     active TINYINT(1) DEFAULT NULL COMMENT '启用标记',
     message VARCHAR(500) DEFAULT NULL COMMENT '欢迎语内容',
     created_at DATETIME DEFAULT NULL COMMENT '创建时间',

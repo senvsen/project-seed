@@ -54,6 +54,9 @@ public class MpAccountController {
         if (!mpAccountCreate.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
+        if (mpAccountService.count(new QueryWrapper<MpAccount>().eq("account_name", mpAccountCreate.getAccountName())) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CONFLICT);
+        }
         MpAccount mpAccount = new MpAccount();
         BeanUtils.copyProperties(mpAccountCreate, mpAccount);
         return mpAccountService.save(mpAccount) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.CREATE_FAIL);
@@ -64,6 +67,9 @@ public class MpAccountController {
     public Result updateMpAccount(@RequestBody MpAccountUpdate mpAccountUpdate) {
         if (!mpAccountUpdate.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
+        }
+        if (mpAccountService.count(new QueryWrapper<MpAccount>().eq("account_name", mpAccountUpdate.getAccountName())) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CONFLICT);
         }
         MpAccount mpAccount = new MpAccount();
         BeanUtils.copyProperties(mpAccountUpdate, mpAccount);

@@ -56,6 +56,9 @@ public class PrivilegeController {
         if (!privilegeCreate.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
+        if (privilegeService.count(new QueryWrapper<Privilege>().eq("privilege_key", privilegeCreate.getPrivilegeKey())) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CONFLICT);
+        }
         Privilege privilege = new Privilege();
         BeanUtils.copyProperties(privilegeCreate, privilege);
         return privilegeService.save(privilege) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.CREATE_FAIL);
@@ -66,6 +69,9 @@ public class PrivilegeController {
     public Result updatePrivilege(@RequestBody PrivilegeUpdate privilegeUpdate) {
         if (!privilegeUpdate.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
+        }
+        if (privilegeService.count(new QueryWrapper<Privilege>().eq("privilege_key", privilegeUpdate.getPrivilegeKey())) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CONFLICT);
         }
         Privilege privilege = new Privilege();
         BeanUtils.copyProperties(privilegeUpdate, privilege);

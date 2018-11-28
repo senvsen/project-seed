@@ -3,7 +3,7 @@ USE test;
 DROP TABLE IF EXISTS auth_user;
 CREATE TABLE auth_user (
     id BIGINT(19) NOT NULL COMMENT '用户ID',
-    username VARCHAR(30) DEFAULT NULL UNIQUE COMMENT '用户名',
+    username VARCHAR(30) DEFAULT NULL COMMENT '用户名',
     password VARCHAR(64) DEFAULT NULL COMMENT '密码',
     name VARCHAR(30) DEFAULT NULL COMMENT '姓名',
     phone VARCHAR(30) DEFAULT NULL COMMENT '手机号码',
@@ -23,7 +23,7 @@ CREATE TABLE auth_user (
 DROP TABLE IF EXISTS auth_role;
 CREATE TABLE auth_role (
     id BIGINT(19) NOT NULL COMMENT '角色ID',
-    role_key VARCHAR(30) DEFAULT NULL UNIQUE COMMENT '角色Key',
+    role_key VARCHAR(30) DEFAULT NULL COMMENT '角色Key',
     name VARCHAR(30) DEFAULT NULL COMMENT '角色名',
     description VARCHAR(255) DEFAULT NULL COMMENT '角色描述',
     department_id BIGINT(19) DEFAULT NULL COMMENT '所属部门ID',
@@ -39,7 +39,7 @@ DROP TABLE IF EXISTS auth_privilege;
 CREATE TABLE auth_privilege (
     id BIGINT(19) NOT NULL COMMENT '权限ID',
     privilege_type TINYINT(4) DEFAULT NULL COMMENT '权限类型',
-    privilege_key VARCHAR(30) DEFAULT NULL UNIQUE COMMENT '权限Key',
+    privilege_key VARCHAR(30) DEFAULT NULL COMMENT '权限Key',
     name VARCHAR(30) DEFAULT NULL COMMENT '权限名',
     description VARCHAR(255) DEFAULT NULL COMMENT '权限描述',
     created_at DATETIME DEFAULT NULL COMMENT '创建时间',
@@ -79,7 +79,7 @@ CREATE TABLE auth_role_privilege (
 DROP TABLE IF EXISTS auth_department;
 CREATE TABLE auth_department (
     id BIGINT(19) NOT NULL COMMENT '部门ID',
-    department_key VARCHAR(30) DEFAULT NULL UNIQUE COMMENT '部门Key',
+    department_key VARCHAR(30) DEFAULT NULL COMMENT '部门Key',
     name VARCHAR(30) DEFAULT NULL COMMENT '部门名称',
     parent_id BIGINT(19) DEFAULT NULL COMMENT '父级部门ID',
     created_at DATETIME DEFAULT NULL COMMENT '创建时间',

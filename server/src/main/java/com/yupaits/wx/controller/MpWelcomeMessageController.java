@@ -49,6 +49,9 @@ public class MpWelcomeMessageController {
         if (!mpWelcomeMessageCreate.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
+        if (mpWelcomeMessageService.count(new QueryWrapper<MpWelcomeMessage>().eq("account_id", mpWelcomeMessageCreate.getAccountId())) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CONFLICT);
+        }
         MpWelcomeMessage mpWelcomeMessage = new MpWelcomeMessage();
         BeanUtils.copyProperties(mpWelcomeMessageCreate, mpWelcomeMessage);
         return mpWelcomeMessageService.save(mpWelcomeMessage) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.CREATE_FAIL);

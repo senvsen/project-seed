@@ -62,6 +62,9 @@ public class RoleController {
         if (!roleCreate.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
+        if (roleService.count(new QueryWrapper<Role>().eq("role_key", roleCreate.getRoleKey())) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CONFLICT);
+        }
         Role role = new Role();
         BeanUtils.copyProperties(roleCreate, role);
         return roleService.save(role) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.CREATE_FAIL);
@@ -72,6 +75,9 @@ public class RoleController {
     public Result updateRole(@RequestBody RoleUpdate roleUpdate) {
         if (!roleUpdate.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
+        }
+        if (roleService.count(new QueryWrapper<Role>().eq("role_key", roleUpdate.getRoleKey())) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CONFLICT);
         }
         Role role = new Role();
         BeanUtils.copyProperties(roleUpdate, role);
@@ -141,7 +147,6 @@ public class RoleController {
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
         if (MapUtils.isNotEmpty(query)) {
             query.forEach((key, value) -> {
-                //TODO 设置查询条件
                 if (StringUtils.equals(key, "departmentId")) {
                     queryWrapper.eq("department_id", value);
                 }

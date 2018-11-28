@@ -58,6 +58,9 @@ public class DepartmentController {
         if (!departmentCreate.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
+        if (departmentService.count(new QueryWrapper<Department>().eq("department_key", departmentCreate.getDepartmentKey())) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CONFLICT);
+        }
         Department department = new Department();
         BeanUtils.copyProperties(departmentCreate, department);
         return departmentService.save(department) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.CREATE_FAIL);
@@ -69,23 +72,12 @@ public class DepartmentController {
         if (!departmentUpdate.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
+        if (departmentService.count(new QueryWrapper<Department>().eq("department_key", departmentUpdate.getDepartmentKey())) > 0) {
+            return ResultWrapper.fail(ResultCode.DATA_CONFLICT);
+        }
         Department department = new Department();
         BeanUtils.copyProperties(departmentUpdate, department);
         return departmentService.updateById(department) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.UPDATE_FAIL);
-    }
-
-    @ApiOperation("批量保存部门")
-    @PutMapping("/batch-save")
-    public Result batchSaveDepartment(@RequestBody List<DepartmentUpdate> departmentUpdateList) {
-        if (!DepartmentUpdate.isValid(departmentUpdateList)) {
-            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
-        }
-        List<Department> departmentList = departmentUpdateList.stream().map(departmentUpdate -> {
-            Department department = new Department();
-            BeanUtils.copyProperties(departmentUpdate, department);
-            return department;
-        }).collect(Collectors.toList());
-        return departmentService.saveOrUpdateBatch(departmentList) ? ResultWrapper.success() : ResultWrapper.fail(ResultCode.SAVE_FAIL);
     }
 
     @ApiOperation("根据ID删除部门")
