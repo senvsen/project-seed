@@ -1,4 +1,7 @@
 # project-seed
+
+[![Build Status](https://travis-ci.com/YupaiTS/project-seed.svg?branch=master)](https://travis-ci.com/YupaiTS/project-seed)
+
 Spring Boot种子项目
 
 ## 技术选型
