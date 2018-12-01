@@ -42,10 +42,7 @@ Spring Boot种子项目
 
 ![RBAC管理](./images/RBAC.png)
 ![鉴权过滤](./images/filter-chain.png)
-![druid监控](./images/druid.png)
-![定时任务调度管理](./images/schedule.png)
 ![swagger接口文档](./images/swagger-ui.png)
-![代码生成器](./images/code-generator.png)
 
 ## 运行项目
 
