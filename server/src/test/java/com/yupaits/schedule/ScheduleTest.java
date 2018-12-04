@@ -31,8 +31,22 @@ public class ScheduleTest {
                         .setJobGroup("LuckyGroup")
                         .setTriggerName("EveryHour")
                         .setTriggerGroup("Daily")
-                        .setCronExpression("0/10 * * * * ?")
-                        .setDescription("测试定时任务")
+                        .setCronExpression("0 0/1 * * * ?")
+                        .setDescription("测试定时任务"),
+                new Job().setClassName("com.yupaits.schedule.job.SystemNoticeCleanJob")
+                        .setJobName("SystemNoticeClean")
+                        .setJobGroup("Cleaner")
+                        .setTriggerName("EveryDayAt13")
+                        .setTriggerGroup("Daily")
+                        .setCronExpression("0 0 13 * * ?")
+                        .setDescription("清理过期的系统通知"),
+                new Job().setClassName("com.yupaits.schedule.job.BatchCleanJob")
+                        .setJobName("HistoryDataClean")
+                        .setJobGroup("Cleaner")
+                        .setTriggerName("EveryHourAtHalf")
+                        .setTriggerGroup("Daily")
+                        .setCronExpression("0 30 * * * ?")
+                        .setDescription("历史数据清理任务")
         )));
     }
 }
