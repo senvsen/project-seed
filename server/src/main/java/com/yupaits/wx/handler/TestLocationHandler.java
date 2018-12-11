@@ -6,6 +6,7 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -13,7 +14,9 @@ import java.util.Map;
  * @author yupaits
  * @date 2018/11/22
  */
-public class TestLocationHandler implements WxMpMessageHandler {
+public class TestLocationHandler implements WxMpMessageHandler, Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) {
         return WxMpXmlOutMessage.TEXT()

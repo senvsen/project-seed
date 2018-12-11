@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.yupaits.batch.consts.MigrationDataConsts;
 import com.yupaits.batch.listener.JobCompletedListener;
+import com.yupaits.batch.mapper.HistoryDataBeanPropertyRowMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -139,7 +140,7 @@ public class BatchConfig {
                 .name(entity)
                 .dataSource(dataSource)
                 .sql(MigrationDataConsts.READER_SQL_MAP.get(entity))
-                .rowMapper(new BeanPropertyRowMapper<>(MigrationDataConsts.READER_ROW_BEAN_MAP.get(entity)))
+                .rowMapper(new HistoryDataBeanPropertyRowMapper<>(MigrationDataConsts.READER_ROW_BEAN_MAP.get(entity)))
                 .fetchSize(1000)
                 .build();
     }

@@ -1,29 +1,28 @@
 package com.yupaits.wx.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yupaits.commons.result.Result;
+import com.yupaits.commons.result.ResultCode;
+import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.commons.utils.ValidateUtils;
+import com.yupaits.wx.dto.MpAccountCreate;
+import com.yupaits.wx.dto.MpAccountUpdate;
 import com.yupaits.wx.entity.MpAccount;
 import com.yupaits.wx.service.IMpAccountService;
 import com.yupaits.wx.vo.MpAccountVO;
-import com.yupaits.wx.dto.MpAccountCreate;
-import com.yupaits.wx.dto.MpAccountUpdate;
-import com.yupaits.commons.utils.ValidateUtils;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import java.util.Map;
-import org.apache.commons.collections4.MapUtils;
-import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultWrapper;
-import com.yupaits.commons.result.ResultCode;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.swagger.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -68,7 +67,7 @@ public class MpAccountController {
         if (!mpAccountUpdate.isValid()) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        if (mpAccountService.count(new QueryWrapper<MpAccount>().eq("account_name", mpAccountUpdate.getAccountName())) > 0) {
+        if (mpAccountService.count(new QueryWrapper<MpAccount>().ne("id", mpAccountUpdate.getId()).eq("account_name", mpAccountUpdate.getAccountName())) > 0) {
             return ResultWrapper.fail(ResultCode.DATA_CONFLICT);
         }
         MpAccount mpAccount = new MpAccount();

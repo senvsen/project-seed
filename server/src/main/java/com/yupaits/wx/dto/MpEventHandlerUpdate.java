@@ -34,13 +34,16 @@ public class MpEventHandlerUpdate extends BaseDTO {
     @JsonDeserialize(using = LongDeserializer.class)
     private Long id;
 
+    @ApiModelProperty(value = "公众号账户ID")
+    @JsonDeserialize(using = LongDeserializer.class)
+    private Long accountId;
+
     @ApiModelProperty(value = "事件类型")
     private String eventType;
 
     @ApiModelProperty(value = "处理类路径")
     private String handlerClass;
 
-    @SuppressWarnings("unchecked")
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {

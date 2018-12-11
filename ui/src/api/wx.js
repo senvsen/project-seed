@@ -50,20 +50,8 @@ export default {
   updateMpAutoReply(id, mpAutoReplyUpdate) {
     return request.put(`${prefix}/mp-auto-reply/${id}`, mpAutoReplyUpdate);
   },
-  batchSaveMpAutoReply(mpAutoReplyUpdateList) {
-    return request.put(`${prefix}/mp-auto-reply/batch-save`, mpAutoReplyUpdateList);
-  },
   deleteMpAutoReply(id) {
     return request.delete(`${prefix}/mp-auto-reply/${id}`);
-  },
-  batchDeleteMpAutoReply(ids) {
-    return request.put(`${prefix}/mp-auto-reply/batch-delete`, ids);
-  },
-  getMpAutoReply(id) {
-    return request.get(`${prefix}/mp-auto-reply/${id}`);
-  },
-  getMpAutoReplyList(query) {
-    return request.post(`${prefix}/mp-auto-reply/list`, query);
   },
   getMpAutoReplyPage(page, size, query, ascs, descs) {
     const ascsParam = ascs.join('&ascs=');
@@ -76,20 +64,8 @@ export default {
   updateMpEventHandler(id, mpEventHandlerUpdate) {
     return request.put(`${prefix}/mp-event-handler/${id}`, mpEventHandlerUpdate);
   },
-  batchSaveMpEventHandler(mpEventHandlerUpdateList) {
-    return request.put(`${prefix}/mp-event-handler/batch-save`, mpEventHandlerUpdateList);
-  },
   deleteMpEventHandler(id) {
     return request.delete(`${prefix}/mp-event-handler/${id}`);
-  },
-  batchDeleteMpEventHandler(ids) {
-    return request.put(`${prefix}/mp-event-handler/batch-delete`, ids);
-  },
-  getMpEventHandler(id) {
-    return request.get(`${prefix}/mp-event-handler/${id}`);
-  },
-  getMpEventHandlerList(query) {
-    return request.post(`${prefix}/mp-event-handler/list`, query);
   },
   getMpEventHandlerPage(page, size, query, ascs, descs) {
     const ascsParam = ascs.join('&ascs=');

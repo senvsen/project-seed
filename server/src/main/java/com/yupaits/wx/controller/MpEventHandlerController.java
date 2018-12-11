@@ -1,29 +1,29 @@
 package com.yupaits.wx.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yupaits.commons.result.Result;
+import com.yupaits.commons.result.ResultCode;
+import com.yupaits.commons.result.ResultWrapper;
+import com.yupaits.commons.utils.ValidateUtils;
+import com.yupaits.wx.dto.MpEventHandlerCreate;
+import com.yupaits.wx.dto.MpEventHandlerUpdate;
 import com.yupaits.wx.entity.MpEventHandler;
 import com.yupaits.wx.helper.MpEventHandlerHelper;
 import com.yupaits.wx.service.IMpEventHandlerService;
 import com.yupaits.wx.vo.MpEventHandlerVO;
-import com.yupaits.wx.dto.MpEventHandlerCreate;
-import com.yupaits.wx.dto.MpEventHandlerUpdate;
-import com.yupaits.commons.utils.ValidateUtils;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import java.util.Map;
-import org.apache.commons.collections4.MapUtils;
-import com.yupaits.commons.result.Result;
-import com.yupaits.commons.result.ResultWrapper;
-import com.yupaits.commons.result.ResultCode;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import io.swagger.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -70,28 +70,10 @@ public class MpEventHandlerController {
         MpEventHandler mpEventHandler = new MpEventHandler();
         BeanUtils.copyProperties(mpEventHandlerUpdate, mpEventHandler);
         if (mpEventHandlerService.updateById(mpEventHandler)) {
-            mpEventHandlerHelper.evictHandlerMap(mpEventHandlerUpdate.getId());
+            mpEventHandlerHelper.evictHandlerMap(mpEventHandlerUpdate.getAccountId());
             return ResultWrapper.success();
         }
         return ResultWrapper.fail(ResultCode.UPDATE_FAIL);
-    }
-
-    @ApiOperation("批量保存公众号事件处理")
-    @PutMapping("/batch-save")
-    public Result batchSaveMpEventHandler(@RequestBody List<MpEventHandlerUpdate> mpEventHandlerUpdateList) {
-        if (!MpEventHandlerUpdate.isValid(mpEventHandlerUpdateList)) {
-            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
-        }
-        List<MpEventHandler> mpEventHandlerList = mpEventHandlerUpdateList.stream().map(mpEventHandlerUpdate -> {
-            MpEventHandler mpEventHandler = new MpEventHandler();
-            BeanUtils.copyProperties(mpEventHandlerUpdate, mpEventHandler);
-            return mpEventHandler;
-        }).collect(Collectors.toList());
-        if (mpEventHandlerService.saveOrUpdateBatch(mpEventHandlerList)) {
-            mpEventHandlerList.forEach(mpEventHandler -> mpEventHandlerHelper.evictHandlerMap(mpEventHandler.getId()));
-            return ResultWrapper.success();
-        }
-        return ResultWrapper.fail(ResultCode.SAVE_FAIL);
     }
 
     @ApiOperation("根据ID删除公众号事件处理")
@@ -100,56 +82,15 @@ public class MpEventHandlerController {
         if (!ValidateUtils.idValid(id)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }
-        if (mpEventHandlerService.removeById(id)) {
-            mpEventHandlerHelper.evictHandlerMap(id);
-            return ResultWrapper.success();
-        }
-        return ResultWrapper.fail(ResultCode.DELETE_FAIL);
-    }
-
-    @ApiOperation("批量删除公众号事件处理")
-    @PutMapping("/batch-delete")
-    public Result batchDeleteMpEventHandler(@RequestBody List<Long> ids) {
-        if (CollectionUtils.isEmpty(ids)) {
-            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
-        }
-        if (mpEventHandlerService.removeByIds(ids)) {
-            ids.forEach(mpEventHandlerHelper::evictHandlerMap);
-            return ResultWrapper.success();
-        }
-        return ResultWrapper.fail(ResultCode.DELETE_FAIL);
-    }
-
-    @ApiOperation("根据ID获取公众号事件处理信息")
-    @GetMapping("/{id:\\d{19}}")
-    public Result getMpEventHandler(@PathVariable Long id) {
-        if (!ValidateUtils.idValid(id)) {
-            return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
-        }
         MpEventHandler mpEventHandler = mpEventHandlerService.getById(id);
         if (mpEventHandler == null) {
             return ResultWrapper.fail(ResultCode.DATA_NOT_FOUND);
         }
-        MpEventHandlerVO mpEventHandlerVO = new MpEventHandlerVO();
-        BeanUtils.copyProperties(mpEventHandler, mpEventHandlerVO);
-        return ResultWrapper.success(mpEventHandlerVO);
-    }
-
-    @ApiOperation("按条件获取公众号事件处理列表")
-    @PostMapping("/list")
-    public Result getMpEventHandlerList(@RequestBody(required = false) Map<String, Object> query) {
-        QueryWrapper<MpEventHandler> queryWrapper = new QueryWrapper<>();
-        if (MapUtils.isNotEmpty(query)) {
-            query.forEach((key, value) -> {
-                //TODO 设置查询条件
-            });
+        if (mpEventHandlerService.removeById(id)) {
+            mpEventHandlerHelper.evictHandlerMap(mpEventHandler.getAccountId());
+            return ResultWrapper.success();
         }
-        List<MpEventHandlerVO> mpEventHandlerVOList = mpEventHandlerService.list(queryWrapper).stream().map(mpEventHandler -> {
-            MpEventHandlerVO mpEventHandlerVO = new MpEventHandlerVO();
-            BeanUtils.copyProperties(mpEventHandler, mpEventHandlerVO);
-            return mpEventHandlerVO;
-        }).collect(Collectors.toList());
-        return ResultWrapper.success(mpEventHandlerVOList);
+        return ResultWrapper.fail(ResultCode.DELETE_FAIL);
     }
 
     @ApiOperation("获取公众号事件处理分页信息")
@@ -171,7 +112,9 @@ public class MpEventHandlerController {
         QueryWrapper<MpEventHandler> queryWrapper = new QueryWrapper<>();
         if (MapUtils.isNotEmpty(query)) {
             query.forEach((key, value) -> {
-                //TODO 设置查询条件
+                if (StringUtils.equals(key, "accountId")) {
+                    queryWrapper.eq("account_id", value);
+                }
             });
         }
         IPage<MpEventHandlerVO> mpEventHandlerVOPage = new Page<>();

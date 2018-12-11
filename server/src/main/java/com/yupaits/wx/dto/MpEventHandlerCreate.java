@@ -40,7 +40,6 @@ public class MpEventHandlerCreate extends BaseDTO {
     @ApiModelProperty(value = "处理类路径")
     private String handlerClass;
 
-    @SuppressWarnings("unchecked")
     @Override
     @ApiModelProperty(hidden = true)
     public boolean isValid() {

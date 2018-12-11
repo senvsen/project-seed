@@ -55,7 +55,6 @@ public class WxMpServiceHelper {
         router.rule().async(false).msgType(WxConsts.XmlMsgType.EVENT).event(WxConsts.EventType.SUBSCRIBE).handler(subscribeHandler.getHandler(id)).end();
 
         //自定义处理逻辑
-        @SuppressWarnings("unchecked")
         Map<String, WxMpMessageHandler> mpHandlerMap = mpEventHandlerHelper.fetchHandlerMap(id);
         if (MapUtils.isNotEmpty(mpHandlerMap)) {
             for (Map.Entry<String, WxMpMessageHandler> handler : mpHandlerMap.entrySet()) {

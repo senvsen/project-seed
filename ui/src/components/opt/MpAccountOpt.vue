@@ -232,8 +232,6 @@
         welcomeMessageLoading: false,
         autoReplyLoading: false,
         eventHandlerLoading: false,
-        autoReplyQuery: {},
-        eventHandlerQuery: {},
         autoReplySortable: {
           ascs: [],
           descs: []
@@ -281,8 +279,8 @@
       },
       fetchAutoReplies() {
         this.autoReplyLoading = true;
-        this.$api.wx.getMpAutoReplyPage(this.autoReplyPager.current, this.autoReplyPager.pageSize, this.autoReplyQuery,
-          this.autoReplySortable.ascs, this.autoReplySortable.descs).then(res => {
+        this.$api.wx.getMpAutoReplyPage(this.autoReplyPager.current, this.autoReplyPager.pageSize, 
+          {accountId: this.account.id}, this.autoReplySortable.ascs, this.autoReplySortable.descs).then(res => {
           this.autoReplies = res.data.records;
           this.autoReplyPager.current = res.data.current;
           this.autoReplyPager.total = res.data.total;
@@ -294,7 +292,7 @@
       fetchEventHandlers() {
         this.eventHandlerLoading = true;
         this.$api.wx.getMpEventHandlerPage(this.eventHandlerPager.current, this.eventHandlerPager.pageSize,
-          this.eventHandlerQuery, this.eventHandlerSortable.ascs, this.eventHandlerSortable.descs).then(res => {
+          {accountId: this.account.id}, this.eventHandlerSortable.ascs, this.eventHandlerSortable.descs).then(res => {
           this.eventHandlers = res.data.records;
           this.eventHandlerPager.current = res.data.current;
           this.eventHandlerPager.total = res.data.total;
