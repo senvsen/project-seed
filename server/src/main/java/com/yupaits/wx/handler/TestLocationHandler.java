@@ -21,8 +21,8 @@ public class TestLocationHandler implements WxMpMessageHandler, Serializable {
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) {
         return WxMpXmlOutMessage.TEXT()
                 .content(String.format("当前时间：%s，%n经度：%s，%n纬度：%s，%n精度：%s", LocalDateTime.now(), wxMpXmlMessage.getLongitude(), wxMpXmlMessage.getLatitude(), wxMpXmlMessage.getPrecision()))
-                .fromUser(wxMpXmlMessage.getFromUser())
-                .toUser(wxMpXmlMessage.getToUser())
+                .fromUser(wxMpXmlMessage.getToUser())
+                .toUser(wxMpXmlMessage.getFromUser())
                 .build();
     }
 }

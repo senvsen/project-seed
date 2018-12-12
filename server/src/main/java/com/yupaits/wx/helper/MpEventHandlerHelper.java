@@ -36,25 +36,24 @@ public class MpEventHandlerHelper {
     @SuppressWarnings("unchecked")
     public Map<String, WxMpMessageHandler> fetchHandlerMap(Long id) {
         Map<String, WxMpMessageHandler> handlerMap = (Map<String, WxMpMessageHandler>) redisTemplate.opsForHash().get(MP_EVENT_HANDLER, id);
-        if (handlerMap != null) {
-            return handlerMap;
-        }
-        handlerMap = Maps.newHashMap();
-        List<MpEventHandler> eventHandlerList = mpEventHandlerMapper.selectList(new QueryWrapper<MpEventHandler>().eq("account_id", id));
-        if (CollectionUtils.isEmpty(eventHandlerList)) {
-            return handlerMap;
-        }
-        for (MpEventHandler mpEventHandler : eventHandlerList) {
-            if (!mpEventHandler.isValid()) {
-                continue;
+        if (handlerMap == null) {
+            handlerMap = Maps.newHashMap();
+            List<MpEventHandler> eventHandlerList = mpEventHandlerMapper.selectList(new QueryWrapper<MpEventHandler>().eq("account_id", id));
+            if (CollectionUtils.isEmpty(eventHandlerList)) {
+                return handlerMap;
             }
-            try {
-                handlerMap.put(mpEventHandler.getEventType(), getHandler(mpEventHandler.getHandlerClass()));
-            } catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {
-                log.error("加载事件处理 {} 出错", mpEventHandler, e);
+            for (MpEventHandler mpEventHandler : eventHandlerList) {
+                if (!mpEventHandler.isValid()) {
+                    continue;
+                }
+                try {
+                    handlerMap.put(mpEventHandler.getEventType(), getHandler(mpEventHandler.getHandlerClass()));
+                } catch (IllegalAccessException | ClassNotFoundException | InstantiationException e) {
+                    log.error("加载事件处理 {} 出错", mpEventHandler, e);
+                }
             }
+            redisTemplate.opsForHash().put(MP_EVENT_HANDLER, id, handlerMap);
         }
-        redisTemplate.opsForHash().put(MP_EVENT_HANDLER, id, handlerMap);
         return handlerMap;
     }
 

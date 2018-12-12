@@ -6,7 +6,6 @@ import com.yupaits.wx.dto.WxMpReplyMessage;
 import com.yupaits.wx.entity.MpWelcomeMessage;
 import com.yupaits.wx.mapper.MpWelcomeMessageMapper;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpMessageHandler;
 import me.chanjar.weixin.mp.api.WxMpService;

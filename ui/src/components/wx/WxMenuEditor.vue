@@ -175,7 +175,6 @@
             this.button = {type: '', name: this.button.name, sub_button: []};
           }
           this.selectedButtonList.push(this.button);
-          this.editing = false;
         } else if (this.optType === 'edit') {
           if (this.menuType === 'menu' && !this.isAction) {
             this.button.type = '';
@@ -183,11 +182,12 @@
               this.$set(this.button, 'sub_button', []);
             }
           }
-          this.selectedButtonList.splice(this.selectedButtonList, 1, this.button);
-          this.editing = false;
+          this.selectedButtonList.splice(this.selectedButtonIndex, 1, this.button);
         } else {
           console.error('不支持的操作类型');
         }
+        this.editingButton = '';
+        this.editing = false;
       },
       cancelEdit() {
         this.editingButton = '';
