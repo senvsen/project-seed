@@ -30,11 +30,11 @@ public class HistoryDataBeanPropertyRowMapper<T> extends BeanPropertyRowMapper<T
         try {
             for (Class<?> enumClass : ENUM_LIST) {
                 if (enumClass.equals(propertyType)) {
-                    Method fromCodeMethod = propertyType.getDeclaredMethod("fromCode", Integer.class);
-                    return fromCodeMethod.invoke(propertyType.newInstance(), rs.getInt(index));
+                    Method fromCodeMethod = propertyType.getDeclaredMethod("fromCode", int.class);
+                    return fromCodeMethod.invoke(null, rs.getInt(index));
                 }
             }
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException ignored) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
 
         }
         return super.getColumnValue(rs, index, pd);
