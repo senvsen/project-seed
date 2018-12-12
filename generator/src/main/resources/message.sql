@@ -1,4 +1,4 @@
-USE test;
+USE seed;
 
 DROP TABLE IF EXISTS msg_system_notice;
 CREATE TABLE msg_system_notice (

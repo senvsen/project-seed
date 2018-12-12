@@ -54,7 +54,7 @@ Spring Boot种子项目
 
 1. 执行sql脚本
 
-    在本地MySQL数据库创建默认的 `test` 数据库，执行 **generator** 模块 resources 目录下的 sql 脚本。
+    在本地MySQL数据库创建默认的 `seed` 数据库，执行 **generator** 模块 resources 目录下的 sql 脚本。
 
 1. 执行单元测试代码插入测试数据
 

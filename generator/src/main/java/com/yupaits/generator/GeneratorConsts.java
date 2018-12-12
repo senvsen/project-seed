@@ -9,7 +9,7 @@ import java.io.File;
 public class GeneratorConsts {
 
     //JDBC配置
-    static final String DATABASE_NAME = "test";
+    static final String DATABASE_NAME = "seed";
     static final String DB_HOST = "localhost";
     static final String JDBC_URL_PATTERN = "jdbc:mysql://%s:3306/%s?useUnicode=true&useSSL=false&characterEncoding=utf8";
     static final String JDBC_USERNAME = "root";

@@ -1,4 +1,4 @@
-USE test;
+USE seed;
 
 DROP TABLE IF EXISTS sys_filter_chain;
 CREATE TABLE sys_filter_chain (

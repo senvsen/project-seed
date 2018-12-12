@@ -1,4 +1,4 @@
-USE test;
+USE seed;
 
 DROP TABLE IF EXISTS schedule_job;
 CREATE TABLE schedule_job (

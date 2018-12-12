@@ -1,4 +1,4 @@
-USE test;
+USE seed;
 
 DROP TABLE IF EXISTS wx_mp_account;
 CREATE TABLE wx_mp_account (

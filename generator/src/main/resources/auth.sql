@@ -1,4 +1,4 @@
-USE test;
+USE seed;
 
 DROP TABLE IF EXISTS auth_user;
 CREATE TABLE auth_user (
