@@ -212,9 +212,7 @@
         eventHandlerVisible: false,
         welcomeMessage: {
           active: false,
-          message: {
-            msgType: ''
-          }
+          message: {}
         },
         autoReplies: [],
         eventHandlers: [],
@@ -271,6 +269,7 @@
         this.$api.wx.getMpWelcomeMessageList({accountId: this.account.id}).then(res => {
           if (res.data.length > 0) {
             this.welcomeMessage = res.data[0];
+            this.$store.dispatch('setWxMessage', this.welcomeMessage.message);
           }
           this.welcomeMessageLoading = false;
         }).catch(() => {
@@ -326,7 +325,6 @@
       },
       editWelcomeMessage() {
         this.fetchWelcomeMessage();
-        this.$store.dispatch('setWxMessage', this.welcomeMessage.message);
         this.welcomeMessageVisible = true;
       },
       autoReplyManage() {
