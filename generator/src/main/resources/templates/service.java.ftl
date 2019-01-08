@@ -27,7 +27,7 @@ public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
      * @param relatedId 关联关系
      * @return 保存结果
      */
-    boolean batchSave(RelatedId<Long> relatedId);
+    boolean batchSave(RelatedId<Long, Long> relatedId);
     </#if>
 }
 </#if>

@@ -17,15 +17,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "RelatedId", description = "关联键组合")
-public class RelatedId<T extends Serializable> implements Serializable {
+public class RelatedId<FT extends Serializable, ST extends Serializable> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主关联键", required = true)
-    private ForeignId<T> firstId;
+    private ForeignId<FT> firstId;
 
     @ApiModelProperty(value = "次关联键集合", required = true)
-    private ForeignIdCollection<T> secondIds;
+    private ForeignIdCollection<ST> secondIds;
 
     @ApiModelProperty(hidden = true)
     public boolean isValid(Class clazz) {

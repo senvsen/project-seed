@@ -43,7 +43,7 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     <#else>
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean batchSave(RelatedId<Long> relatedId) {
+    public boolean batchSave(RelatedId<Long, Long> relatedId) {
         remove(new QueryWrapper<${entity}>()
                     .eq(StringUtils.camelToUnderline(relatedId.getFirstId().getFieldName()), relatedId.getFirstId().getValue())
                     .notIn(StringUtils.camelToUnderline(relatedId.getSecondIds().getFieldName()), relatedId.getSecondIds().getValues()));

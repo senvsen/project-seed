@@ -61,7 +61,7 @@ public class UserRoleController {
 
     @ApiOperation("批量保存用户-角色关系")
     @PostMapping("/batch-save")
-    public Result batchSave(@RequestBody RelatedId<Long> relatedId) {
+    public Result batchSave(@RequestBody RelatedId<Long, Long> relatedId) {
         if (!relatedId.isValid(UserRole.class)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }

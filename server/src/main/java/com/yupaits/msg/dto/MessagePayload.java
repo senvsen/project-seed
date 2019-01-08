@@ -22,7 +22,7 @@ public class MessagePayload implements Serializable {
     private MessageCreate message;
 
     @ApiModelProperty(value = "关联键组合", required = true)
-    private RelatedId<Long> relatedId;
+    private RelatedId<Long, Long> relatedId;
 
     @ApiModelProperty(hidden = true)
     public boolean isValid() {

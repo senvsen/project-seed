@@ -30,7 +30,7 @@ public class RolePrivilegeServiceImpl extends ServiceImpl<RolePrivilegeMapper, R
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean batchSave(RelatedId<Long> relatedId) {
+    public boolean batchSave(RelatedId<Long, Long> relatedId) {
         remove(new QueryWrapper<RolePrivilege>()
                     .eq(StringUtils.camelToUnderline(relatedId.getFirstId().getFieldName()), relatedId.getFirstId().getValue())
                     .notIn(StringUtils.camelToUnderline(relatedId.getSecondIds().getFieldName()), relatedId.getSecondIds().getValues()));

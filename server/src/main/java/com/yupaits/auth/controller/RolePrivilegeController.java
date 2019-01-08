@@ -61,7 +61,7 @@ public class RolePrivilegeController {
 
     @ApiOperation("批量保存角色-权限关系")
     @PostMapping("/batch-save")
-    public Result batchSave(@RequestBody RelatedId<Long> relatedId) {
+    public Result batchSave(@RequestBody RelatedId<Long, Long> relatedId) {
         if (!relatedId.isValid(RolePrivilege.class)) {
             return ResultWrapper.fail(ResultCode.PARAMS_ERROR);
         }

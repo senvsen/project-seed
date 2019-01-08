@@ -16,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.lang.reflect.Field;
 import java.util.List;
 
-;
-;
-
 /**
  * <p>
  * 用户-角色 服务实现类
@@ -33,7 +30,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean batchSave(RelatedId<Long> relatedId) {
+    public boolean batchSave(RelatedId<Long, Long> relatedId) {
         remove(new QueryWrapper<UserRole>()
                     .eq(StringUtils.camelToUnderline(relatedId.getFirstId().getFieldName()), relatedId.getFirstId().getValue())
                     .notIn(StringUtils.camelToUnderline(relatedId.getSecondIds().getFieldName()), relatedId.getSecondIds().getValues()));
